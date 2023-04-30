@@ -6,7 +6,9 @@ const Drawer = createDrawerNavigator();
 
 function MyDrawer() {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator screenOptions={{
+      headerShown:false
+    }}>
       <Drawer.Screen name="HomeScreen" component={MyTabs} />
     </Drawer.Navigator>
   );

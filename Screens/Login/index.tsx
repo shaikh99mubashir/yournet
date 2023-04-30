@@ -104,7 +104,6 @@ const Login = ({navigation}: any) => {
             <TouchableOpacity activeOpacity={0.8} onPress={LoginFunction} style={{alignItems:'center', padding:10, backgroundColor:Color.mainColor,borderRadius:5}}>
               <Text style={{color:'white', fontSize:20, fontFamily:'Poppins-SemiBold'}}>Login</Text>
             </TouchableOpacity>
-
         </View>
 
         {/* Don't Have Account */}

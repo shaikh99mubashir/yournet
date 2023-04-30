@@ -11,7 +11,10 @@ const Login = ({navigation}: any) => {
     password:''
   })
 
-  
+  const LoginFunction = () =>{
+    navigation.navigate('Home')
+  }
+
   return (
     <View
       style={{
@@ -98,7 +101,7 @@ const Login = ({navigation}: any) => {
             borderColor:Color.mainColor,
             marginVertical:20
           }}>
-            <TouchableOpacity style={{alignItems:'center', padding:10, backgroundColor:Color.mainColor,borderRadius:5}}>
+            <TouchableOpacity activeOpacity={0.8} onPress={LoginFunction} style={{alignItems:'center', padding:10, backgroundColor:Color.mainColor,borderRadius:5}}>
               <Text style={{color:'white', fontSize:20, fontFamily:'Poppins-SemiBold'}}>Login</Text>
             </TouchableOpacity>
 
@@ -106,7 +109,7 @@ const Login = ({navigation}: any) => {
 
         {/* Don't Have Account */}
         <View style={{alignItems:'center'}}>
-          <TouchableOpacity activeOpacity={0.8} onPress={()=> navigation.navigate('SignUp')}>
+          <TouchableOpacity activeOpacity={0.8}>
           <Text style={{color:Color.textColor,fontSize:15, fontFamily:'Poppins-Regular'}}>Don’t have an Account? 
           <Text style={{color:Color.mainColor,fontSize:15, fontFamily:'Poppins-SemiBold'}}> Contact Support</Text>
           </Text>

@@ -1,6 +1,6 @@
 import { Dimensions, StyleSheet, Text, TextInput, View,TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-// import Header from '../../Component/Header'
+import Header from '../../Components/Header'
 import Color from '../../Constants/Color';
 
 const ForgotPassword = ({navigation} :any) => {
@@ -16,13 +16,12 @@ const ForgotPassword = ({navigation} :any) => {
         height: Dimensions.get('window').height,
         paddingHorizontal: 10
       }}>
-        {/* <Header
+        <Header
           navigation={navigation}
-          user={user}
           backBtn
           noSignUp
           title='Forgot Password'
-        /> */}
+        />
       <View style={{marginHorizontal: 5,marginVertical:5}}>
         <Text style={{fontFamily:'Poppins-Regular', color:Color.textColor, fontSize:16,fontWeight:'bold'}}>Enter Email Address</Text>
         </View>

@@ -103,6 +103,15 @@ const Login = ({navigation}: any) => {
             </TouchableOpacity>
 
         </View>
+
+        {/* Don't Have Account */}
+        <View style={{alignItems:'center'}}>
+          <TouchableOpacity activeOpacity={0.8} onPress={()=> navigation.navigate('SignUp')}>
+          <Text style={{color:Color.textColor,fontSize:15, fontFamily:'Poppins-Regular'}}>Don’t have an Account? 
+          <Text style={{color:Color.mainColor,fontSize:15, fontFamily:'Poppins-SemiBold'}}> Contact Support</Text>
+          </Text>
+          </TouchableOpacity>
+        </View>
         
     </View>
   )

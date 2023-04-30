@@ -20,7 +20,7 @@ const MyTabs = () => {
         tabBarActiveTintColor: 'red',
       })}>
       <Tab.Screen
-        name="HomeScreen"
+        name="Hom"
         component={Home}
         options={{
           tabBarIcon: ({focused, color}) => (
@@ -38,8 +38,8 @@ const MyTabs = () => {
                     source={require('../../Images/home.png')}
                     resizeMode="contain"
                     style={{
-                      height: 30,
-                      width: 30,
+                      height: 35,
+                      width: 35,
                       tintColor: focused ? Color.mainColor : Color.textColor,
                     }}
                   />
@@ -85,8 +85,8 @@ const MyTabs = () => {
                     source={require('../../Images/payment.png')}
                     resizeMode="contain"
                     style={{
-                      height: 30,
-                      width: 30,
+                      height: 35,
+                      width: 35,
                       tintColor: focused ? Color.mainColor : Color.textColor,
                     }}
                   />
@@ -149,8 +149,8 @@ const MyTabs = () => {
                     source={require('../../Images/feedback.png')}
                     resizeMode="contain"
                     style={{
-                      height: 30,
-                      width: 30,
+                      height: 35,
+                      width: 35,
                       tintColor: focused ? Color.mainColor : Color.textColor,
                     }}
                   />
@@ -179,8 +179,8 @@ const MyTabs = () => {
                     source={require('../../Images/avatar.png')}
                     resizeMode="contain"
                     style={{
-                      height: 30,
-                      width: 30,
+                      height: 35,
+                      width: 35,
                       tintColor: focused ? Color.mainColor : Color.textColor,
                     }}
                   />

@@ -9,6 +9,7 @@ import Verification from '../../Screens/Verification';
 import NewPassword from '../../Screens/NewPassword';
 import Payment from '../../Screens/Payment';
 import Complaint from '../../Screens/Complaint';
+import Notification from '../../Screens/Notification';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ const MyStack = () => {
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="ForgotPassword" component={ForgotPassword}/>
         <Stack.Screen name="Verification" component={Verification}/>
+        <Stack.Screen name="Notification" component={Notification}/>
         <Stack.Screen name="Complaint" component={Complaint}/>
         <Stack.Screen name="NewPassword" component={NewPassword}/>
         <Stack.Screen name="Payment" component={Payment}/>

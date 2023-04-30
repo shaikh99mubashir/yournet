@@ -7,6 +7,8 @@ import Login from '../../Screens/Login';
 import ForgotPassword from '../../Screens/ForgotPassword';
 import Verification from '../../Screens/Verification';
 import NewPassword from '../../Screens/NewPassword';
+import Payment from '../../Screens/Payment';
+import Complaint from '../../Screens/Complaint';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +19,9 @@ const MyStack = () => {
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="ForgotPassword" component={ForgotPassword}/>
         <Stack.Screen name="Verification" component={Verification}/>
+        <Stack.Screen name="Complaint" component={Complaint}/>
         <Stack.Screen name="NewPassword" component={NewPassword}/>
+        <Stack.Screen name="Payment" component={Payment}/>
         <Stack.Screen name="Home" component={MyDrawer}/>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
       </Stack.Navigator>

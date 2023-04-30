@@ -275,7 +275,8 @@ const Home = ({navigation}: any) => {
         </View>
       </View>
 
-      
+            
+
     </View>
   );
 };

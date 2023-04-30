@@ -20,6 +20,7 @@ import {
           backgroundColor: Color.white,
           height: Dimensions.get('window').height,
           paddingHorizontal: 10,
+          paddingVertical:20
         }}>
         <Header navigation={navigation}  title="Complaint" />
         {/* Email */}

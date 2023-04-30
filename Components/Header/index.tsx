@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Color from '../../Constants/Color';
 export type Props = {
   navigation: any;
@@ -43,12 +44,9 @@ const Header = (Props: any) => {
               }}
               activeOpacity={0.8}
               onPress={() => navigation.openDrawer()}>
-              {/* <Image
-                source={require('../../Images/DrawerIcon.png')}
-                resizeMode="contain"
-                style={styles.icon}
-              /> */}
-              <Text>drawer</Text>
+              <Text>
+                <Icon name="reorder-three" size={30} color="black" />
+              </Text>
             </TouchableOpacity>
           ) : backBtn ? (
             <TouchableOpacity
@@ -97,11 +95,7 @@ const Header = (Props: any) => {
               style={{flex: 1, alignItems: 'flex-end', ...myStyle}}
               activeOpacity={0.8}
               onPress={() => navigation.navigate('Notification')}>
-              {/* <Image
-                source={require('../../Images/NotificationIcon.png')}
-                resizeMode="contain"
-                style={[styles.icon]}
-              /> */}<Text>Notification</Text>
+              <FontAwesome name="bell" size={25} color="black" />
             </TouchableOpacity>
           ) : (
             <View style={{flex: 1}}>

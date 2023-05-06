@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
-  Animated,
   FlatList,
   Image,
   ScrollView,

@@ -13,6 +13,7 @@ import Notification from '../../Screens/Notification';
 import CustomerSupport from '../../Screens/CustomerSupport';
 import FeeDetails from '../../Screens/FeeDetails';
 import Help from '../../Screens/Help';
+import PromotionsDetails from '../../Screens/PromotionsDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,7 @@ const MyStack = () => {
         <Stack.Screen name="Home" component={MyDrawer}/>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Help" component={Help} />
+        <Stack.Screen name="PromotionsDetails" component={PromotionsDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );

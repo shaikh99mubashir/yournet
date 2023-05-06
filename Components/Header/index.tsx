@@ -35,6 +35,7 @@ const Header = (Props: any) => {
         justifyContent: 'space-between',
         width: '100%',
         alignItems: 'center',
+        marginTop:10
       }}>
         <>
           {Drawer ? (
@@ -82,12 +83,11 @@ const Header = (Props: any) => {
             <View style={{flex: 2}}></View>
           ) : (
             <View style={{flex: 2}}>
-              {/* <Image
-                source={require('../../Images/ColorLogo.png')}
+              <Image
+                source={require('../../Images/Logo.png')}
                 resizeMode="contain"
                 style={styles.logo}
-              /> */}
-              <Text>Logo</Text>
+              />
             </View>
           )}
           {Notification ? (
@@ -120,7 +120,8 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width / 16,
   },
   logo: {
-    height: Dimensions.get('window').height / 12,
+    // height: Dimensions.get('window').height / 12,
     width: Dimensions.get('window').width / 2,
+    height:40
   },
 });

@@ -10,6 +10,9 @@ import NewPassword from '../../Screens/NewPassword';
 import Payment from '../../Screens/Payment';
 import Complaint from '../../Screens/Complaint';
 import Notification from '../../Screens/Notification';
+import CustomerSupport from '../../Screens/CustomerSupport';
+import FeeDetails from '../../Screens/FeeDetails';
+import Help from '../../Screens/Help';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +29,8 @@ const MyStack = () => {
         <Stack.Screen name="Payment" component={Payment}/>
         <Stack.Screen name="Home" component={MyDrawer}/>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen name="Help" component={Help} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

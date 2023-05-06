@@ -6,6 +6,8 @@ import Home from '../../Screens/Home';
 import Payment from '../../Screens/Payment';
 import Complaint from '../../Screens/Complaint';
 import Profile from '../../Screens/Profile';
+import Promotions from '../../Screens/Promotions';
+import MyAccounts from '../../Screens/MyAccounts';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,13 +16,13 @@ const MyTabs = () => {
     <Tab.Navigator
       screenOptions={({route}) => ({
         headerShown: false,
-        tabBarShowLabel: false,
+        // tabBarShowLabel: false,
         tabBarInactiveTintColor: 'black',
         tabBarStyle: styles.tabBarStyle,
         tabBarActiveTintColor: 'red',
       })}>
       <Tab.Screen
-        name="Hom"
+        name="Home"
         component={Home}
         options={{
           tabBarIcon: ({focused, color}) => (
@@ -114,8 +116,8 @@ const MyTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Complaint"
-        component={Complaint}
+        name="Promotions"
+        component={Promotions}
         options={{
           tabBarIcon: ({focused, color}) => (
             <View>
@@ -161,8 +163,8 @@ const MyTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={Profile}
+        name="My Account"
+        component={MyAccounts}
         options={{
           tabBarIcon: ({focused, color}) => (
             <View>
@@ -218,7 +220,7 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     borderTopWidth: 0,
     height: 60,
-    borderTopEndRadius: 30,
-    borderTopStartRadius: 30,
+    // borderTopEndRadius: 30,
+    // borderTopStartRadius: 30,
   },
 });

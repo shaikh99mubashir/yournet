@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Icon from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import React, {useState, useRef, useEffect} from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
@@ -28,6 +28,10 @@ const Home = ({navigation}: any) => {
     {
       id: 3,
       image: require('../../Images/slider3.jpg'),
+    },
+    {
+      id: 4,
+      image: require('../../Images/slider1.jpg'),
     },
   ];
 
@@ -146,39 +150,24 @@ const Home = ({navigation}: any) => {
               }}>
               Web Portals
             </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                gap: 10,
-                flexWrap: 'wrap',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Image
-                source={require('../../Images/slider2.jpg')}
-                style={{width: 100, height: 100, borderRadius: 10}}
-              />
-              <Image
-                source={require('../../Images/slider2.jpg')}
-                style={{width: 100, height: 100, borderRadius: 10}}
-              />
-              <Image
-                source={require('../../Images/slider2.jpg')}
-                style={{width: 100, height: 100, borderRadius: 10}}
-              />
-              <Image
-                source={require('../../Images/slider2.jpg')}
-                style={{width: 100, height: 100, borderRadius: 10}}
-              />
-              <Image
-                source={require('../../Images/slider2.jpg')}
-                style={{width: 100, height: 100, borderRadius: 10}}
-              />
-              <Image
-                source={require('../../Images/slider2.jpg')}
-                style={{width: 100, height: 100, borderRadius: 10}}
-              />
-            </View>
+            <FlatList
+              data={data}
+              showsHorizontalScrollIndicator={false}
+              nestedScrollEnabled
+              horizontal
+              renderItem={({item, index}: any) => {
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={{paddingRight: 10}}>
+                    <Image
+                      source={item.image}
+                      style={{width: 100, height: 100, borderRadius: 10}}
+                    />
+                  </TouchableOpacity>
+                );
+              }}
+            />
           </View>
         </View>
         {/* Slider */}
@@ -193,6 +182,7 @@ const Home = ({navigation}: any) => {
               ref={flatListRef}
               data={data}
               showsHorizontalScrollIndicator={false}
+              nestedScrollEnabled={true}
               pagingEnabled
               onScroll={e => {
                 const x = e.nativeEvent.contentOffset.x;
@@ -210,7 +200,7 @@ const Home = ({navigation}: any) => {
                     }}>
                     <Image
                       source={item.image}
-                      style={{borderRadius: 10, width: '90%', height: '94%'}}
+                      style={{borderRadius: 10, width: '94%', height: '94%'}}
                       resizeMode="contain"
                     />
                   </View>
@@ -242,7 +232,51 @@ const Home = ({navigation}: any) => {
           </View>
         </View>
 
-        {/*  */}
+        {/* Help And Support */}
+        <View
+          style={{
+            flexDirection: 'row',
+            gap: 10,
+            alignItems: 'center',
+            backgroundColor: Color.white,
+            elevation: 5,
+            marginVertical: 20,
+            marginHorizontal: 10,
+            borderRadius: 10,
+            padding: 10,
+          }}>
+          <AntDesign name="customerservice" color={Color.mainColor} size={80} />
+          <View style={{}}>
+            <Text style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
+              Help & Customer Support
+            </Text>
+            <Text style={{fontSize: 14, color: Color.textColor}}>
+              Register a complaint or get quick {'\n'} help on quries related to
+              <Text style={{color: Color.mainColor, fontWeight: 'bold'}}>
+                {' '}
+                Yournet
+              </Text>
+            </Text>
+            <TouchableOpacity
+            activeOpacity={0.8}
+              style={{
+                borderWidth: 1,
+                width: 120,
+                alignItems: 'center',
+                justifyContent:'center',
+                paddingVertical: 8,
+                borderRadius: 50,
+                borderColor: Color.mainColor,
+                marginVertical: 10,
+                flexDirection:'row',
+                gap:10
+
+              }}>
+              <Text  style={{color: Color.textColor, fontWeight: 'bold', fontSize:16}}>Get Help</Text>
+              <AntDesign name="arrowright" color={Color.mainColor} size={20} />
+            </TouchableOpacity>
+          </View>
+        </View>
       </ScrollView>
     </View>
   );

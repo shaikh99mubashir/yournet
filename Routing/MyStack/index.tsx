@@ -30,7 +30,6 @@ const MyStack = () => {
         <Stack.Screen name="Home" component={MyDrawer}/>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Help" component={Help} />
-
       </Stack.Navigator>
     </NavigationContainer>
   );

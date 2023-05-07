@@ -7,10 +7,11 @@ import {
   FlatList,
   Image,
   ScrollView,
+  ToastAndroid
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect,} from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
 const {height, width} = Dimensions.get('window');
@@ -52,6 +53,10 @@ const Home = ({navigation}: any) => {
     // Cleanup function to clear interval on unmount
     return () => clearInterval(intervalId);
   }, [currentIndex]);
+
+  const ShowMessage = () => {
+    ToastAndroid.show('This Feature will Soon Avaiable !', ToastAndroid.SHORT);
+  }
 
   return (
     <View style={{backgroundColor: Color.white, height: '100%'}}>
@@ -257,6 +262,7 @@ const Home = ({navigation}: any) => {
               </Text>
             </Text>
             <TouchableOpacity
+            onPress={ShowMessage}
             activeOpacity={0.8}
               style={{
                 borderWidth: 1,

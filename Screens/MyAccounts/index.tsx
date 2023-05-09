@@ -22,6 +22,7 @@ const MyAccounts = () => {
           fontWeight: 'bold',
           marginTop: 15,
           color: Color.mainColor,
+          textAlign:'center'
         }}>
         My Account
       </Text>

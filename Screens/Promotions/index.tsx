@@ -28,7 +28,7 @@ const Promotions = ({navigation}:any) => {
   ];
   return (
     <View style={{backgroundColor:Color.white, marginBottom:200}}>
-      <Header navigation={navigation} backBtn/>
+      <Header/>
       <Text style={{textAlign:'center', fontSize:22, marginVertical:10, color:Color.mainColor, fontWeight:'bold'}}>Promotions</Text>
      <View style={{marginHorizontal:10, marginTop:10}}>
       <FlatList

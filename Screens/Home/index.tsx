@@ -15,7 +15,10 @@ import React, {useState, useRef, useEffect,} from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
 const {height, width} = Dimensions.get('window');
-const Home = ({navigation}: any) => {
+const Home = ({navigation, route}: any) => {
+  const userData = route.params?.config;
+  console.log('userData===>',userData);
+  
   const data = [
     {
       id: 1,
@@ -61,19 +64,19 @@ const Home = ({navigation}: any) => {
   return (
     <View style={{backgroundColor: Color.white, height: '100%'}}>
       <View style={{marginHorizontal: 10}}>
-        <Header navigation={navigation} Drawer Notification title="YOURNET" />
+        <Header navigation={navigation} Drawer Notification />
         {/* User Name Inage And Id */}
-        <View style={{flexDirection: 'row', gap: 10}}>
+        <View style={{flexDirection: 'row', gap: 10, marginTop:20}}>
           <Image
             source={require('../../Images/avatar.png')}
             style={{width: 45, height: 45, borderRadius: 50}}
             resizeMode="contain"
           />
           <View>
-            <Text style={{fontSize: 15, fontFamily: 'Poppins-SemiBold'}}>
+            <Text style={{fontSize: 15, fontFamily: 'Poppins-SemiBold',color:Color.textColor}}>
               Mubashir
             </Text>
-            <Text style={{fontSize: 14, fontFamily: 'Poppins-Regular'}}>
+            <Text style={{fontSize: 14, fontFamily: 'Poppins-Regular',color:Color.textColor}}>
               User Id: 202020
             </Text>
           </View>
@@ -95,18 +98,28 @@ const Home = ({navigation}: any) => {
           <View style={styles.container}>
             <View style={styles.body}>
               <View style={{}}>
-                <Text style={styles.package}>
-                  Account Status:{'\n'}{' '}
-                  <Text style={styles.status}>Activated</Text>
+                <View></View>
+                <Text style={[styles.package,{fontSize:30, textAlign:'center'}]}>
+                  Account {'\n'} Status{' '}
                 </Text>
-                <Text style={styles.package}>
+                <View style={{ alignItems:'center'}}>
+                  <Text style={[styles.status,{color:Color.white, fontSize:25,backgroundColor:'#4ecc05', paddingHorizontal:10,paddingVertical:3}]}>Activated</Text>
+                </View>
+                <View style={{flexDirection:'row', alignItems:'center', gap:10, marginTop:10}}>
+                  <Image source={require('../../Images/redIcon.png')} style={{width:20,height:26}}/>
+                <Text style={[styles.package,{fontWeight:'bold', fontSize:18}]}>
                   Renewal Date: {'\n'}
                   <Text style={{color: Color.textColor}}>12/05/2023</Text>
                 </Text>
-                <Text style={styles.package}>
+                </View>
+                <View style={{flexDirection:'row', alignItems:'center', gap:10, marginVertical:10}}>
+                  <Image source={require('../../Images/redIcon.png')} style={{width:20,height:26}}/>
+                <Text style={[styles.package,{fontWeight:'bold', fontSize:18}]}>
                   Expiry Date: {'\n'}
-                  <Text style={{color: Color.textColor}}>12/05/2024</Text>
+                  <Text style={{color: Color.textColor}}>12/05/2023</Text>
                 </Text>
+                </View>
+                
               </View>
               <View
                 style={{
@@ -115,6 +128,7 @@ const Home = ({navigation}: any) => {
                   paddingVertical: 20,
                   borderRadius: 10,
                   alignItems: 'center',
+                  height:150
                 }}>
                 <Text
                   style={{
@@ -126,7 +140,7 @@ const Home = ({navigation}: any) => {
                 </Text>
                 <Text
                   style={{
-                    color: Color.textColor,
+                    color: '#f9e208',
                     fontSize: 25,
                     fontWeight: 'bold',
                   }}>
@@ -325,7 +339,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
     color: Color.mainColor,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
   renewal: {
     fontSize: 16,

@@ -131,7 +131,7 @@ const MyTabs = () => {
                     borderRadius: 5,
                   }}>
                   <Image
-                    source={require('../../Images/feedback.png')}
+                    source={require('../../Images/promotions.png')}
                     resizeMode="contain"
                     style={{
                       height: 40,
@@ -148,7 +148,7 @@ const MyTabs = () => {
                     flexDirection: 'row',
                   }}>
                   <Image
-                    source={require('../../Images/feedback.png')}
+                    source={require('../../Images/promotions.png')}
                     resizeMode="contain"
                     style={{
                       height: 35,
@@ -178,7 +178,7 @@ const MyTabs = () => {
                     borderRadius: 5,
                   }}>
                   <Image
-                    source={require('../../Images/avatar.png')}
+                    source={require('../../Images/myacount.png')}
                     resizeMode="contain"
                     style={{
                       height: 35,
@@ -195,7 +195,7 @@ const MyTabs = () => {
                     flexDirection: 'row',
                   }}>
                   <Image
-                    source={require('../../Images/avatar.png')}
+                    source={require('../../Images/myacount.png')}
                     resizeMode="contain"
                     style={{
                       height: 30,

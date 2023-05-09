@@ -21,6 +21,7 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown:false}}>
+        <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="ForgotPassword" component={ForgotPassword}/>
         <Stack.Screen name="Verification" component={Verification}/>
@@ -29,7 +30,6 @@ const MyStack = () => {
         <Stack.Screen name="NewPassword" component={NewPassword}/>
         <Stack.Screen name="Payment" component={Payment}/>
         <Stack.Screen name="Home" component={MyDrawer}/>
-        <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Help" component={Help} />
         <Stack.Screen name="PromotionsDetails" component={PromotionsDetails} />
       </Stack.Navigator>

@@ -1,12 +1,16 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,ToastAndroid } from 'react-native';
 import { Color } from '../../Constants';
 import Header from '../../Components/Header';
 
 const Payment = () => {
+  const ShowMessage = () => {
+    ToastAndroid.show('This Feature will Soon Avaiable !', ToastAndroid.SHORT);
+  }
   return (
     <View style={styles.container}>
-      <Header title='Payment'/>
+      <Header/>
+      <Text style={{textAlign:'center', fontSize:22, marginVertical:10, color:Color.mainColor, fontWeight:'bold'}}>Payment</Text>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Card Number</Text>
         <TextInput style={styles.input} placeholder="Enter card number" keyboardType="numeric" />
@@ -19,7 +23,7 @@ const Payment = () => {
         <Text style={styles.label}>CVV</Text>
         <TextInput style={styles.input} placeholder="Enter CVV" keyboardType="numeric" />
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity onPress={ShowMessage} style={styles.button}>
         <Text style={styles.buttonText}>Pay Now</Text>
       </TouchableOpacity>
     </View>

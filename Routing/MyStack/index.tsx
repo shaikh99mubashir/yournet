@@ -20,7 +20,7 @@ const Stack = createNativeStackNavigator();
 const MyStack = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown:false}}>
+      <Stack.Navigator screenOptions={{headerShown:false,}}>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="ForgotPassword" component={ForgotPassword}/>

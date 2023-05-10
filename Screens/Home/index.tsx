@@ -7,18 +7,37 @@ import {
   FlatList,
   Image,
   ScrollView,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import React, {useState, useRef, useEffect,} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
+import {BaseUrl} from '../../Constants/BaseUrl';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const {height, width} = Dimensions.get('window');
-const Home = ({navigation, route}: any) => {
-  const userData = route.params?.config;
-  console.log('userData===>',userData);
+const Home = ({navigation}: any) => {
+
+  // To retrieve the loginFields
+  const [userId, setUserId] = useState<any>('')
   
+  console.log('userId',userId.customer_id);
+  const gettingUserData = () =>{
+    AsyncStorage.getItem('loginFields')
+    .then((value) => {
+      if (value !== null) {
+        setUserId(JSON.parse(value));
+      } else {
+        console.log('No login fields found');
+      }
+    })
+    .catch((error) => console.log('Error retrieving login fields: ', error));
+  }
+  useEffect(()=>{
+    gettingUserData()
+  },[])
   const data = [
     {
       id: 1,
@@ -37,7 +56,55 @@ const Home = ({navigation, route}: any) => {
       image: require('../../Images/slider1.jpg'),
     },
   ];
+  const [getUserData, setUserData] = useState<any>([]);
+  const getData = () => {
+    const formData = new FormData();
+    formData.append('customer_id', userId?.customer_id);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}getdata`, formData, config)
+      .then((res: any) => {
+        // console.log('res',res.data);
+        setUserData(res.data.customer);
+      })
+      .catch(error => {
+        console.log('error==>', error);
+        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+      });
+  };
 
+  useEffect(() => {
+    getData();
+  }, [userId?.customer_id]);
+  const [userPackage, setUserPackage] = useState<any>([])
+  console.log('userPackage',userPackage);
+  
+  const getPackageData = () => {
+    const formData = new FormData();
+    formData.append('package_id', getUserData?.package_id);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}getPackageDetails`, formData, config)
+      .then((res: any) => {
+        // console.log('res=================>', res.data.package);
+        setUserPackage(res.data.package);
+      })
+      .catch(error => {
+        console.log('error==>', error);
+        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+      });
+  };
+  useEffect(() => {
+    getPackageData();
+  }, [getUserData?.package_id]);
   const [currentIndex, setCurrentIndex] = useState<any>(0);
   const flatListRef = useRef<any>(null);
   // Function to move to next image
@@ -59,25 +126,36 @@ const Home = ({navigation, route}: any) => {
 
   const ShowMessage = () => {
     ToastAndroid.show('This Feature will Soon Avaiable !', ToastAndroid.SHORT);
-  }
+  };
 
   return (
     <View style={{backgroundColor: Color.white, height: '100%'}}>
       <View style={{marginHorizontal: 10}}>
         <Header navigation={navigation} Drawer Notification />
         {/* User Name Inage And Id */}
-        <View style={{flexDirection: 'row', gap: 10, marginTop:20}}>
+
+        <View style={{flexDirection: 'row', gap: 10, marginTop: 20}}>
           <Image
             source={require('../../Images/avatar.png')}
             style={{width: 45, height: 45, borderRadius: 50}}
             resizeMode="contain"
           />
           <View>
-            <Text style={{fontSize: 15, fontFamily: 'Poppins-SemiBold',color:Color.textColor}}>
-              Mubashir
+            <Text
+              style={{
+                fontSize: 15,
+                fontFamily: 'Poppins-SemiBold',
+                color: Color.textColor,
+              }}>
+              {getUserData?.first_name}
             </Text>
-            <Text style={{fontSize: 14, fontFamily: 'Poppins-Regular',color:Color.textColor}}>
-              User Id: 202020
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: 'Poppins-Regular',
+                color: Color.textColor,
+              }}>
+              User Id: {getUserData?.customer_id}
             </Text>
           </View>
         </View>
@@ -99,27 +177,78 @@ const Home = ({navigation, route}: any) => {
             <View style={styles.body}>
               <View style={{}}>
                 <View></View>
-                <Text style={[styles.package,{fontSize:30, textAlign:'center'}]}>
+                <Text
+                  style={[styles.package, {fontSize: 30, textAlign: 'center'}]}>
                   Account {'\n'} Status{' '}
                 </Text>
-                <View style={{ alignItems:'center'}}>
-                  <Text style={[styles.status,{color:Color.white, fontSize:25,backgroundColor:'#4ecc05', paddingHorizontal:10,paddingVertical:3}]}>Activated</Text>
+                <View style={{alignItems: 'center'}}>
+                  <Text
+                    style={[
+                      styles.status,
+                      {
+                        color: Color.white,
+                        fontSize: 25,
+                        backgroundColor:
+                          getUserData?.status == 'Active'
+                            ? '#4ecc05'
+                            : getUserData?.status == 'Inactive '
+                            ? 'red'
+                            : getUserData?.status == 'Registered'
+                            ? '#eee'
+                            : getUserData?.status == 'Terminate' ? 'darkgrey' :'pink',
+                        paddingHorizontal: 10,
+                        paddingVertical: 3,
+                      },
+                    ]}>
+                    {getUserData?.status == 'Inactive'
+                      ? 'Expire'
+                      : getUserData?.status}
+                  </Text>
                 </View>
-                <View style={{flexDirection:'row', alignItems:'center', gap:10, marginTop:10}}>
-                  <Image source={require('../../Images/redIcon.png')} style={{width:20,height:26}}/>
-                <Text style={[styles.package,{fontWeight:'bold', fontSize:18}]}>
-                  Renewal Date: {'\n'}
-                  <Text style={{color: Color.textColor}}>12/05/2023</Text>
-                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10,
+                    marginTop: 10,
+                  }}>
+                  <Image
+                    source={require('../../Images/redIcon.png')}
+                    style={{width: 20, height: 26}}
+                  />
+                  <Text
+                    style={[
+                      styles.package,
+                      {fontWeight: 'bold', fontSize: 18},
+                    ]}>
+                    Renewal Date: {'\n'}
+                    <Text style={{color: Color.textColor}}>
+                      {getUserData?.activation_date}
+                    </Text>
+                  </Text>
                 </View>
-                <View style={{flexDirection:'row', alignItems:'center', gap:10, marginVertical:10}}>
-                  <Image source={require('../../Images/redIcon.png')} style={{width:20,height:26}}/>
-                <Text style={[styles.package,{fontWeight:'bold', fontSize:18}]}>
-                  Expiry Date: {'\n'}
-                  <Text style={{color: Color.textColor}}>12/05/2023</Text>
-                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10,
+                    marginVertical: 10,
+                  }}>
+                  <Image
+                    source={require('../../Images/redIcon.png')}
+                    style={{width: 20, height: 26}}
+                  />
+                  <Text
+                    style={[
+                      styles.package,
+                      {fontWeight: 'bold', fontSize: 18},
+                    ]}>
+                    Expiry Date: {'\n'}
+                    <Text style={{color: Color.textColor}}>
+                      {getUserData?.expiry_date}
+                    </Text>
+                  </Text>
                 </View>
-                
               </View>
               <View
                 style={{
@@ -128,7 +257,7 @@ const Home = ({navigation, route}: any) => {
                   paddingVertical: 20,
                   borderRadius: 10,
                   alignItems: 'center',
-                  height:150
+                  height: 150,
                 }}>
                 <Text
                   style={{
@@ -144,7 +273,7 @@ const Home = ({navigation, route}: any) => {
                     fontSize: 25,
                     fontWeight: 'bold',
                   }}>
-                  7Mbps
+                  {userPackage?.package_mbps == null ? '0' : userPackage.package_mbps} Mbps
                 </Text>
                 <Text
                   style={{
@@ -276,22 +405,28 @@ const Home = ({navigation, route}: any) => {
               </Text>
             </Text>
             <TouchableOpacity
-            onPress={ShowMessage}
-            activeOpacity={0.8}
+              onPress={ShowMessage}
+              activeOpacity={0.8}
               style={{
                 borderWidth: 1,
                 width: 120,
                 alignItems: 'center',
-                justifyContent:'center',
+                justifyContent: 'center',
                 paddingVertical: 8,
                 borderRadius: 50,
                 borderColor: Color.mainColor,
                 marginVertical: 10,
-                flexDirection:'row',
-                gap:10
-
+                flexDirection: 'row',
+                gap: 10,
               }}>
-              <Text  style={{color: Color.textColor, fontWeight: 'bold', fontSize:16}}>Get Help</Text>
+              <Text
+                style={{
+                  color: Color.textColor,
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                }}>
+                Get Help
+              </Text>
               <AntDesign name="arrowright" color={Color.mainColor} size={20} />
             </TouchableOpacity>
           </View>

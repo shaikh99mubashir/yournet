@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet,ToastAndroid} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet,ToastAndroid,Image} from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -8,6 +8,7 @@ import {
 import {Color} from '../../Constants';
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Share from 'react-native-share';
@@ -57,13 +58,14 @@ function CustomDrawerContent(props: any) {
               <Text style={styles.closeButton}>Log Out</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => props.navigation.closeDrawer()}>
-              <Text
+              {/* <Text
                 style={[
                   styles.closeButton,
                   {fontWeight: 'bold', fontSize: 18},
                 ]}>
                 X
-              </Text>
+              </Text> */}
+              <Icon name="ios-arrow-back-sharp" size={27} color="black" />
             </TouchableOpacity>
           </View>
           {/* Name Profile And setting */}
@@ -172,7 +174,7 @@ function CustomDrawerContent(props: any) {
                     width: 130,
                     height: 60,
                   }}>
-                  <AntDesign name="carryout" color="black" size={25} />
+                  <Image source={require('../../Images/fees.png')} style={{width:25, height:25}} resizeMode='contain'/>
                   <Text style={{color:Color.textColor}}> Fee Details</Text>
                 </TouchableOpacity>
               </View>
@@ -199,7 +201,7 @@ function CustomDrawerContent(props: any) {
                     width: 130,
                     height: 60,
                   }}>
-                  <Feather name="help-circle" color="black" size={25} />
+                  <Image source={require('../../Images/faq.png')} style={{width:25, height:25}} resizeMode='contain'/>
                   <Text style={{color:Color.textColor}}> FAQs</Text>
                 </TouchableOpacity>
               </View>
@@ -217,7 +219,7 @@ function CustomDrawerContent(props: any) {
                     width: 130,
                     height: 60,
                   }}>
-                  <AntDesign name="sharealt" color="black" size={25} />
+                  <Image source={require('../../Images/share.png')} style={{width:25, height:25}} resizeMode='contain'/>
                   <Text> Share</Text>
                 </TouchableOpacity>
               </View>
@@ -256,7 +258,7 @@ function CustomDrawerContent(props: any) {
                     width: 130,
                     height: 120,
                   }}>
-                  <MaterialIcons name="history" color="black" size={35} />
+                  <Image source={require('../../Images/transactionhistory.png')} style={{width:35, height:35}} resizeMode='contain'/>
                   <Text style={{color:Color.textColor}}> Transaction {'\n'} History</Text>
                 </TouchableOpacity>
               </View>

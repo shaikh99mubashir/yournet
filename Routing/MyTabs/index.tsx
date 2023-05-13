@@ -68,7 +68,7 @@ const MyTabs = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Payment"
         component={Payment}
         options={{
@@ -114,7 +114,7 @@ const MyTabs = () => {
             </View>
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Promotions"
         component={Promotions}

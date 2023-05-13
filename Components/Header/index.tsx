@@ -49,17 +49,7 @@ const Header = (Props: any) => {
                 <Icon name="reorder-three" size={30} color="black" />
               </Text>
             </TouchableOpacity>
-          ) : backBtn ? (
-            <TouchableOpacity
-              style={{
-                flex: 1,
-              }}
-              onPress={() => navigation.goBack()}>
-              <Text>
-                <Icon name="md-chevron-back" size={30} color="black" />
-              </Text>
-            </TouchableOpacity>
-          ) : (
+          ) :  (
             <View
               style={{
                 flex: 1,
@@ -96,6 +86,15 @@ const Header = (Props: any) => {
               activeOpacity={0.8}
               onPress={() => navigation.navigate('Notification')}>
               <FontAwesome name="bell" size={25} color="black" />
+            </TouchableOpacity>
+          ) : backBtn ? (
+            <TouchableOpacity
+              style={{
+              }}
+              onPress={() => navigation.goBack()}>
+              
+                <Icon name="ios-arrow-back-sharp" size={27} color="black" />
+              
             </TouchableOpacity>
           ) : (
             <View style={{flex: 1}}>

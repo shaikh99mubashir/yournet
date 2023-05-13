@@ -23,7 +23,7 @@ const Home = ({navigation}: any) => {
   // To retrieve the loginFields
   const [userId, setUserId] = useState<any>('')
   
-  console.log('userId',userId.customer_id);
+  // console.log('userId',userId.customer_id);
   const gettingUserData = () =>{
     AsyncStorage.getItem('loginFields')
     .then((value) => {
@@ -81,7 +81,7 @@ const Home = ({navigation}: any) => {
     getData();
   }, [userId?.customer_id]);
   const [userPackage, setUserPackage] = useState<any>([])
-  console.log('userPackage',userPackage);
+  // console.log('userPackage',userPackage);
   
   const getPackageData = () => {
     const formData = new FormData();
@@ -94,7 +94,6 @@ const Home = ({navigation}: any) => {
     axios
       .post(`${BaseUrl}getPackageDetails`, formData, config)
       .then((res: any) => {
-        // console.log('res=================>', res.data.package);
         setUserPackage(res.data.package);
       })
       .catch(error => {
@@ -250,14 +249,15 @@ const Home = ({navigation}: any) => {
                   </Text>
                 </View>
               </View>
+              <View style={{flex:1}}>
               <View
                 style={{
                   backgroundColor: Color.mainColor,
-                  paddingHorizontal: 20,
-                  paddingVertical: 20,
+                  paddingHorizontal: 10,
+                  paddingVertical: 15,
                   borderRadius: 10,
                   alignItems: 'center',
-                  height: 150,
+                  // height: 150,
                 }}>
                 <Text
                   style={{
@@ -283,6 +283,8 @@ const Home = ({navigation}: any) => {
                   }}>
                   unlimited
                 </Text>
+              </View>
+              <Image source={require('../../Images/leaf.png')} style={{width:100, height:120,marginTop:15,}} resizeMode='contain'/>
               </View>
             </View>
           </View>
@@ -392,7 +394,8 @@ const Home = ({navigation}: any) => {
             borderRadius: 10,
             padding: 10,
           }}>
-          <AntDesign name="customerservice" color={Color.mainColor} size={80} />
+            <Image source={require('../../Images/headphone.png')} style={{width:80, height:80}} resizeMode='contain'/>
+          {/* <AntDesign name="customerservice" color={Color.mainColor} size={80} /> */}
           <View style={{}}>
             <Text style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
               Help & Customer Support

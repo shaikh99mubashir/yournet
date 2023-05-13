@@ -4,15 +4,64 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  ScrollView
+  ScrollView,
+  ToastAndroid
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { BaseUrl } from '../../Constants/BaseUrl';
 
 const MyAccounts = () => {
   const [editNickName, setEditNickName] = useState<boolean>(false);
+  const [nickName, setNickName] = useState<any>('')
+  const [userId, setUserId] = useState<any>('')
+  const [getUserData, setUserData] = useState<any>([]);
+  console.log('nickName', nickName);
+  
+  
+  console.log('getUserData',getUserData);
+  // console.log('userId',userId.customer_id);
+  const gettingUserData = () =>{
+    AsyncStorage.getItem('loginFields')
+    .then((value) => {
+      if (value !== null) {
+        setUserId(JSON.parse(value));
+      } else {
+        console.log('No login fields found');
+      }
+    })
+    .catch((error) => console.log('Error retrieving login fields: ', error));
+  }
+  useEffect(()=>{
+    gettingUserData()
+  },[])
+  const getData = () => {
+    const formData = new FormData();
+    formData.append('customer_id', userId?.customer_id);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}getdata`, formData, config)
+      .then((res: any) => {
+        // console.log('res',res.data);
+        setUserData(res.data.customer);
+      })
+      .catch(error => {
+        console.log('error==>', error);
+        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, [userId?.customer_id]);
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={{marginHorizontal: 10}}>
       <Header />
@@ -50,7 +99,7 @@ const MyAccounts = () => {
             marginTop: 10,
           }}>
           {editNickName ? (
-            <TextInput placeholder="Edit Your Nick Name" placeholderTextColor={Color.textColor} style={{color:Color.textColor}}/>
+            <TextInput placeholder="Edit Your Nick Name" onChangeText={(e)=> setNickName(e)} placeholderTextColor={Color.textColor} style={{color:Color.textColor}}/>
           ) : (
             <Text
               style={{
@@ -58,7 +107,7 @@ const MyAccounts = () => {
                 fontWeight: 'bold',
                 fontSize: 24,
               }}>
-              Mubashir
+              {nickName? nickName :getUserData?.first_name}
             </Text>
           )}
           <TouchableOpacity onPress={() => setEditNickName(!editNickName)}>
@@ -96,7 +145,7 @@ const MyAccounts = () => {
               fontWeight: 'bold',
               fontSize: 24,
             }}>
-            Mubashir
+            {getUserData?.first_name}
           </Text>
         </View>
       </View>
@@ -126,7 +175,7 @@ const MyAccounts = () => {
               fontWeight: 'bold',
               fontSize: 20,
             }}>
-            +92 5151511511
+            {getUserData?.mobile_number}
           </Text>
         </View>
       </View>
@@ -156,7 +205,7 @@ const MyAccounts = () => {
               fontWeight: 'bold',
               fontSize: 20,
             }}>
-            shaikh99mubashir@gmail.com
+            {getUserData?.email_address}
           </Text>
         </View>
       </View>
@@ -186,7 +235,7 @@ const MyAccounts = () => {
               fontWeight: 'bold',
               fontSize: 20,
             }}>
-            20/20/20
+            {getUserData?.created_at}
           </Text>
         </View>
       </View>

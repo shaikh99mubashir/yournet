@@ -19,25 +19,24 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const {height, width} = Dimensions.get('window');
 const Home = ({navigation}: any) => {
-
   // To retrieve the loginFields
-  const [userId, setUserId] = useState<any>('')
-  
+  const [userId, setUserId] = useState<any>('');
+
   // console.log('userId',userId.customer_id);
-  const gettingUserData = () =>{
+  const gettingUserData = () => {
     AsyncStorage.getItem('loginFields')
-    .then((value) => {
-      if (value !== null) {
-        setUserId(JSON.parse(value));
-      } else {
-        console.log('No login fields found');
-      }
-    })
-    .catch((error) => console.log('Error retrieving login fields: ', error));
-  }
-  useEffect(()=>{
-    gettingUserData()
-  },[])
+      .then(value => {
+        if (value !== null) {
+          setUserId(JSON.parse(value));
+        } else {
+          console.log('No login fields found');
+        }
+      })
+      .catch(error => console.log('Error retrieving login fields: ', error));
+  };
+  useEffect(() => {
+    gettingUserData();
+  }, []);
   const data = [
     {
       id: 1,
@@ -80,9 +79,9 @@ const Home = ({navigation}: any) => {
   useEffect(() => {
     getData();
   }, [userId?.customer_id]);
-  const [userPackage, setUserPackage] = useState<any>([])
+  const [userPackage, setUserPackage] = useState<any>([]);
   // console.log('userPackage',userPackage);
-  
+
   const getPackageData = () => {
     const formData = new FormData();
     formData.append('package_id', getUserData?.package_id);
@@ -104,13 +103,40 @@ const Home = ({navigation}: any) => {
   useEffect(() => {
     getPackageData();
   }, [getUserData?.package_id]);
+
+  const [promotionData, setPromotionData] = useState([]);
+  const getPromotionData = () => {
+    const formData = new FormData();
+    formData.append('company_id', getUserData?.company_id);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}getPromotionsByCompanyId`, formData, config)
+      .then((res: any) => {
+        setPromotionData(res.data.promotions);
+      })
+      .catch(error => {
+        console.log('error==>', error);
+        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+      });
+  };
+  console.log('promotionData====>', promotionData);
+
+  useEffect(() => {
+    getPromotionData();
+  }, [getUserData?.company_id]);
   const [currentIndex, setCurrentIndex] = useState<any>(0);
   const flatListRef = useRef<any>(null);
   // Function to move to next image
   const nextImage = () => {
-    const nextIndex = (currentIndex + 1) % data.length;
-    setCurrentIndex(nextIndex);
-    flatListRef.current.scrollToIndex({animated: true, index: nextIndex});
+    if (promotionData && promotionData.length > 0) {
+      const nextIndex = (currentIndex + 1) % promotionData.length;
+      flatListRef.current?.scrollToIndex({index: nextIndex});
+      setCurrentIndex(nextIndex);
+    }
   };
 
   // Use effect to move to next image every 5 seconds
@@ -194,7 +220,9 @@ const Home = ({navigation}: any) => {
                             ? 'red'
                             : getUserData?.status == 'Registered'
                             ? '#eee'
-                            : getUserData?.status == 'Terminate' ? 'darkgrey' :'pink',
+                            : getUserData?.status == 'Terminate'
+                            ? 'darkgrey'
+                            : 'pink',
                         paddingHorizontal: 10,
                         paddingVertical: 3,
                       },
@@ -249,42 +277,54 @@ const Home = ({navigation}: any) => {
                   </Text>
                 </View>
               </View>
-              <View style={{flex:1}}>
-              <View
-                style={{
-                  backgroundColor: Color.mainColor,
-                  paddingHorizontal: 10,
-                  paddingVertical: 15,
-                  borderRadius: 10,
-                  alignItems: 'center',
-                  // height: 150,
-                }}>
-                <Text
+              <View style={{flex: 1}}>
+                <View
                   style={{
-                    color: Color.white,
-                    fontSize: 25,
-                    fontWeight: 'bold',
+                    backgroundColor: Color.mainColor,
+                    paddingHorizontal: 10,
+                    paddingVertical: 15,
+                    borderRadius: 10,
+                    alignItems: 'center',
+                    // height: 150,
                   }}>
-                  Package
-                </Text>
-                <Text
+                  <Text
+                    style={{
+                      color: Color.white,
+                      fontSize: 25,
+                      fontWeight: 'bold',
+                    }}>
+                    Package
+                  </Text>
+                  <Text
+                    style={{
+                      color: '#f9e208',
+                      fontSize: 25,
+                      fontWeight: 'bold',
+                    }}>
+                    {userPackage?.package_mbps == null
+                      ? '0'
+                      : userPackage.package_mbps}{' '}
+                    Mbps
+                  </Text>
+                  <Text
+                    style={{
+                      color: Color.white,
+                      fontSize: 25,
+                      fontWeight: 'bold',
+                    }}>
+                    unlimited
+                  </Text>
+                </View>
+                <Image
+                  source={require('../../Images/leaf.png')}
                   style={{
-                    color: '#f9e208',
-                    fontSize: 25,
-                    fontWeight: 'bold',
-                  }}>
-                  {userPackage?.package_mbps == null ? '0' : userPackage.package_mbps} Mbps
-                </Text>
-                <Text
-                  style={{
-                    color: Color.white,
-                    fontSize: 25,
-                    fontWeight: 'bold',
-                  }}>
-                  unlimited
-                </Text>
-              </View>
-              <Image source={require('../../Images/leaf.png')} style={{width:100, height:120,marginTop:15,}} resizeMode='contain'/>
+                    width: 100,
+                    height: 120,
+                    marginTop: 15,
+                    marginLeft: 20,
+                  }}
+                  resizeMode="contain"
+                />
               </View>
             </View>
           </View>
@@ -329,7 +369,7 @@ const Home = ({navigation}: any) => {
             }}>
             <FlatList
               ref={flatListRef}
-              data={data}
+              data={promotionData ?? []}
               showsHorizontalScrollIndicator={false}
               nestedScrollEnabled={true}
               pagingEnabled
@@ -338,7 +378,7 @@ const Home = ({navigation}: any) => {
                 setCurrentIndex((x / (width - 50)).toFixed(0));
               }}
               horizontal
-              renderItem={({item, index}) => {
+              renderItem={({item, index}: any) => {
                 return (
                   <View
                     style={{
@@ -348,7 +388,7 @@ const Home = ({navigation}: any) => {
                       alignItems: 'center',
                     }}>
                     <Image
-                      source={item.image}
+                      source={{ uri: item.image }}
                       style={{borderRadius: 10, width: '94%', height: '94%'}}
                       resizeMode="contain"
                     />
@@ -364,20 +404,21 @@ const Home = ({navigation}: any) => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            {data.map((item, index) => {
-              return (
-                <View
-                  key={item.id}
-                  style={{
-                    width: currentIndex == index ? 20 : 8,
-                    height: currentIndex == index ? 10 : 8,
-                    borderRadius: currentIndex == index ? 5 : 4,
-                    backgroundColor:
-                      currentIndex == index ? Color.mainColor : 'gray',
-                    marginLeft: 5,
-                  }}></View>
-              );
-            })}
+            {promotionData &&
+              promotionData.map((item: any, index: number) => {
+                return (
+                  <View
+                    key={item.ID}
+                    style={{
+                      width: currentIndex == index ? 20 : 8,
+                      height: currentIndex == index ? 10 : 8,
+                      borderRadius: currentIndex == index ? 5 : 4,
+                      backgroundColor:
+                        currentIndex == index ? Color.mainColor : 'gray',
+                      marginLeft: 5,
+                    }}></View>
+                );
+              })}
           </View>
         </View>
 
@@ -394,7 +435,11 @@ const Home = ({navigation}: any) => {
             borderRadius: 10,
             padding: 10,
           }}>
-            <Image source={require('../../Images/headphone.png')} style={{width:80, height:80}} resizeMode='contain'/>
+          <Image
+            source={require('../../Images/headphone.png')}
+            style={{width: 80, height: 80}}
+            resizeMode="contain"
+          />
           {/* <AntDesign name="customerservice" color={Color.mainColor} size={80} /> */}
           <View style={{}}>
             <Text style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>

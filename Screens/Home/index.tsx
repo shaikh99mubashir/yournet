@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   ToastAndroid,
+  Linking 
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import React, {useState, useRef, useEffect} from 'react';
@@ -21,8 +22,6 @@ const {height, width} = Dimensions.get('window');
 const Home = ({navigation}: any) => {
   // To retrieve the loginFields
   const [userId, setUserId] = useState<any>('');
-
-  // console.log('userId',userId.customer_id);
   const gettingUserData = () => {
     AsyncStorage.getItem('loginFields')
       .then(value => {
@@ -37,24 +36,7 @@ const Home = ({navigation}: any) => {
   useEffect(() => {
     gettingUserData();
   }, []);
-  const data = [
-    {
-      id: 1,
-      image: require('../../Images/slider1.jpg'),
-    },
-    {
-      id: 2,
-      image: require('../../Images/slider2.jpg'),
-    },
-    {
-      id: 3,
-      image: require('../../Images/slider3.jpg'),
-    },
-    {
-      id: 4,
-      image: require('../../Images/slider1.jpg'),
-    },
-  ];
+ 
   // get User DATA
   const [getUserData, setUserData] = useState<any>([]);
   const getData = () => {
@@ -128,7 +110,7 @@ const Home = ({navigation}: any) => {
       });
   };
 
-  console.log('webPortalData===>',webPortalData);
+  // console.log('webPortalData===>',webPortalData);
   
 
   useEffect(() => {
@@ -137,27 +119,34 @@ const Home = ({navigation}: any) => {
 
   const [selectedLink, setSelectedLink] = useState<string | null>(null);
 
- const  handelWebView = (link:any) => {
-  console.log('link---->',link);
-    setSelectedLink(link);
-    if (selectedLink) {
-      return (
-        <View style={{ flex: 1, width:'100%', height:'100%' }}>
-          <TouchableOpacity onPress={handleCloseWebView} style={{ padding: 10 }}>
-            <Text style={{ fontSize: 18 }}>Close</Text>
-          </TouchableOpacity>
-          <WebView
-            source={{ uri: selectedLink }}
-            style={{ flex: 1 }}
-          />
-        </View>
-      );
-    }
- }
+  const handelWebView = (link: string) => {
+    console.log(`Opening link: ${link}`);
+    Linking.openURL(link).catch((error) => {
+      console.error(`Failed to open link: ${link}`, error);
+    });
+  };
 
- const handleCloseWebView = () => {
-  setSelectedLink(null);
-};
+//  const  handelWebView = (link:any) => {
+//   console.log('link---->',link);
+//     setSelectedLink(link);
+//     if (selectedLink) {
+//       return (
+//         <View style={{ flex: 1, width:'100%', height:'100%' }}>
+//           <TouchableOpacity onPress={handleCloseWebView} style={{ padding: 10 }}>
+//             <Text style={{ fontSize: 18 }}>Close</Text>
+//           </TouchableOpacity>
+//           <WebView
+//             source={{ uri: selectedLink }}
+//             style={{ flex: 1 }}
+//           />
+//         </View>
+//       );
+//     }
+//  }
+
+//  const handleCloseWebView = () => {
+//   setSelectedLink(null);
+// };
 
 
 

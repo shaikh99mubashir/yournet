@@ -5,7 +5,6 @@ import {Color} from '../../Constants';
 
 const PromotionsDetails = ({navigation, route}: any) => {
   const data = route.params;
-  console.log('data==>', data);
 
   return (
     <View style={{backgroundColor: Color.white, height: '100%'}}>
@@ -31,10 +30,13 @@ const PromotionsDetails = ({navigation, route}: any) => {
           shadowRadius: 10,
         }}>
         <Image
-          source={require('../../Images/slider1.jpg')}
+          source={{ uri: data?.image }}
           style={{width: '95%', height: 200, borderRadius: 10, marginBottom: 5}}
         />
-        <Text>{data?.txt}</Text>
+        <View style={{alignItems:'flex-start', paddingHorizontal:12}}>
+        <Text style={{fontSize:15, fontWeight:'bold'}}>{data?.title}</Text>
+        <Text style={{fontSize:15,}}>{data?.description}</Text>
+        </View>
       </View>
     </View>
   );

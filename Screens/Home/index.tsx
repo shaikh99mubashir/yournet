@@ -9,13 +9,13 @@ import {
   ScrollView,
   ToastAndroid,
 } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import React, {useState, useRef, useEffect} from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
 import {BaseUrl} from '../../Constants/BaseUrl';
 import axios from 'axios';
+import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const {height, width} = Dimensions.get('window');
 const Home = ({navigation}: any) => {
@@ -55,6 +55,7 @@ const Home = ({navigation}: any) => {
       image: require('../../Images/slider1.jpg'),
     },
   ];
+  // get User DATA
   const [getUserData, setUserData] = useState<any>([]);
   const getData = () => {
     const formData = new FormData();
@@ -79,9 +80,9 @@ const Home = ({navigation}: any) => {
   useEffect(() => {
     getData();
   }, [userId?.customer_id]);
+// get User DATA work completed
+  // package Work
   const [userPackage, setUserPackage] = useState<any>([]);
-  // console.log('userPackage',userPackage);
-
   const getPackageData = () => {
     const formData = new FormData();
     formData.append('package_id', getUserData?.package_id);
@@ -103,7 +104,67 @@ const Home = ({navigation}: any) => {
   useEffect(() => {
     getPackageData();
   }, [getUserData?.package_id]);
+  // package Work Ended
 
+  //  WEB PORTAL
+
+  const [webPortalData, WebPortalData] = useState([]);
+  const getWebPortalData = () => {
+    const formData = new FormData();
+    formData.append('company_id', getUserData?.company_id);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}getPortalsByCompanyId`, formData, config)
+      .then((res: any) => {
+        WebPortalData(res.data.portals);
+      })
+      .catch(error => {
+        console.log('error==>', error);
+        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+      });
+  };
+
+  console.log('webPortalData===>',webPortalData);
+  
+
+  useEffect(() => {
+    getWebPortalData();
+  }, [getUserData?.company_id]);
+
+  const [selectedLink, setSelectedLink] = useState<string | null>(null);
+
+ const  handelWebView = (link:any) => {
+  console.log('link---->',link);
+    setSelectedLink(link);
+    if (selectedLink) {
+      return (
+        <View style={{ flex: 1, width:'100%', height:'100%' }}>
+          <TouchableOpacity onPress={handleCloseWebView} style={{ padding: 10 }}>
+            <Text style={{ fontSize: 18 }}>Close</Text>
+          </TouchableOpacity>
+          <WebView
+            source={{ uri: selectedLink }}
+            style={{ flex: 1 }}
+          />
+        </View>
+      );
+    }
+ }
+
+ const handleCloseWebView = () => {
+  setSelectedLink(null);
+};
+
+
+
+  // web PORTAL ENDED
+
+
+  // All Promotion Work
   const [promotionData, setPromotionData] = useState([]);
   const getPromotionData = () => {
     const formData = new FormData();
@@ -123,11 +184,14 @@ const Home = ({navigation}: any) => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
       });
   };
-  console.log('promotionData====>', promotionData);
 
   useEffect(() => {
     getPromotionData();
   }, [getUserData?.company_id]);
+  AsyncStorage.setItem('company_id', JSON.stringify(getUserData?.company_id))
+  .then(() => console.log('company_id saved'))
+  .catch(error => console.log('Error saving company_id: ', error));
+
   const [currentIndex, setCurrentIndex] = useState<any>(0);
   const flatListRef = useRef<any>(null);
   // Function to move to next image
@@ -138,7 +202,6 @@ const Home = ({navigation}: any) => {
       setCurrentIndex(nextIndex);
     }
   };
-
   // Use effect to move to next image every 5 seconds
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -148,6 +211,8 @@ const Home = ({navigation}: any) => {
     // Cleanup function to clear interval on unmount
     return () => clearInterval(intervalId);
   }, [currentIndex]);
+
+  //  promotion Work Ended
 
   const ShowMessage = () => {
     ToastAndroid.show('This Feature will Soon Avaiable !', ToastAndroid.SHORT);
@@ -340,23 +405,25 @@ const Home = ({navigation}: any) => {
               Web Portals
             </Text>
             <FlatList
-              data={data}
+              data={webPortalData ?? []}
               showsHorizontalScrollIndicator={false}
               nestedScrollEnabled
               horizontal
               renderItem={({item, index}: any) => {
                 return (
                   <TouchableOpacity
+                  onPress={()=>handelWebView(item?.portal_link)}
                     activeOpacity={0.8}
-                    style={{paddingRight: 10}}>
+                    style={{paddingRight: 10,}}>
                     <Image
-                      source={item.image}
+                      source={{uri: item.image}}
                       style={{width: 100, height: 100, borderRadius: 10}}
+                      resizeMode='contain'
                     />
                   </TouchableOpacity>
                 );
               }}
-            />
+              />
           </View>
         </View>
         {/* Slider */}

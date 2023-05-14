@@ -17,9 +17,9 @@ const MyTabs = () => {
       screenOptions={({route}) => ({
         headerShown: false,
         // tabBarShowLabel: false,
-        tabBarInactiveTintColor: 'black',
+        tabBarInactiveTintColor: Color.textColor,
         tabBarStyle: styles.tabBarStyle,
-        tabBarActiveTintColor: 'red',
+        tabBarActiveTintColor: 'black',
       })}>
       <Tab.Screen
         name="Home"
@@ -42,7 +42,7 @@ const MyTabs = () => {
                     style={{
                       height: 35,
                       width: 35,
-                      tintColor: focused ? Color.mainColor : Color.textColor,
+                      tintColor: focused ? 'black' : Color.textColor,
                     }}
                   />
                 </View>
@@ -59,7 +59,7 @@ const MyTabs = () => {
                     style={{
                       height: 30,
                       width: 30,
-                      tintColor: focused ? Color.mainColor : Color.textColor,
+                      tintColor: focused ? 'black' : Color.textColor,
                     }}
                   />
                 </View>
@@ -136,7 +136,7 @@ const MyTabs = () => {
                     style={{
                       height: 40,
                       width: 40,
-                      tintColor: focused ? Color.mainColor : Color.textColor,
+                      tintColor: focused ? 'black' : Color.textColor,
                     }}
                   />
                 </View>
@@ -153,7 +153,7 @@ const MyTabs = () => {
                     style={{
                       height: 35,
                       width: 35,
-                      tintColor: focused ? Color.mainColor : Color.textColor,
+                      tintColor: focused ? 'black' : Color.textColor,
                     }}
                   />
                 </View>
@@ -183,7 +183,7 @@ const MyTabs = () => {
                     style={{
                       height: 35,
                       width: 35,
-                      tintColor: focused ? Color.mainColor : Color.textColor,
+                      tintColor: focused ? 'black' : Color.textColor,
                     }}
                   />
                 </View>
@@ -200,7 +200,7 @@ const MyTabs = () => {
                     style={{
                       height: 30,
                       width: 30,
-                      tintColor: focused ? Color.mainColor : Color.textColor,
+                      tintColor: focused ? 'black' : Color.textColor,
                     }}
                   />
                 </View>

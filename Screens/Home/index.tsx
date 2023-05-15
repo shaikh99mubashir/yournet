@@ -8,7 +8,7 @@ import {
   Image,
   ScrollView,
   ToastAndroid,
-  Linking 
+  Linking,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import React, {useState, useRef, useEffect} from 'react';
@@ -16,11 +16,12 @@ import Header from '../../Components/Header';
 import {Color} from '../../Constants';
 import {BaseUrl} from '../../Constants/BaseUrl';
 import axios from 'axios';
-import { WebView } from 'react-native-webview';
+import {WebView} from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const {height, width} = Dimensions.get('window');
 const Home = ({navigation}: any) => {
   // To retrieve the loginFields
+  const [nickName, setNickName] = useState<any>('');
   const [userId, setUserId] = useState<any>('');
   const gettingUserData = () => {
     AsyncStorage.getItem('loginFields')
@@ -36,7 +37,7 @@ const Home = ({navigation}: any) => {
   useEffect(() => {
     gettingUserData();
   }, []);
- 
+
   // get User DATA
   const [getUserData, setUserData] = useState<any>([]);
   const getData = () => {
@@ -62,7 +63,7 @@ const Home = ({navigation}: any) => {
   useEffect(() => {
     getData();
   }, [userId?.customer_id]);
-// get User DATA work completed
+  // get User DATA work completed
   // package Work
   const [userPackage, setUserPackage] = useState<any>([]);
   const getPackageData = () => {
@@ -111,47 +112,42 @@ const Home = ({navigation}: any) => {
   };
 
   // console.log('webPortalData===>',webPortalData);
-  
 
   useEffect(() => {
     getWebPortalData();
   }, [getUserData?.company_id]);
 
-  const [selectedLink, setSelectedLink] = useState<string | null>(null);
+  const [selectedLink, setSelectedLink] = useState<string | null>(
+    'https://www.youtube.com/watch?v=1wZw7RvXPRU&t=44s',
+  );
 
   const handelWebView = (link: string) => {
     console.log(`Opening link: ${link}`);
-    Linking.openURL(link).catch((error) => {
+    Linking.openURL(link).catch(error => {
       console.error(`Failed to open link: ${link}`, error);
     });
   };
 
-//  const  handelWebView = (link:any) => {
-//   console.log('link---->',link);
-//     setSelectedLink(link);
-//     if (selectedLink) {
-//       return (
-//         <View style={{ flex: 1, width:'100%', height:'100%' }}>
-//           <TouchableOpacity onPress={handleCloseWebView} style={{ padding: 10 }}>
-//             <Text style={{ fontSize: 18 }}>Close</Text>
-//           </TouchableOpacity>
-//           <WebView
-//             source={{ uri: selectedLink }}
-//             style={{ flex: 1 }}
-//           />
-//         </View>
-//       );
-//     }
-//  }
+  // const handelWebView = (link: any) => {
+  //   console.log('link---->', link);
+  //   setSelectedLink(link);
+  //   if (selectedLink) {
+  //     return (
+  //       <View style={{flex: 1, width: '100%', height: '100%'}}>
+  //         <TouchableOpacity onPress={handleCloseWebView} style={{padding: 10}}>
+  //           <Text style={{fontSize: 18}}>Close</Text>
+  //         </TouchableOpacity>
+  //         <WebView source={{uri: selectedLink}} style={{flex: 1}} />
+  //       </View>
+  //     );
+  //   }
+  // };
 
-//  const handleCloseWebView = () => {
-//   setSelectedLink(null);
-// };
-
-
+  // const handleCloseWebView = () => {
+  //   setSelectedLink(null);
+  // };
 
   // web PORTAL ENDED
-
 
   // All Promotion Work
   const [promotionData, setPromotionData] = useState([]);
@@ -178,8 +174,8 @@ const Home = ({navigation}: any) => {
     getPromotionData();
   }, [getUserData?.company_id]);
   AsyncStorage.setItem('company_id', JSON.stringify(getUserData?.company_id))
-  .then(() => console.log('company_id saved'))
-  .catch(error => console.log('Error saving company_id: ', error));
+    .then(() => console.log('company_id saved'))
+    .catch(error => console.log('Error saving company_id: ', error));
 
   const [currentIndex, setCurrentIndex] = useState<any>(0);
   const flatListRef = useRef<any>(null);
@@ -207,6 +203,23 @@ const Home = ({navigation}: any) => {
     ToastAndroid.show('This Feature will Soon Avaiable !', ToastAndroid.SHORT);
   };
 
+  navigation.addListener('state', () => {
+    gettingUserNickName();
+  });
+  const gettingUserNickName = async () => {
+    let value = await AsyncStorage.getItem('nickName');
+    console.log(value, 'valueasdasd');
+    if (value !== null) {
+      console.log(value, 'value');
+      setNickName(JSON.parse(value));
+    }
+  };
+  useEffect(() => {
+    gettingUserNickName();
+  }, []);
+
+  console.log(selectedLink, 'selected');
+
   return (
     <View style={{backgroundColor: Color.white, height: '100%'}}>
       <View style={{marginHorizontal: 10}}>
@@ -226,7 +239,7 @@ const Home = ({navigation}: any) => {
                 fontFamily: 'Poppins-SemiBold',
                 color: Color.textColor,
               }}>
-              {getUserData?.first_name}
+              {nickName ? nickName : getUserData?.first_name}
             </Text>
             <Text
               style={{
@@ -336,7 +349,7 @@ const Home = ({navigation}: any) => {
                   style={{
                     backgroundColor: Color.mainColor,
                     paddingHorizontal: 10,
-                    paddingVertical: 15,
+                    paddingVertical: 10,
                     borderRadius: 10,
                     alignItems: 'center',
                     // height: 150,
@@ -373,9 +386,9 @@ const Home = ({navigation}: any) => {
                   source={require('../../Images/leaf.png')}
                   style={{
                     width: 100,
-                    height: 120,
-                    marginTop: 15,
-                    marginLeft: 20,
+                    height: 100,
+                    marginTop: 25,
+                    alignSelf: 'center',
                   }}
                   resizeMode="contain"
                 />
@@ -401,20 +414,26 @@ const Home = ({navigation}: any) => {
               renderItem={({item, index}: any) => {
                 return (
                   <TouchableOpacity
-                  onPress={()=>handelWebView(item?.portal_link)}
+                    onPress={() => handelWebView(item?.portal_link)}
                     activeOpacity={0.8}
-                    style={{paddingRight: 10,}}>
+                    style={{paddingRight: 10}}>
                     <Image
                       source={{uri: item.image}}
                       style={{width: 100, height: 100, borderRadius: 10}}
-                      resizeMode='contain'
+                      resizeMode="contain"
                     />
                   </TouchableOpacity>
                 );
               }}
-              />
+            />
           </View>
         </View>
+        {/* {selectedLink && (
+          <WebView
+            source={{uri: selectedLink}}
+            style={{width: '100%', height: 300, backgroundColor: 'black'}}
+          />
+        )} */}
         {/* Slider */}
         <View>
           <View
@@ -444,7 +463,7 @@ const Home = ({navigation}: any) => {
                       alignItems: 'center',
                     }}>
                     <Image
-                      source={{ uri: item.image }}
+                      source={{uri: item.image}}
                       style={{borderRadius: 10, width: '94%', height: '94%'}}
                       resizeMode="contain"
                     />
@@ -491,12 +510,12 @@ const Home = ({navigation}: any) => {
             borderRadius: 10,
             padding: 10,
           }}>
-          <Image
+          {/* <Image
             source={require('../../Images/headphone.png')}
             style={{width: 80, height: 80}}
             resizeMode="contain"
-          />
-          {/* <AntDesign name="customerservice" color={Color.mainColor} size={80} /> */}
+          /> */}
+          <AntDesign name="customerservice" color={Color.textColor} size={80} />
           <View style={{}}>
             <Text style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
               Help & Customer Support

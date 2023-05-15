@@ -1,5 +1,12 @@
-import React,{useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet,ToastAndroid,Image} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ToastAndroid,
+  Image,
+} from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -13,13 +20,40 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Share from 'react-native-share';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useIsFocused} from '@react-navigation/native';
 import axios from 'axios';
-import { BaseUrl } from '../../Constants/BaseUrl';
+import {BaseUrl} from '../../Constants/BaseUrl';
+import {useNavigation} from '@react-navigation/native';
+
 function CustomDrawerContent(props: any) {
+  const navigation = useNavigation();
+
+  console.log(
+    navigation.addListener('state', response => {
+      gettingUserNickName();
+    }),
+    'navigation',
+  );
+
+  const [nickName, setNickName] = useState<any>('');
   const navigateToScreen = (screenName: any) => {
     props.navigation.navigate(screenName);
   };
+  const focus = useIsFocused();
 
+  console.log(focus, 'focus');
+
+  const gettingUserNickName = async () => {
+    let value = await AsyncStorage.getItem('nickName');
+    console.log(value, 'valueasdasd');
+    if (value !== null) {
+      console.log(value, 'value');
+      setNickName(JSON.parse(value));
+    }
+  };
+  useEffect(() => {
+    gettingUserNickName();
+  }, [focus, navigation]);
   const [userId, setUserId] = useState<any>('');
   const gettingUserData = () => {
     AsyncStorage.getItem('loginFields')
@@ -35,7 +69,7 @@ function CustomDrawerContent(props: any) {
   useEffect(() => {
     gettingUserData();
   }, []);
- 
+
   // get User DATA
   const [getUserData, setUserData] = useState<any>([]);
   const getData = () => {
@@ -62,16 +96,13 @@ function CustomDrawerContent(props: any) {
     getData();
   }, [userId?.customer_id]);
 
-
-  console.log('getUserData',getUserData);
-  
+  console.log(nickName, 'nickname');
 
   const share = async () => {
     console.log('running share');
 
     const options = {
-      message:
-        'Internet service Provider',
+      message: 'Internet service Provider',
       url: 'https://yournet.com',
       email: 'mubashir@gmail.com',
       subject: 'Eiusmod esse veniam esse.',
@@ -87,7 +118,7 @@ function CustomDrawerContent(props: any) {
   };
   const ShowMessage = () => {
     ToastAndroid.show('This Feature will Soon Avaiable !', ToastAndroid.SHORT);
-  }
+  };
   return (
     <View style={{flex: 1, backgroundColor: Color.white}}>
       <DrawerContentScrollView
@@ -98,14 +129,16 @@ function CustomDrawerContent(props: any) {
           {/* Logout And Close Button */}
           <View style={styles.closeButtonContainer}>
             <TouchableOpacity
-            onPress={()=>props.navigation.replace('Login')}
+              onPress={() => props.navigation.replace('Login')}
               style={{
                 backgroundColor: '#eee',
                 paddingVertical: 5,
                 paddingHorizontal: 10,
                 borderRadius: 10,
               }}>
-              <Text style={styles.closeButton}>Log Out</Text>
+              <Text style={[styles.closeButton, {fontWeight: 'bold'}]}>
+                Log Out
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => props.navigation.closeDrawer()}>
               {/* <Text
@@ -139,37 +172,52 @@ function CustomDrawerContent(props: any) {
                 paddingHorizontal: 15,
                 borderRadius: 50,
                 marginVertical: 10,
-                alignItems:'center',
-                justifyContent:'center'
+                alignItems: 'center',
+                justifyContent: 'center',
               }}>
-              <Text style={{fontSize: 35, color: Color.textColor, padding:0, margin:0}}>{getUserData?.first_name?.charAt(0)}</Text>
+              <Text
+                style={{
+                  fontSize: 35,
+                  color: Color.textColor,
+                  padding: 0,
+                  margin: 0,
+                }}>
+                {nickName
+                  ? nickName?.charAt(0)
+                  : getUserData?.first_name?.charAt(0)}
+              </Text>
             </View>
             <Text style={{fontSize: 20, color: Color.textColor}}>
-            {getUserData?.first_name}
+              {nickName ?? getUserData?.first_name}
             </Text>
-            <Text style={{fontSize: 20, color: Color.textColor}}>{getUserData?.customer_id}</Text>
+            <Text style={{fontSize: 20, color: Color.textColor}}>
+              {getUserData?.customer_id}
+            </Text>
             <View style={{flexDirection: 'row', gap: 10, marginVertical: 20}}>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigateToScreen('Profile')}
+                onPress={() => navigateToScreen('MyAccounts')}
                 style={{
                   backgroundColor: Color.white,
                   paddingVertical: 10,
                   paddingHorizontal: 20,
                   borderRadius: 10,
-                  flexDirection:'row',
-                  gap:5,
-                  alignItems:'center',
-                  justifyContent:'center',
-                  width:'35%'
+                  flexDirection: 'row',
+                  gap: 5,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '35%',
                 }}>
-                  <Image source={require('../../Images/myacount.png')} style={{width:18, height:18}}/>
+                <Image
+                  source={require('../../Images/myacount.png')}
+                  style={{width: 18, height: 18}}
+                />
                 <Text style={{fontSize: 15, color: Color.textColor}}>
                   Profile
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-              activeOpacity={0.8}
+                activeOpacity={0.8}
                 // onPress={() => navigateToScreen('Settings')}
                 onPress={ShowMessage}
                 style={{
@@ -177,13 +225,16 @@ function CustomDrawerContent(props: any) {
                   paddingVertical: 10,
                   paddingHorizontal: 20,
                   borderRadius: 10,
-                  flexDirection:'row',
-                  gap:5,
-                  alignItems:'center',
-                  justifyContent:'center',
-                  width:'35%'
+                  flexDirection: 'row',
+                  gap: 5,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '35%',
                 }}>
-                <Image source={require('../../Images/settings.png')} style={{width:18, height:18}}/>
+                <Image
+                  source={require('../../Images/settings.png')}
+                  style={{width: 18, height: 18}}
+                />
                 <Text style={{fontSize: 15, color: Color.textColor}}>
                   Setting
                 </Text>
@@ -194,8 +245,8 @@ function CustomDrawerContent(props: any) {
           <View
             style={{
               marginHorizontal: 10,
-              paddingHorizontal:10,
-              paddingVertical:20,
+              paddingHorizontal: 10,
+              paddingVertical: 20,
               borderRadius: 10,
               marginBottom: 10,
               backgroundColor: '#eee',
@@ -221,7 +272,10 @@ function CustomDrawerContent(props: any) {
                     height: 55,
                   }}>
                   <AntDesign name="customerservice" color="black" size={25} />
-                  <Text style={{color: Color.textColor}}> Customer {'\n'} Support</Text>
+                  <Text style={{color: Color.textColor}}>
+                    {' '}
+                    Customer {'\n'} Support
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View style={{justifyContent: 'center'}}>
@@ -234,11 +288,16 @@ function CustomDrawerContent(props: any) {
                     borderRadius: 10,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    gap: 10,width: 140,
+                    gap: 10,
+                    width: 140,
                     height: 55,
                   }}>
-                  <Image source={require('../../Images/fees.png')} style={{width:25, height:25}} resizeMode='contain'/>
-                  <Text style={{color:Color.textColor}}> Fee Details</Text>
+                  <Image
+                    source={require('../../Images/fees.png')}
+                    style={{width: 25, height: 25}}
+                    resizeMode="contain"
+                  />
+                  <Text style={{color: Color.textColor}}> Fee Details</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -264,8 +323,12 @@ function CustomDrawerContent(props: any) {
                     width: 140,
                     height: 55,
                   }}>
-                  <Image source={require('../../Images/faq.png')} style={{width:25, height:25}} resizeMode='contain'/>
-                  <Text style={{color:Color.textColor}}> FAQs</Text>
+                  <Image
+                    source={require('../../Images/faq.png')}
+                    style={{width: 25, height: 25}}
+                    resizeMode="contain"
+                  />
+                  <Text style={{color: Color.textColor}}> FAQs</Text>
                 </TouchableOpacity>
               </View>
               <View style={{justifyContent: 'center'}}>
@@ -282,8 +345,12 @@ function CustomDrawerContent(props: any) {
                     width: 140,
                     height: 55,
                   }}>
-                  <Image source={require('../../Images/share.png')} style={{width:25, height:25}} resizeMode='contain'/>
-                  <Text> Share</Text>
+                  <Image
+                    source={require('../../Images/share.png')}
+                    style={{width: 25, height: 25}}
+                    resizeMode="contain"
+                  />
+                  <Text style={{color: Color.textColor}}> Share</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -293,13 +360,12 @@ function CustomDrawerContent(props: any) {
           <View
             style={{
               marginHorizontal: 10,
-              paddingHorizontal:10,
-              paddingVertical:20,
+              paddingHorizontal: 10,
+              paddingVertical: 20,
               borderRadius: 10,
               marginBottom: 10,
               backgroundColor: '#eee',
             }}>
-
             <View
               style={{
                 flexDirection: 'row',
@@ -316,13 +382,20 @@ function CustomDrawerContent(props: any) {
                     padding: 10,
                     borderRadius: 10,
                     justifyContent: 'center',
-                    alignItems:'center',
+                    alignItems: 'center',
                     gap: 10,
                     width: 130,
                     height: 120,
                   }}>
-                  <Image source={require('../../Images/transactionhistory.png')} style={{width:35, height:35}} resizeMode='contain'/>
-                  <Text style={{color:Color.textColor}}> Transaction {'\n'} History</Text>
+                  <Image
+                    source={require('../../Images/transactionhistory.png')}
+                    style={{width: 35, height: 35}}
+                    resizeMode="contain"
+                  />
+                  <Text style={{color: Color.textColor}}>
+                    {' '}
+                    Transaction {'\n'} History
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View style={{justifyContent: 'center'}}>
@@ -335,28 +408,35 @@ function CustomDrawerContent(props: any) {
                     padding: 10,
                     borderRadius: 10,
                     justifyContent: 'center',
-                    
+
                     alignItems: 'center',
                     gap: 10,
                     width: 130,
                     height: 120,
                   }}>
                   <MaterialIcons name="next-plan" color="black" size={35} />
-                  <Text style={{color:Color.textColor}}> Packages {'\n'} Plans</Text>
+                  <Text style={{color: Color.textColor}}>
+                    {' '}
+                    Packages {'\n'} Plans
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
-          <View style={{flexDirection:'row', justifyContent:'center',}}>
-          <Text style={{textAlign:'center'}}>ISP Billing Version 1.001 </Text>
-          <TouchableOpacity 
-          onPress={ShowMessage}
-          // onPress={() => navigateToScreen('TermsCondition')}
-          ><Text style={{color:'blue'}}>Terms & Condition</Text></TouchableOpacity>
+          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <Text style={{textAlign: 'center'}}>
+              ISP Billing Version 1.001{' '}
+            </Text>
+            <TouchableOpacity
+              onPress={ShowMessage}
+              // onPress={() => navigateToScreen('TermsCondition')}
+            >
+              <Text style={{color: 'blue'}}>Terms & Condition</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
-        <DrawerItemList {...props} />
+        {/* <DrawerItemList {...props} /> */}
       </DrawerContentScrollView>
     </View>
   );

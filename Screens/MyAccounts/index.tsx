@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../../Components/Header';
@@ -13,32 +13,36 @@ import {Color} from '../../Constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { BaseUrl } from '../../Constants/BaseUrl';
+import {BaseUrl} from '../../Constants/BaseUrl';
 
 const MyAccounts = () => {
   const [editNickName, setEditNickName] = useState<boolean>(false);
-  const [nickName, setNickName] = useState<any>('')
-  const [userId, setUserId] = useState<any>('')
+  const [nickName, setNickName] = useState<any>('');
+  const [userId, setUserId] = useState<any>('');
   const [getUserData, setUserData] = useState<any>([]);
   console.log('nickName', nickName);
-  
-  
-  console.log('getUserData',getUserData);
+
+  AsyncStorage.setItem('nickName', JSON.stringify(nickName))
+    .then(() => console.log('nickName fields saved'))
+    .catch(error => console.log('Error saving nickName fields: ', error));
+
+  console.log('getUserData', getUserData);
   // console.log('userId',userId.customer_id);
-  const gettingUserData = () =>{
+
+  const gettingUserData = () => {
     AsyncStorage.getItem('loginFields')
-    .then((value) => {
-      if (value !== null) {
-        setUserId(JSON.parse(value));
-      } else {
-        console.log('No login fields found');
-      }
-    })
-    .catch((error) => console.log('Error retrieving login fields: ', error));
-  }
-  useEffect(()=>{
-    gettingUserData()
-  },[])
+      .then(value => {
+        if (value !== null) {
+          setUserId(JSON.parse(value));
+        } else {
+          console.log('No login fields found');
+        }
+      })
+      .catch(error => console.log('Error retrieving login fields: ', error));
+  };
+  useEffect(() => {
+    gettingUserData();
+  }, []);
   const getData = () => {
     const formData = new FormData();
     formData.append('customer_id', userId?.customer_id);
@@ -63,7 +67,9 @@ const MyAccounts = () => {
     getData();
   }, [userId?.customer_id]);
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={{marginHorizontal: 10}}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{marginHorizontal: 10}}>
       <Header />
       <Text
         style={{
@@ -71,12 +77,12 @@ const MyAccounts = () => {
           fontWeight: 'bold',
           marginTop: 15,
           color: Color.mainColor,
-          textAlign:'center'
+          textAlign: 'center',
         }}>
         My Account
       </Text>
       <Text style={{fontSize: 16, marginTop: 15, color: Color.textColor}}>
-        Personnal Details
+        Personal Details
       </Text>
       {/* Nick Name */}
       <View
@@ -99,7 +105,12 @@ const MyAccounts = () => {
             marginTop: 10,
           }}>
           {editNickName ? (
-            <TextInput placeholder="Edit Your Nick Name" onChangeText={(e)=> setNickName(e)} placeholderTextColor={Color.textColor} style={{color:Color.textColor}}/>
+            <TextInput
+              placeholder="Edit Your Nick Name"
+              onChangeText={e => setNickName(e)}
+              placeholderTextColor={Color.textColor}
+              style={{color: Color.textColor}}
+            />
           ) : (
             <Text
               style={{
@@ -107,7 +118,7 @@ const MyAccounts = () => {
                 fontWeight: 'bold',
                 fontSize: 24,
               }}>
-              {nickName? nickName :getUserData?.first_name}
+              {nickName ? nickName : getUserData?.first_name}
             </Text>
           )}
           <TouchableOpacity onPress={() => setEditNickName(!editNickName)}>
@@ -130,7 +141,7 @@ const MyAccounts = () => {
         }}>
         <Text
           style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
-          User Name
+          Login | Customer ID
         </Text>
         <View
           style={{

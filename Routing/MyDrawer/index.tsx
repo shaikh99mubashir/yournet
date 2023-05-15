@@ -19,13 +19,19 @@ import PackagesPlans from '../../Screens/PackagesPlans';
 import TransactionHistory from '../../Screens/TransactionHistory';
 import TermsCondition from '../../Screens/TermsCondition';
 import MyTabs from '../MyTabs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSafeAreaFrame} from 'react-native-safe-area-context';
+import {useEffect, useState} from 'react';
+import {useIsFocused} from '@react-navigation/native';
+import MyAccounts from '../../Screens/MyAccounts';
+
 const width = Dimensions.get('screen').width;
 const Drawer = createDrawerNavigator();
 
 function MyDrawer() {
   return (
     <Drawer.Navigator
-      drawerContent={props => <CustomDrawerContent {...props} />}
+      drawerContent={({...props}) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
         drawerActiveTintColor: '#fff',
@@ -45,6 +51,7 @@ function MyDrawer() {
       <Drawer.Screen name="Complaint" component={Complaint} />
       <Drawer.Screen name="Notification" component={Notification} />
       <Drawer.Screen name="Profile" component={Profile} />
+      <Drawer.Screen name="MyAccounts" component={MyAccounts} />
       <Drawer.Screen name="CustomerSupport" component={CustomerSupport} />
       <Drawer.Screen name="FeeDetails" component={FeeDetails} />
       <Drawer.Screen name="FAQs" component={FAQs} />
@@ -56,7 +63,6 @@ function MyDrawer() {
 }
 
 const styles = StyleSheet.create({
-
   drawerContent: {
     flex: 1,
     justifyContent: 'space-between',

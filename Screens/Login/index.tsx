@@ -12,9 +12,10 @@ import {
   KeyboardAvoidingView,
   Platform,
   Modal,
-  Animated, Easing
+  Animated,
+  Easing,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Color from '../../Constants/Color';
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
@@ -34,6 +35,23 @@ const Login = ({navigation}: any) => {
   AsyncStorage.setItem('loginFields', JSON.stringify(loginFields))
     .then(() => console.log('Login fields saved'))
     .catch(error => console.log('Error saving login fields: ', error));
+  const [isLoginFieldsAvaiable, setIsLoginFieldsAvaiable] = useState<any>([]);
+  console.log('getUserData', isLoginFieldsAvaiable);
+  // console.log('userId',userId.customer_id);
+  const gettingUserData = () => {
+    AsyncStorage.getItem('loginFields')
+      .then(value => {
+        if (value !== null) {
+          setIsLoginFieldsAvaiable(JSON.parse(value));
+        } else {
+          console.log('No login fields found');
+        }
+      })
+      .catch(error => console.log('Error retrieving login fields: ', error));
+  };
+  useEffect(() => {
+    gettingUserData();
+  }, []);
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -88,7 +106,7 @@ const Login = ({navigation}: any) => {
         duration: 800,
         easing: Easing.circle,
         useNativeDriver: true,
-      })
+      }),
     ).start();
   };
 
@@ -98,7 +116,6 @@ const Login = ({navigation}: any) => {
     inputRange: [0, 1],
     outputRange: ['45deg', '360deg'],
   });
-
 
   // const LoginFunction = () => {
   //   let flag = Object.values(loginFields);
@@ -199,6 +216,7 @@ const Login = ({navigation}: any) => {
               style={{
                 width: Dimensions.get('window').width / 1.21,
                 paddingHorizontal: 20,
+                color: 'black',
               }}
             />
           </View>
@@ -221,6 +239,7 @@ const Login = ({navigation}: any) => {
               style={{
                 width: Dimensions.get('window').width / 1.21,
                 padding: 12,
+                color: 'black',
               }}
             />
             <TouchableOpacity
@@ -301,14 +320,14 @@ const Login = ({navigation}: any) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                   <Animated.Image
-      source={require('../../Images/ISP.png')}
-      style={{
-        transform: [{ rotate: interpolatedRotateAnimation }],
-        width: 200,
-        height: 200,
-      }}
-    />
+                <Animated.Image
+                  source={require('../../Images/ISP.png')}
+                  style={{
+                    transform: [{rotate: interpolatedRotateAnimation}],
+                    width: 200,
+                    height: 200,
+                  }}
+                />
               </View>
             </Modal>
 

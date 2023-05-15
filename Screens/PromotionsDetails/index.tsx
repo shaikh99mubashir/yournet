@@ -7,14 +7,19 @@ const PromotionsDetails = ({navigation, route}: any) => {
   const data = route.params;
 
   return (
-    <View style={{backgroundColor: Color.white, height: '100%'}}>
+    <View
+      style={{
+        backgroundColor: Color.white,
+        height: '100%',
+        paddingHorizontal: 5,
+      }}>
       <Header navigation={navigation} backBtn />
       <Text
         style={{
           textAlign: 'center',
           fontSize: 22,
           marginVertical: 10,
-          color: Color.mainColor,
+          color: Color.textColor,
           fontWeight: 'bold',
         }}>
         Promotions Details
@@ -30,12 +35,12 @@ const PromotionsDetails = ({navigation, route}: any) => {
           shadowRadius: 10,
         }}>
         <Image
-          source={{ uri: data?.image }}
+          source={{uri: data?.image}}
           style={{width: '95%', height: 200, borderRadius: 10, marginBottom: 5}}
         />
-        <View style={{alignItems:'flex-start', paddingHorizontal:12}}>
-        <Text style={{fontSize:15, fontWeight:'bold'}}>{data?.title}</Text>
-        <Text style={{fontSize:15,}}>{data?.description}</Text>
+        <View style={{alignItems: 'flex-start', paddingHorizontal: 12}}>
+          <Text style={{fontSize: 15, fontWeight: 'bold'}}>{data?.title}</Text>
+          <Text style={{fontSize: 15}}>{data?.description}</Text>
         </View>
       </View>
     </View>

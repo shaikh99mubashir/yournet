@@ -35,74 +35,81 @@ const Header = (Props: any) => {
         justifyContent: 'space-between',
         width: '100%',
         alignItems: 'center',
-        marginTop:10
+        marginTop: 10,
       }}>
-        <>
-          {Drawer ? (
-            <TouchableOpacity
-              style={{
-                flex: 1,
-              }}
-              activeOpacity={0.8}
-              onPress={() => navigation.openDrawer()}>
-              <Text>
-                <Icon name="reorder-three" size={30} color="black" />
-              </Text>
-            </TouchableOpacity>
-          ) :  (
-            <View
-              style={{
-                flex: 1,
-              }}></View>
-          )}
+      <>
+        {Drawer ? (
+          <TouchableOpacity
+            style={{
+              flex: 1,
+            }}
+            activeOpacity={0.8}
+            onPress={() => navigation.openDrawer()}>
+            <Text>
+              <Icon name="reorder-three" size={30} color="black" />
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <View
+            style={{
+              flex: 1,
+            }}></View>
+        )}
 
-          {title ? (
-            <View style={{flex: 2, alignItems: 'center'}}>
-              <Text
-                style={{
-                  fontFamily: 'Poppins-Regular',
-                  fontSize: 20,
-                  color: Color.mainColor,
-                  marginVertical: 15,
-                  fontWeight: 'bold',
-                }}>
-                {title}
-              </Text>
-            </View>
-          ) : noLogo ? (
-            <View style={{flex: 2}}></View>
-          ) : (
-            <View style={{flex: 2}}>
-              <Image
-                source={require('../../Images/Logo.png')}
-                resizeMode="contain"
-                style={styles.logo}
-              />
-            </View>
-          )}
-          {Notification ? (
+        {title ? (
+          <View style={{flex: 2, alignItems: 'center'}}>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Regular',
+                fontSize: 20,
+                color: Color.mainColor,
+                marginVertical: 15,
+                fontWeight: 'bold',
+              }}>
+              {title}
+            </Text>
+          </View>
+        ) : noLogo ? (
+          <View style={{flex: 2}}></View>
+        ) : (
+          <View style={{flex: 2}}>
+            <Image
+              source={require('../../Images/Logo.png')}
+              resizeMode="contain"
+              style={styles.logo}
+            />
+          </View>
+        )}
+        {Notification ? (
+          <View style={{flex: 1}}>
             <TouchableOpacity
-              style={{flex: 1, alignItems: 'flex-end', ...myStyle}}
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+              }}
               activeOpacity={0.8}
               onPress={() => navigation.navigate('Notification')}>
               <FontAwesome name="bell" size={25} color="black" />
             </TouchableOpacity>
-          ) : backBtn ? (
-            <TouchableOpacity
-              style={{
-              }}
-              onPress={() => navigation.goBack()}>
-              
-                <Icon name="ios-arrow-back-sharp" size={27} color="black" />
-              
+          </View>
+        ) : backBtn ? (
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'flex-end',
+              justifyContent: 'flex-end',
+            }}>
+            <TouchableOpacity style={{}} onPress={() => navigation.goBack()}>
+              <Icon name="ios-arrow-back-sharp" size={27} color="black" />
             </TouchableOpacity>
-          ) : (
-            <View style={{flex: 1}}>
-              <Text></Text>
-            </View>
-          )}
-        </>
-      
+          </View>
+        ) : (
+          <View style={{flex: 1}}>
+            <Text></Text>
+          </View>
+        )}
+      </>
     </View>
   );
 };
@@ -120,7 +127,9 @@ const styles = StyleSheet.create({
   },
   logo: {
     // height: Dimensions.get('window').height / 12,
-    width: Dimensions.get('window').width / 2,
-    height:40
+    // width: Dimensions.get('window').width / 2,
+    width: 150,
+    height: 40,
+    alignSelf: 'center',
   },
 });

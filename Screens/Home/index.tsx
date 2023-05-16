@@ -9,6 +9,8 @@ import {
   ScrollView,
   ToastAndroid,
   Linking,
+  SafeAreaView,
+  ImageBackground,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import React, {useState, useRef, useEffect} from 'react';
@@ -117,32 +119,23 @@ const Home = ({navigation}: any) => {
     getWebPortalData();
   }, [getUserData?.company_id]);
 
-  const [selectedLink, setSelectedLink] = useState<string | null>(
-    'https://www.youtube.com/watch?v=1wZw7RvXPRU&t=44s',
-  );
+  const [selectedLink, setSelectedLink] = useState<string | null>(null);
 
-  const handelWebView = (link: string) => {
-    console.log(`Opening link: ${link}`);
-    Linking.openURL(link).catch(error => {
-      console.error(`Failed to open link: ${link}`, error);
-    });
-  };
-
-  // const handelWebView = (link: any) => {
-  //   console.log('link---->', link);
-  //   setSelectedLink(link);
-  //   if (selectedLink) {
-  //     return (
-  //       <View style={{flex: 1, width: '100%', height: '100%'}}>
-  //         <TouchableOpacity onPress={handleCloseWebView} style={{padding: 10}}>
-  //           <Text style={{fontSize: 18}}>Close</Text>
-  //         </TouchableOpacity>
-  //         <WebView source={{uri: selectedLink}} style={{flex: 1}} />
-  //       </View>
-  //     );
-  //   }
+  // const handelWebView = (link: string) => {
+  //   console.log(`Opening link: ${link}`);
+  //   Linking.openURL(link).catch(error => {
+  //     console.error(`Failed to open link: ${link}`, error);
+  //   });
   // };
 
+  const handelWebView = (link: any) => {
+    console.log('link---->', link);
+    setSelectedLink(link);
+  };
+
+  const handleCloseWebView = () => {
+    setSelectedLink(null);
+  };
   // const handleCloseWebView = () => {
   //   setSelectedLink(null);
   // };
@@ -221,11 +214,15 @@ const Home = ({navigation}: any) => {
   console.log(selectedLink, 'selected');
 
   return (
-    <View style={{backgroundColor: Color.white, height: '100%'}}>
+    <View
+      style={{
+        backgroundColor: Color.white,
+        height: '100%',
+        paddingHorizontal: 10,
+      }}>
       <View style={{marginHorizontal: 10}}>
         <Header navigation={navigation} Drawer Notification />
         {/* User Name Inage And Id */}
-
         <View style={{flexDirection: 'row', gap: 10, marginTop: 20}}>
           <Image
             source={require('../../Images/avatar.png')}
@@ -252,7 +249,7 @@ const Home = ({navigation}: any) => {
           </View>
         </View>
       </View>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{marginHorizontal: 10}}>
           <Text
             style={{
@@ -268,7 +265,6 @@ const Home = ({navigation}: any) => {
           <View style={styles.container}>
             <View style={styles.body}>
               <View style={{}}>
-                <View></View>
                 <Text
                   style={[styles.package, {fontSize: 30, textAlign: 'center'}]}>
                   Account {'\n'} Status{' '}
@@ -308,14 +304,14 @@ const Home = ({navigation}: any) => {
                   }}>
                   <Image
                     source={require('../../Images/redIcon.png')}
-                    style={{width: 20, height: 26}}
+                    style={{width: 15, height: 15}}
                   />
                   <Text
                     style={[
                       styles.package,
                       {fontWeight: 'bold', fontSize: 18},
                     ]}>
-                    Renewal Date: {'\n'}
+                    Last Renewal Date: {'\n'}
                     <Text style={{color: Color.textColor}}>
                       {getUserData?.activation_date}
                     </Text>
@@ -330,22 +326,22 @@ const Home = ({navigation}: any) => {
                   }}>
                   <Image
                     source={require('../../Images/redIcon.png')}
-                    style={{width: 20, height: 26}}
+                    style={{width: 15, height: 15}}
                   />
                   <Text
                     style={[
                       styles.package,
                       {fontWeight: 'bold', fontSize: 18},
                     ]}>
-                    Expiry Date: {'\n'}
+                    Last Expiry Date: {'\n'}
                     <Text style={{color: Color.textColor}}>
                       {getUserData?.expiry_date}
                     </Text>
                   </Text>
                 </View>
               </View>
-              <View style={{flex: 1}}>
-                <View
+              <View style={{}}>
+                {/* <View
                   style={{
                     backgroundColor: Color.mainColor,
                     paddingHorizontal: 10,
@@ -354,10 +350,15 @@ const Home = ({navigation}: any) => {
                     alignItems: 'center',
                     // height: 150,
                   }}>
+                  
+                </View> */}
+                <ImageBackground
+                  source={require('../../Images/packagebg.png')}
+                  style={{flex: 1, alignItems:'center', justifyContent:"center"}}>
                   <Text
                     style={{
                       color: Color.white,
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: 'bold',
                     }}>
                     Package
@@ -365,7 +366,7 @@ const Home = ({navigation}: any) => {
                   <Text
                     style={{
                       color: '#f9e208',
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: 'bold',
                     }}>
                     {userPackage?.package_mbps == null
@@ -376,12 +377,12 @@ const Home = ({navigation}: any) => {
                   <Text
                     style={{
                       color: Color.white,
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: 'bold',
                     }}>
                     unlimited
                   </Text>
-                </View>
+                </ImageBackground>
                 <Image
                   source={require('../../Images/leaf.png')}
                   style={{
@@ -416,10 +417,10 @@ const Home = ({navigation}: any) => {
                   <TouchableOpacity
                     onPress={() => handelWebView(item?.portal_link)}
                     activeOpacity={0.8}
-                    style={{paddingRight: 10}}>
+                    style={{paddingRight: 15}}>
                     <Image
                       source={{uri: item.image}}
-                      style={{width: 100, height: 100, borderRadius: 10}}
+                      style={{width: 150, height: 130, borderRadius: 10}}
                       resizeMode="contain"
                     />
                   </TouchableOpacity>
@@ -431,14 +432,15 @@ const Home = ({navigation}: any) => {
         {/* {selectedLink && (
           <WebView
             source={{uri: selectedLink}}
-            style={{width: '100%', height: 300, backgroundColor: 'black'}}
+            style={{width: '100%', height: 300, flex:3}}
           />
         )} */}
+
         {/* Slider */}
         <View>
           <View
             style={{
-              height: height / 4,
+              height: height / 3,
               justifyContent: 'center',
               alignItems: 'center',
             }}>
@@ -457,14 +459,14 @@ const Home = ({navigation}: any) => {
                 return (
                   <View
                     style={{
-                      width: width,
-                      height: height / 4,
+                      width: width / 1.05,
+                      height: height / 3,
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
                     <Image
                       source={{uri: item.image}}
-                      style={{borderRadius: 10, width: '94%', height: '94%'}}
+                      style={{borderRadius: 10, width: '92%', height: '94%'}}
                       resizeMode="contain"
                     />
                   </View>
@@ -555,6 +557,15 @@ const Home = ({navigation}: any) => {
           </View>
         </View>
       </ScrollView>
+
+      {/* {selectedLink && (
+        <TouchableOpacity
+          style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0,  }}
+          // onPress={handleCloseWebView}
+        >
+          <WebView source={{ uri: selectedLink }} />
+        </TouchableOpacity>
+      )} */}
     </View>
   );
 };

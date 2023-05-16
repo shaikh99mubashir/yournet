@@ -15,28 +15,7 @@ import {BaseUrl} from '../../Constants/BaseUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Promotions = ({navigation}: any) => {
-  const data = [
-    {
-      id: 1,
-      image: require('../../Images/slider1.jpg'),
-      txt: 'Hello World kdksdn kdsj  skd fs dks dfksd fksd f sdk fsdk f sdfk sdf ksd fk dsfksd fkjsd f sdkf sddkjf sddk fskdj fksd fkjsd fkjjd sf',
-    },
-    {
-      id: 2,
-      image: require('../../Images/slider2.jpg'),
-      txt: 'Hello World kdksdn kdsj  skd fs dks dfksd fksd f sdk fsdk f sdfk sdf ksd fk dsfksd fkjsd f sdkf sddkjf sddk fskdj fksd fkjsd fkjjd sf',
-    },
-    {
-      id: 3,
-      image: require('../../Images/slider3.jpg'),
-      txt: 'Hello World kdksdn kdsj  skd fs dks dfksd fksd f sdk fsdk f sdfk sdf ksd fk dsfksd fkjsd f sdkf sddkjf sddk fskdj fksd fkjsd fkjjd sf',
-    },
-    {
-      id: 4,
-      image: require('../../Images/slider1.jpg'),
-      txt: 'Hello World kdksdn kdsj  skd fs dks dfksd fksd f sdk fsdk f sdfk sdf ksd fk dsfksd fkjsd f sdkf sddkjf sddk fskdj fksd fkjsd fkjjd sf',
-    },
-  ];
+
   const [companyId, setCompanyId] = useState('');
   const gettingUserData = () => {
     AsyncStorage.getItem('company_id')
@@ -74,11 +53,13 @@ const Promotions = ({navigation}: any) => {
       });
   };
 
+  console.log('promotionData',promotionData);
+  
   useEffect(() => {
     getPromotionData();
   }, [companyId]);
   return (
-    <View style={{backgroundColor: Color.white, marginBottom: 200}}>
+    <View style={{backgroundColor: Color.white, marginBottom: 200, paddingHorizontal:10}}>
       <Header />
       <Text
         style={{
@@ -107,7 +88,7 @@ const Promotions = ({navigation}: any) => {
                     marginBottom: 20,
                     borderRadius: 10,
                     paddingVertical: 10,
-                    elevation: 10,
+                    elevation: 3,
                     shadowRadius: 10,
                   }}>
                   <Image

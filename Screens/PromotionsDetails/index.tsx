@@ -1,17 +1,20 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image,ScrollView} from 'react-native';
 import React from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
+import {  } from 'react-native-gesture-handler';
 
 const PromotionsDetails = ({navigation, route}: any) => {
   const data = route.params;
 
   return (
+    <ScrollView showsVerticalScrollIndicator={false}>
     <View
       style={{
         backgroundColor: Color.white,
         height: '100%',
-        paddingHorizontal: 5,
+        paddingHorizontal: 10,
+        marginBottom:20
       }}>
       <Header navigation={navigation} backBtn />
       <Text
@@ -31,7 +34,7 @@ const PromotionsDetails = ({navigation, route}: any) => {
           marginHorizontal: 10,
           borderRadius: 10,
           paddingVertical: 10,
-          elevation: 10,
+          elevation: 2,
           shadowRadius: 10,
         }}>
         <Image
@@ -44,6 +47,7 @@ const PromotionsDetails = ({navigation, route}: any) => {
         </View>
       </View>
     </View>
+      </ScrollView>
   );
 };
 

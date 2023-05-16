@@ -117,48 +117,6 @@ const Login = ({navigation}: any) => {
     outputRange: ['45deg', '360deg'],
   });
 
-  // const LoginFunction = () => {
-  //   let flag = Object.values(loginFields);
-
-  //   let flag2 = flag.some((e, i) => e == '');
-
-  //   if (flag2) {
-  //     ToastAndroid.show('Required fields are missing', ToastAndroid.BOTTOM);
-  //     return;
-  //   }
-  //   setLoading(true); // Set loading state to true when request starts
-  //   const {customer_id, password} = loginFields;
-
-  //   const formData = new FormData();
-  //   formData.append('customer_id', customer_id);
-  //   formData.append('password', password);
-
-  //   const config = {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data',
-  //     },
-  //   };
-
-  //   axios
-  //     .post(`${BaseUrl}login`, formData, config)
-  //     .then((res: any) => {
-  //       console.log('res', res.data);
-  //       console.log('loginFields', loginFields);
-  //       setLoading(false); // Set loading state to false when request is completed
-  //       if (res.data.status == 'success') {
-  //         navigation.replace('Home', {userData: customer_id});
-  //         ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);
-  //       } else {
-  //         ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.log('error==>', error);
-  //       ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-  //       setLoading(false); // Set loading state to false when request fails
-  //     });
-  // };
-
   return (
     <LinearGradient
       colors={['#FFC0CB', '#ADD8E6']}
@@ -173,8 +131,8 @@ const Login = ({navigation}: any) => {
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ScrollView contentContainerStyle={{flexGrow: 1}}>
-          <View style={{alignItems: 'center', marginVertical: 10}}>
+        <ScrollView contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
+          <View style={{alignItems: 'center', marginTop:60, marginBottom:10}}>
             <Image
               source={require('../../Images/Logo.png')}
               resizeMode="contain"
@@ -338,6 +296,7 @@ const Login = ({navigation}: any) => {
                 width: Dimensions.get('window').width / 1.1,
                 borderRadius: 30,
                 marginVertical: 15,
+                
               }}>
               <TouchableOpacity
                 activeOpacity={0.8}
@@ -345,17 +304,18 @@ const Login = ({navigation}: any) => {
                 disabled={loading}
                 style={{
                   alignItems: 'center',
-                  padding: 5,
+                  padding: 12,
                   backgroundColor: 'black',
                   borderRadius: 30,
+
                 }}>
                 {loading ? (
-                  <ActivityIndicator color="#fff" />
+                  <ActivityIndicator color="#fff" size={'small'} />
                 ) : (
                   <Text
                     style={{
                       color: 'white',
-                      fontSize: 20,
+                      fontSize: 22,
                       fontFamily: 'Poppins',
                     }}>
                     Login

@@ -67,9 +67,9 @@ const MyAccounts = () => {
     getData();
   }, [userId?.customer_id]);
   return (
+    <View       style={{paddingHorizontal: 15}}>
     <ScrollView
-      showsVerticalScrollIndicator={false}
-      style={{marginHorizontal: 10}}>
+      showsVerticalScrollIndicator={false}>
       <Header />
       <Text
         style={{
@@ -88,7 +88,7 @@ const MyAccounts = () => {
       <View
         style={{
           backgroundColor: Color.white,
-          elevation: 10,
+          elevation: 2,
           padding: 10,
           borderRadius: 10,
           marginVertical: 15,
@@ -134,7 +134,7 @@ const MyAccounts = () => {
       <View
         style={{
           backgroundColor: Color.white,
-          elevation: 10,
+          elevation: 2,
           padding: 10,
           borderRadius: 10,
           marginBottom: 15,
@@ -164,7 +164,7 @@ const MyAccounts = () => {
       <View
         style={{
           backgroundColor: Color.white,
-          elevation: 10,
+          elevation: 2,
           padding: 10,
           borderRadius: 10,
           marginBottom: 15,
@@ -194,7 +194,7 @@ const MyAccounts = () => {
       <View
         style={{
           backgroundColor: Color.white,
-          elevation: 10,
+          elevation: 2,
           padding: 10,
           borderRadius: 10,
           marginBottom: 15,
@@ -224,7 +224,7 @@ const MyAccounts = () => {
       <View
         style={{
           backgroundColor: Color.white,
-          elevation: 10,
+          elevation: 2,
           padding: 10,
           borderRadius: 10,
           marginBottom: 15,
@@ -254,7 +254,7 @@ const MyAccounts = () => {
       <View
         style={{
           backgroundColor: Color.white,
-          elevation: 10,
+          elevation: 2,
           padding: 10,
           borderRadius: 10,
           marginBottom: 15,
@@ -281,6 +281,7 @@ const MyAccounts = () => {
         </View>
       </View>
     </ScrollView>
+    </View>
   );
 };
 

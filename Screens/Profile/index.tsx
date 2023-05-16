@@ -1,106 +1,291 @@
-import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  ScrollView,
+  ToastAndroid,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import Header from '../../Components/Header';
+import {Color} from '../../Constants';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {BaseUrl} from '../../Constants/BaseUrl';
 
-const Profile = () => {
+const Profile = ({navigation}:any) => {
+  const [editNickName, setEditNickName] = useState<boolean>(false);
+  const [nickName, setNickName] = useState<any>('');
+  const [userId, setUserId] = useState<any>('');
+  const [getUserData, setUserData] = useState<any>([]);
+  console.log('nickName', nickName);
+
+  AsyncStorage.setItem('nickName', JSON.stringify(nickName))
+    .then(() => console.log('nickName fields saved'))
+    .catch(error => console.log('Error saving nickName fields: ', error));
+
+  console.log('getUserData', getUserData);
+  // console.log('userId',userId.customer_id);
+
+  const gettingUserData = () => {
+    AsyncStorage.getItem('loginFields')
+      .then(value => {
+        if (value !== null) {
+          setUserId(JSON.parse(value));
+        } else {
+          console.log('No login fields found');
+        }
+      })
+      .catch(error => console.log('Error retrieving login fields: ', error));
+  };
+  useEffect(() => {
+    gettingUserData();
+  }, []);
+  const getData = () => {
+    const formData = new FormData();
+    formData.append('customer_id', userId?.customer_id);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}getdata`, formData, config)
+      .then((res: any) => {
+        // console.log('res',res.data);
+        setUserData(res.data.customer);
+      })
+      .catch(error => {
+        console.log('error==>', error);
+        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, [userId?.customer_id]);
   return (
-    <View style={styles.container}>
-      <View style={styles.profileContainer}>
-        <Image source={require('../../Images/avatar.png')} style={styles.profileImage} />
-        <Text style={styles.profileName}>Mubashir</Text>
-        <Text style={styles.profileEmail}>Mubashir@gmail.com</Text>
-        <TouchableOpacity style={styles.editButton}>
-          <Text style={styles.editButtonText}>Edit Profile</Text>
-        </TouchableOpacity>
+    <View       style={{paddingHorizontal: 15}}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}>
+      <Header navigation={navigation}  backBtn />
+      <Text
+        style={{
+          fontSize: 26,
+          fontWeight: 'bold',
+          marginTop: 15,
+          color: Color.textColor,
+          textAlign: 'center',
+        }}>
+        Profile
+      </Text>
+      <Text style={{fontSize: 16, marginTop: 15, color: Color.textColor}}>
+        Personal Details
+      </Text>
+      {/* Nick Name */}
+      <View
+        style={{
+          backgroundColor: Color.white,
+          elevation: 2,
+          padding: 10,
+          borderRadius: 10,
+          marginVertical: 15,
+        }}>
+        <Text
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+          Nick Name
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          {editNickName ? (
+            <TextInput
+              placeholder="Edit Your Nick Name"
+              onChangeText={e => setNickName(e)}
+              placeholderTextColor={Color.textColor}
+              style={{color: Color.textColor}}
+            />
+          ) : (
+            <Text
+              style={{
+                color: Color.textColor,
+                fontWeight: 'bold',
+                fontSize: 24,
+              }}>
+              {nickName ? nickName : getUserData?.first_name}
+            </Text>
+          )}
+          <TouchableOpacity onPress={() => setEditNickName(!editNickName)}>
+            <FontAwesome
+              name={editNickName ? 'save' : 'edit'}
+              size={25}
+              color={Color.textColor}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.infoContainer}>
-        <View style={styles.infoBox}>
-          <Text style={styles.infoTitle}>Account Balance</Text>
-          <Text style={styles.infoAmount}>$200</Text>
+      {/* userName */}
+      <View
+        style={{
+          backgroundColor: Color.white,
+          elevation: 2,
+          padding: 10,
+          borderRadius: 10,
+          marginBottom: 15,
+        }}>
+        <Text
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+          Login | Customer ID
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          <Text
+            style={{
+              color: Color.textColor,
+              fontWeight: 'bold',
+              fontSize: 24,
+            }}>
+            {getUserData?.first_name}
+          </Text>
         </View>
-        <View style={styles.infoBox}>
-          <Text style={styles.infoTitle}>Data Usage</Text>
-          <Text style={styles.infoAmount}>50 GB</Text>
-        </View>
-        <View style={styles.infoBox}>
-          <Text style={styles.infoTitle}>Payment Method</Text>
-          <Text style={styles.infoAmount}>Visa **** **** **** 1234</Text>
-        </View>
-        <TouchableOpacity style={styles.logoutButton}>
-          <Text style={styles.logoutButtonText}>Logout</Text>
-        </TouchableOpacity>
       </View>
+      {/* Mobile No */}
+      <View
+        style={{
+          backgroundColor: Color.white,
+          elevation: 2,
+          padding: 10,
+          borderRadius: 10,
+          marginBottom: 15,
+        }}>
+        <Text
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+          Mobile Number
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          <Text
+            style={{
+              color: Color.textColor,
+              fontWeight: 'bold',
+              fontSize: 20,
+            }}>
+            {getUserData?.mobile_number}
+          </Text>
+        </View>
+      </View>
+      {/* E-mail */}
+      <View
+        style={{
+          backgroundColor: Color.white,
+          elevation: 2,
+          padding: 10,
+          borderRadius: 10,
+          marginBottom: 15,
+        }}>
+        <Text
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+          E-mail
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          <Text
+            style={{
+              color: Color.textColor,
+              fontWeight: 'bold',
+              fontSize: 20,
+            }}>
+            {getUserData?.email_address}
+          </Text>
+        </View>
+      </View>
+      {/* Account Opening Date */}
+      <View
+        style={{
+          backgroundColor: Color.white,
+          elevation: 2,
+          padding: 10,
+          borderRadius: 10,
+          marginBottom: 15,
+        }}>
+        <Text
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+          Account Opening Date
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          <Text
+            style={{
+              color: Color.textColor,
+              fontWeight: 'bold',
+              fontSize: 20,
+            }}>
+            {getUserData?.created_at}
+          </Text>
+        </View>
+      </View>
+      {/* Service Provider */}
+      <View
+        style={{
+          backgroundColor: Color.white,
+          elevation: 2,
+          padding: 10,
+          borderRadius: 10,
+          marginBottom: 15,
+        }}>
+        <Text
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+          Service Provider
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          <Text
+            style={{
+              color: Color.textColor,
+              fontWeight: 'bold',
+              fontSize: 20,
+            }}>
+            Yournet
+          </Text>
+        </View>
+      </View>
+    </ScrollView>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  profileContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 10,
-  },
-  profileName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  profileEmail: {
-    fontSize: 16,
-    color: '#555',
-    marginBottom: 20,
-  },
-  editButton: {
-    backgroundColor: '#1E90FF',
-    borderRadius: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  editButtonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  infoContainer: {
-    width: '100%',
-    paddingHorizontal: 20,
-  },
-  infoBox: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  infoTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  infoAmount: {
-    fontSize: 16,
-    color: '#555',
-  },
-  logoutButton: {
-    backgroundColor: '#DC143C',
-    borderRadius: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    marginTop: 20,
-  },
-  logoutButtonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-});
-
 export default Profile;
+
+const styles = StyleSheet.create({});
+

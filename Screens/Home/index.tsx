@@ -11,7 +11,10 @@ import {
   Linking,
   SafeAreaView,
   ImageBackground,
+  BackHandler,
+  Alert,
 } from 'react-native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import React, {useState, useRef, useEffect} from 'react';
 import Header from '../../Components/Header';
@@ -20,9 +23,49 @@ import {BaseUrl} from '../../Constants/BaseUrl';
 import axios from 'axios';
 import {WebView} from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useIsFocused} from '@react-navigation/native';
+import CheckWebView from '../CheckWebView';
 const {height, width} = Dimensions.get('window');
 const Home = ({navigation}: any) => {
+  // let token: any;
+  // console.log('token====>1', token);
+  // const [userToken, setUserToken] = useState('');
+  // console.log('token ===>2', token);
+
+  // const focus = useIsFocused();
+  // AsyncStorage.getItem('token')
+  //   .then(value => {
+  //     console.log('value', value);
+
+  //     if (value !== null) {
+  //       token =JSON.parse(value);
+  //     } else {
+  //       console.log('No login fields found');
+  //     }
+  //   })
+  //   .catch(error => console.log('Error retrieving login fields: ', error));
+  // const navigateToLogin = () => {
+  //   // if (!userToken) {
+  //   //   console.log('running');
+  //   //   // navigation.replace('Login');
+  //   //   ToastAndroid.show('Session Expire Login Again', ToastAndroid.SHORT);
+  //   //   return;
+  //   // }
+  // };
+  // useEffect(() => {
+  //   const check = setInterval(() => {
+  //     if (focus) {
+  //       console.log('token===>3', token);
+  //       navigateToLogin();
+  //     }
+  //   }, 10000);
+  //   return () => clearInterval(check);
+  // }, [focus]);
+
+  // AsyncStorage.removeItem('token')
+
   // To retrieve the loginFields
+  const focus = useIsFocused();
   const [nickName, setNickName] = useState<any>('');
   const [userId, setUserId] = useState<any>('');
   const gettingUserData = () => {
@@ -39,7 +82,23 @@ const Home = ({navigation}: any) => {
   useEffect(() => {
     gettingUserData();
   }, []);
+  const [userToken, setUserToken] = useState('');
+  const gettingUserDatatoken = () => {
+    AsyncStorage.getItem('token')
+      .then(value => {
+        if (value !== null) {
+          setUserToken(JSON.parse(value));
+        } else {
+          console.log('No login fields found');
+        }
+      })
+      .catch(error => console.log('Error retrieving login fields: ', error));
+  };
 
+  useEffect(() => {
+    gettingUserData();
+    gettingUserDatatoken();
+  }, []);
   // get User DATA
   const [getUserData, setUserData] = useState<any>([]);
   const getData = () => {
@@ -92,7 +151,6 @@ const Home = ({navigation}: any) => {
   // package Work Ended
 
   //  WEB PORTAL
-
   const [webPortalData, WebPortalData] = useState([]);
   const getWebPortalData = () => {
     const formData = new FormData();
@@ -201,7 +259,6 @@ const Home = ({navigation}: any) => {
   });
   const gettingUserNickName = async () => {
     let value = await AsyncStorage.getItem('nickName');
-    console.log(value, 'valueasdasd');
     if (value !== null) {
       console.log(value, 'value');
       setNickName(JSON.parse(value));
@@ -211,7 +268,138 @@ const Home = ({navigation}: any) => {
     gettingUserNickName();
   }, []);
 
-  console.log(selectedLink, 'selected');
+  // console.log(getUserData?.activation_date, 'getUserData?.activation_date');
+
+  const date = new Date(getUserData?.activation_date);
+  const date1 = new Date(getUserData?.expiry_date);
+  const RenewalDate = date.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+  const expiryDate = date1.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+  // const [backButtonPressedOnceToExit, setBackButtonPressedOnceToExit] =
+  //   useState(false);
+  // useEffect(() => {
+  //   // Add event listener for the hardware back button press
+  //   BackHandler.addEventListener('hardwareBackPress', handleBackButtonPress);
+  //   // Clean up the event listener when the component is unmounted
+  //   return () => {
+  //     BackHandler.removeEventListener(
+  //       'hardwareBackPress',
+  //       handleBackButtonPress,
+  //     );
+  //   };
+  // }, []);
+  // const handleBackButtonPress = () => {
+  //   if (!backButtonPressedOnceToExit) {
+  //     setBackButtonPressedOnceToExit(true);
+
+  //     // Show a confirmation modal
+  //     Alert.alert(
+  //       'Confirmation',
+  //       'Are you sure you want to go back To your Home Screen?',
+  //       [
+  //         {text: 'No', onPress: () => setBackButtonPressedOnceToExit(false)},
+  //         {text: 'Yes', onPress: () => BackHandler.exitApp()},
+  //       ],
+  //       {cancelable: true},
+  //     );
+
+  //     // Return `true` to prevent the default back button behavior
+  //     return true;
+  //   }
+  // };
+
+  // const handleBackPress = (webViewRef: any) => {
+  //   if (webViewRef.current) {
+  //     webViewRef.current.goBack();
+  //     return true;
+  //   }
+  //   return false;
+  // };
+  // const webViewRef = React.useRef(null);
+
+  // React.useEffect(() => {
+  //   const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
+  //     handleBackPress(webViewRef),
+  //   );
+
+  //   return () => backHandler.remove();
+  // }, []);
+
+  //   const useCustomBackHandler = () => {
+  //   React.useEffect(() => {
+  //     const handleBackPress = () => {
+  //       // Navigate to the home screen of your mobile application
+  //       navigation.navigate('Home');
+  //       return true;
+  //     };
+
+  //     const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+  //     return () => backHandler.remove();
+  //   }, [navigation]);
+  // };
+  // useCustomBackHandler();
+
+  // const webViewRef = React.useRef(null);
+
+  const webViewRef = React.useRef<WebView | null>(null); 
+
+  React.useEffect(() => {
+    const handleBackPress = () => {
+      if (webViewRef.current) {
+        webViewRef.current.goBack(); // Go back one page within the WebView
+        return true;
+      } else {
+        // Navigate to the home screen of your mobile application
+        navigation.navigate('Home');
+        return true;
+      }
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+    return () => backHandler.remove();
+  }, [navigation]);
+
+  
+  const injectedScript = `
+  <script>
+    (function() {
+      var body = document.body,
+        html = document.documentElement;
+      var height = Math.max(
+        body.scrollHeight,
+        html.scrollHeight,
+        body.offsetHeight,
+        html.offsetHeight,
+        body.clientHeight,
+        html.clientHeight
+      );
+      const data = JSON.stringify({ height, type: 'dimensions' });
+      window.ReactNativeWebView.postMessage(data);
+    })();
+  </script>
+`;
+
+const [webViewHeight, setWebViewHeight] = useState(0);
+
+const handleWebviewMessage = (event: any) => {
+  const postMessage = JSON.parse(event?.nativeEvent?.data);
+  if (postMessage.type === 'dimensions') {
+    const { height } = postMessage;
+    setWebViewHeight(height);
+  }
+};
 
   return (
     <View
@@ -312,9 +500,7 @@ const Home = ({navigation}: any) => {
                       {fontWeight: 'bold', fontSize: 18},
                     ]}>
                     Last Renewal Date: {'\n'}
-                    <Text style={{color: Color.textColor}}>
-                      {getUserData?.activation_date}
-                    </Text>
+                    <Text style={{color: Color.textColor}}>{RenewalDate}</Text>
                   </Text>
                 </View>
                 <View
@@ -334,9 +520,7 @@ const Home = ({navigation}: any) => {
                       {fontWeight: 'bold', fontSize: 18},
                     ]}>
                     Last Expiry Date: {'\n'}
-                    <Text style={{color: Color.textColor}}>
-                      {getUserData?.expiry_date}
-                    </Text>
+                    <Text style={{color: Color.textColor}}>{expiryDate}</Text>
                   </Text>
                 </View>
               </View>
@@ -354,7 +538,11 @@ const Home = ({navigation}: any) => {
                 </View> */}
                 <ImageBackground
                   source={require('../../Images/packagebg.png')}
-                  style={{flex: 1, alignItems:'center', justifyContent:"center"}}>
+                  style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
                   <Text
                     style={{
                       color: Color.white,
@@ -432,7 +620,7 @@ const Home = ({navigation}: any) => {
         {/* {selectedLink && (
           <WebView
             source={{uri: selectedLink}}
-            style={{width: '100%', height: 300, flex:3}}
+            style={{width: '100%', height: 300, flex:1}}
           />
         )} */}
 
@@ -450,7 +638,7 @@ const Home = ({navigation}: any) => {
               showsHorizontalScrollIndicator={false}
               nestedScrollEnabled={true}
               pagingEnabled
-              onScroll={e => {
+              onScroll={(e) => {
                 const x = e.nativeEvent.contentOffset.x;
                 setCurrentIndex((x / (width - 50)).toFixed(0));
               }}
@@ -530,7 +718,7 @@ const Home = ({navigation}: any) => {
               </Text>
             </Text>
             <TouchableOpacity
-              onPress={ShowMessage}
+              onPress={() => navigation.navigate('Help')}
               activeOpacity={0.8}
               style={{
                 borderWidth: 1,
@@ -558,14 +746,31 @@ const Home = ({navigation}: any) => {
         </View>
       </ScrollView>
 
-      {/* {selectedLink && (
+      {selectedLink && (
         <TouchableOpacity
-          style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0,  }}
-          // onPress={handleCloseWebView}
-        >
-          <WebView source={{ uri: selectedLink }} />
+          style={{
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            // height: '100%',
+          }}>
+          <WebView
+            // ref={webViewRef}
+            source={{uri: selectedLink}}
+            allowsFullscreenVideo={true}
+            startInLoadingState={true}
+            overScrollMode="content"
+            androidHardwareAccelerationDisabled={false}
+            cacheEnabled={true}
+            injectedJavaScript={injectedScript}
+            style={{height: webViewHeight, width: '100%'}}
+            onMessage={handleWebviewMessage}
+            scrollEnabled={true}
+          />
         </TouchableOpacity>
-      )} */}
+      )}
     </View>
   );
 };

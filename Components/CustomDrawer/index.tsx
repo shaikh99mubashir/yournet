@@ -88,6 +88,25 @@ function CustomDrawerContent(props: any) {
   const ShowMessage = () => {
     ToastAndroid.show('This Feature will Soon Avaiable !', ToastAndroid.SHORT);
   }
+  const [nickName, setNickName] = useState<any>('');
+  props.navigation.addListener('state', () => {
+    gettingUserNickName();
+  });
+  const gettingUserNickName = async () => {
+    let value = await AsyncStorage.getItem('nickName');
+    // console.log(value, 'valueasdasd');
+    if (value !== null) {
+      console.log(value, 'value');
+      setNickName(JSON.parse(value));
+    }
+  };
+  useEffect(() => {
+    gettingUserNickName();
+  }, []);
+  const logoutFun = () =>{
+    props.navigation.replace('Login')
+    AsyncStorage.removeItem('token')
+  }
   return (
     <View style={{flex: 1, backgroundColor: Color.white,paddingHorizontal:10}}>
       <DrawerContentScrollView
@@ -98,7 +117,7 @@ function CustomDrawerContent(props: any) {
           {/* Logout And Close Button */}
           <View style={[styles.closeButtonContainer,{marginTop:20}]}>
             <TouchableOpacity
-            onPress={()=>props.navigation.replace('Login')}
+            onPress={()=>logoutFun()}
               style={{
                 backgroundColor: '#eee',
                 paddingVertical: 5,
@@ -135,10 +154,10 @@ function CustomDrawerContent(props: any) {
                 alignItems:'center',
                 justifyContent:'center'
               }}>
-              <Text style={{fontSize: 35, color: Color.textColor, padding:0, margin:0}}>{getUserData?.first_name?.charAt(0)}</Text>
+              <Text style={{fontSize: 35, color: Color.textColor, padding:0, margin:0}}>{nickName ? nickName?.charAt(0) :getUserData?.first_name?.charAt(0)}</Text>
             </View>
             <Text style={{fontSize: 20, color: Color.textColor}}>
-            {getUserData?.first_name}
+            {nickName ? nickName : getUserData?.first_name}
             </Text>
             <Text style={{fontSize: 20, color: Color.textColor}}>{getUserData?.customer_id}</Text>
             <View style={{flexDirection: 'row', gap: 10, marginVertical: 20}}>
@@ -163,8 +182,7 @@ function CustomDrawerContent(props: any) {
               </TouchableOpacity>
               <TouchableOpacity
               activeOpacity={0.8}
-                // onPress={() => navigateToScreen('Settings')}
-                onPress={ShowMessage}
+                onPress={() => navigateToScreen('Settings')}
                 style={{
                   backgroundColor: Color.white,
                   paddingVertical: 10,
@@ -302,8 +320,7 @@ function CustomDrawerContent(props: any) {
               }}>
               <View style={{}}>
                 <TouchableOpacity
-                  // onPress={() => navigateToScreen('TransactionHistory')}
-                  onPress={ShowMessage}
+                  onPress={() => navigateToScreen('TransactionHistory')}
                   style={{
                     backgroundColor: Color.white,
                     padding: 10,

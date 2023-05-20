@@ -1,13 +1,82 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-
-const Help = () => {
+import {StyleSheet, Text, View,TouchableOpacity} from 'react-native';
+import React from 'react';
+import {Color} from '../../Constants';
+import Header from '../../Components/Header';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+const Help = ({navigation}: any) => {
   return (
-    <View>
-      <Text>Help</Text>
+    <View
+      style={{
+        backgroundColor: Color.white,
+        height: '100%',
+        paddingHorizontal: 15,
+      }}>
+      <Header navigation={navigation} backBtn />
+      <View
+        style={{
+          alignItems:"center"
+        }}>
+        <MaterialIcons name="support-agent" size={150} color="black" />
+      </View>
+      <TouchableOpacity
+      activeOpacity={0.8}
+        style={{
+          backgroundColor: 'white',
+          elevation: 5,
+          paddingHorizontal: 10,
+          paddingVertical: 20,
+          borderRadius: 10,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginVertical:15
+        }}>
+        <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+          Quick Help
+        </Text>
+        <AntDesign name='right' size={20} color='black'/>
+      </TouchableOpacity>
+      <TouchableOpacity
+      activeOpacity={0.8}
+        style={{
+          backgroundColor: 'white',
+          elevation: 5,
+          paddingHorizontal: 10,
+          paddingVertical: 20,
+          borderRadius: 10,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginVertical:15
+        }}>
+        <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+          Register New Complaint
+        </Text>
+        <AntDesign name='right' size={20} color='black'/>
+      </TouchableOpacity>
+      <TouchableOpacity
+      activeOpacity={0.8}
+        style={{
+          backgroundColor: 'white',
+          elevation: 5,
+          paddingHorizontal: 10,
+          paddingVertical: 20,
+          borderRadius: 10,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginVertical:15
+        }}>
+        <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+          Track Your Complaint
+        </Text>
+        <AntDesign name='right' size={20} color='black'/>
+      </TouchableOpacity>
+      
     </View>
-  )
-}
+  );
+};
 
 export default Help
 

@@ -14,6 +14,9 @@ import CustomerSupport from '../../Screens/CustomerSupport';
 import FeeDetails from '../../Screens/FeeDetails';
 import Help from '../../Screens/Help';
 import PromotionsDetails from '../../Screens/PromotionsDetails';
+import TransactionDetails from '../../Screens/TransactionDetails';
+import Language from '../../Screens/Language';
+import CheckWebView from '../../Screens/CheckWebView';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +35,9 @@ const MyStack = () => {
         <Stack.Screen name="Home" component={MyDrawer}/>
         <Stack.Screen name="Help" component={Help} />
         <Stack.Screen name="PromotionsDetails" component={PromotionsDetails} />
+        <Stack.Screen name="TransactionDetails" component={TransactionDetails} />
+        <Stack.Screen name="Language" component={Language} />
+        <Stack.Screen name="CheckWebView" component={CheckWebView} />
       </Stack.Navigator>
     </NavigationContainer>
   );

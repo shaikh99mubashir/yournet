@@ -31,27 +31,28 @@ const Login = ({navigation}: any) => {
     customer_id: '',
     password: null,
   });
+
   // To store the loginFields
   AsyncStorage.setItem('loginFields', JSON.stringify(loginFields))
     .then(() => console.log('Login fields saved'))
     .catch(error => console.log('Error saving login fields: ', error));
-  const [isLoginFieldsAvaiable, setIsLoginFieldsAvaiable] = useState<any>([]);
-  console.log('getUserData', isLoginFieldsAvaiable);
+  // const [isLoginFieldsAvaiable, setIsLoginFieldsAvaiable] = useState<any>([]);
+  // console.log('getUserData', isLoginFieldsAvaiable);
   // console.log('userId',userId.customer_id);
-  const gettingUserData = () => {
-    AsyncStorage.getItem('loginFields')
-      .then(value => {
-        if (value !== null) {
-          setIsLoginFieldsAvaiable(JSON.parse(value));
-        } else {
-          console.log('No login fields found');
-        }
-      })
-      .catch(error => console.log('Error retrieving login fields: ', error));
-  };
-  useEffect(() => {
-    gettingUserData();
-  }, []);
+  // const gettingUserData = () => {
+  //   AsyncStorage.getItem('loginFields')
+  //     .then(value => {
+  //       if (value !== null) {
+  //         setIsLoginFieldsAvaiable(JSON.parse(value));
+  //       } else {
+  //         console.log('No login fields found');
+  //       }
+  //     })
+  //     .catch(error => console.log('Error retrieving login fields: ', error));
+  // };
+  // useEffect(() => {
+  //   gettingUserData();
+  // }, []);
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -83,6 +84,13 @@ const Login = ({navigation}: any) => {
       .then((res: any) => {
         setLoading(false);
         setSuccess(false);
+        console.log('res===>', res.data.token);
+
+        // To store the loginFields
+        AsyncStorage.setItem('token', JSON.stringify(res.data.token))
+          .then(() => console.log('Token Saved'))
+          .catch(error => console.log('Error saving login fields: ', error));
+
         if (res.data.status == 'success') {
           navigation.replace('Home');
           ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);
@@ -131,8 +139,10 @@ const Login = ({navigation}: any) => {
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ScrollView contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
-          <View style={{alignItems: 'center', marginTop:60, marginBottom:10}}>
+        <ScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          showsVerticalScrollIndicator={false}>
+          <View style={{alignItems: 'center', marginTop: 60, marginBottom: 10}}>
             <Image
               source={require('../../Images/Logo.png')}
               resizeMode="contain"
@@ -296,7 +306,6 @@ const Login = ({navigation}: any) => {
                 width: Dimensions.get('window').width / 1.1,
                 borderRadius: 30,
                 marginVertical: 15,
-                
               }}>
               <TouchableOpacity
                 activeOpacity={0.8}
@@ -307,7 +316,6 @@ const Login = ({navigation}: any) => {
                   padding: 12,
                   backgroundColor: 'black',
                   borderRadius: 30,
-
                 }}>
                 {loading ? (
                   <ActivityIndicator color="#fff" size={'small'} />

@@ -85,7 +85,7 @@ const Profile = ({navigation}:any) => {
         Personal Details
       </Text>
       {/* Nick Name */}
-      <View
+      {/* <View
         style={{
           backgroundColor: Color.white,
           elevation: 2,
@@ -129,7 +129,7 @@ const Profile = ({navigation}:any) => {
             />
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
       {/* userName */}
       <View
         style={{
@@ -138,6 +138,7 @@ const Profile = ({navigation}:any) => {
           padding: 10,
           borderRadius: 10,
           marginBottom: 15,
+          marginTop:10
         }}>
         <Text
           style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>

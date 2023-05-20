@@ -2,8 +2,8 @@ import {StyleSheet, Text, View,TouchableOpacity} from 'react-native';
 import React from 'react';
 import {Color} from '../../Constants';
 import Header from '../../Components/Header';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-const Settings = ({navigation}: any) => {
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+const Language = ({navigation}: any) => {
   return (
     <View
       style={{
@@ -20,10 +20,9 @@ const Settings = ({navigation}: any) => {
           color: Color.textColor,
           fontWeight: 'bold',
         }}>
-        Settings
+        Language
       </Text>
       <TouchableOpacity
-      onPress={()=>navigation.navigate('Language')}
       activeOpacity={0.8}
         style={{
           backgroundColor: 'white',
@@ -36,14 +35,14 @@ const Settings = ({navigation}: any) => {
           justifyContent: 'space-between',
         }}>
         <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
-          Language
+          English
         </Text>
-        <AntDesign name='right' size={20} color='black'/>
+        <FontAwesome name='dot-circle-o' size={24} color={Color.mainColor}/>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default Settings;
+export default Language;
 
 const styles = StyleSheet.create({});

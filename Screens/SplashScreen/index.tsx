@@ -1,13 +1,24 @@
 import { StyleSheet, Text, View ,Image,Dimensions} from 'react-native'
 import React, { useEffect } from 'react'
 import { Color } from '../../Constants'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = ({navigation}:any) => {
   const navigateToHomeScreen = () => {
-    setTimeout(() => {
-      navigation.replace('Login');
-    }, 3000);
+    AsyncStorage.getItem('token').then((val: any) => {
+      let date1 = JSON.parse(val);
+      if (date1) {
+        setTimeout(() => {
+          navigation.replace('Home');
+        }, 2000);
+      } else {
+        setTimeout(() => {
+          navigation.replace('Login');
+        }, 3000);
+      }
+    });
   };
+  
   useEffect(() => {
     navigateToHomeScreen();
   }, []);

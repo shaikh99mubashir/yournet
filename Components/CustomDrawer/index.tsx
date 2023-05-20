@@ -249,7 +249,7 @@ function CustomDrawerContent(props: any) {
                     height: 55,
                   }}>
                   <Image source={require('../../Images/fees.png')} style={{width:25, height:25}} resizeMode='contain'/>
-                  <Text style={{color:Color.textColor}}> Fee Details</Text>
+                  <Text style={{color:Color.textColor}}> Who We Are</Text>
                 </TouchableOpacity>
               </View>
             </View>

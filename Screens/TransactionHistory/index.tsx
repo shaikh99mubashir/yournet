@@ -26,7 +26,7 @@ const TransactionHistory = ({navigation}:any) => {
 
   console.log('user Token', userToken);
   const [receipts, setReceipts] = useState([]);
-  const submitBusinessStep = () => {
+  const getTransData = () => {
     const config = {
       headers: {
         Authorization: userToken,
@@ -50,7 +50,7 @@ const TransactionHistory = ({navigation}:any) => {
   };
 
   useEffect(() => {
-    submitBusinessStep();
+    getTransData();
   }, [userToken]);
 
   return (

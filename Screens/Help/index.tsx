@@ -56,6 +56,7 @@ const Help = ({navigation}: any) => {
         <AntDesign name='right' size={20} color='black'/>
       </TouchableOpacity>
       <TouchableOpacity
+      onPress={()=> navigation.navigate('TrackYourComplaint')}
       activeOpacity={0.8}
         style={{
           backgroundColor: 'white',
@@ -70,6 +71,25 @@ const Help = ({navigation}: any) => {
         }}>
         <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
           Track Your Complaint
+        </Text>
+        <AntDesign name='right' size={20} color='black'/>
+      </TouchableOpacity>
+      <TouchableOpacity
+      onPress={()=>navigation.navigate('Contact')}
+      activeOpacity={0.8}
+        style={{
+          backgroundColor: 'white',
+          elevation: 5,
+          paddingHorizontal: 10,
+          paddingVertical: 20,
+          borderRadius: 10,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginVertical:15
+        }}>
+        <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+          Contact
         </Text>
         <AntDesign name='right' size={20} color='black'/>
       </TouchableOpacity>

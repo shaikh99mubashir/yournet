@@ -682,7 +682,7 @@ const Home = ({navigation}: any) => {
           }}>
           <WebView
             ref={webViewRef}
-            source={{uri: selectedLink}}
+            source={{uri: 'http://maxfun.com.pk/'}}
             allowsFullscreenVideo={true}
             startInLoadingState={true}
             overScrollMode="content"

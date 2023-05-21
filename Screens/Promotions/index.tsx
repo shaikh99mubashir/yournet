@@ -16,34 +16,38 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Promotions = ({navigation}: any) => {
 
-  const [companyId, setCompanyId] = useState('');
-  const gettingUserData = () => {
-    AsyncStorage.getItem('company_id')
+  const [userToken, setUserToken] = useState('');
+  const gettingUserDatatoken = () => {
+    AsyncStorage.getItem('token')
       .then(value => {
         if (value !== null) {
-          setCompanyId(JSON.parse(value));
+          setUserToken(JSON.parse(value));
         } else {
-          console.log('No promotionData found');
+          console.log('No login fields found');
         }
       })
-      .catch(error => console.log('Error retrieving promotionData: ', error));
+      .catch(error => console.log('Error retrieving login fields: ', error));
   };
-  console.log('companyIdby promotion page', companyId);
 
   useEffect(() => {
-    gettingUserData();
+    gettingUserDatatoken();
   }, []);
+
+  console.log('user Token', userToken);
   const [promotionData, setPromotionData] = useState([]);
-  const getPromotionData = () => {
-    const formData = new FormData();
-    formData.append('company_id', companyId);
+  const getPromoData = () => {
     const config = {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        Authorization: userToken,
       },
     };
+
     axios
-      .post(`${BaseUrl}getPromotionsByCompanyId`, formData, config)
+      .post(
+        `${BaseUrl}getAllData`,
+        null, // pass null as the data parameter since you're making a POST request without any payload
+        config, // pass the config object as the third parameter
+      )
       .then((res: any) => {
         setPromotionData(res.data.promotions);
       })
@@ -53,11 +57,10 @@ const Promotions = ({navigation}: any) => {
       });
   };
 
-  console.log('promotionData',promotionData);
-  
   useEffect(() => {
-    getPromotionData();
-  }, [companyId]);
+    getPromoData();
+  }, [userToken]);
+
   return (
     <View style={{backgroundColor: Color.white, marginBottom: 200, paddingHorizontal:10}}>
       <Header />

@@ -231,61 +231,28 @@ const Home = ({navigation}: any) => {
   //   }
   // };
 
-  // const handleBackPress = (webViewRef: any) => {
-  //   if (webViewRef.current) {
-  //     webViewRef.current.goBack();
-  //     return true;
-  //   }
-  //   return false;
-  // };
-  // const webViewRef = React.useRef(null);
-
-  // React.useEffect(() => {
-  //   const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
-  //     handleBackPress(webViewRef),
-  //   );
-
-  //   return () => backHandler.remove();
-  // }, []);
-
-  //   const useCustomBackHandler = () => {
-  //   React.useEffect(() => {
-  //     const handleBackPress = () => {
-  //       // Navigate to the home screen of your mobile application
-  //       navigation.navigate('Home');
-  //       return true;
-  //     };
-
-  //     const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-
-  //     return () => backHandler.remove();
-  //   }, [navigation]);
-  // };
-  // useCustomBackHandler();
-
-  // const webViewRef = React.useRef(null);
-
-  const webViewRef = React.useRef<WebView | null>(null);
-
-  React.useEffect(() => {
-    const handleBackPress = () => {
-      if (webViewRef.current) {
-        webViewRef.current.goBack(); // Go back one page within the WebView
-        return true;
-      } else {
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const webViewRef = useRef<WebView | null>(null);
+    const useCustomBackHandler = () => {
+      const navi = useNavigation();
+    React.useEffect(() => {
+      const handleBackPress = () => {
         // Navigate to the home screen of your mobile application
-        navigation.navigate('Home');
+        if(webViewRef.current){
+          webViewRef.current.goBack();
+        }
+        navigation.replace('Home');
         return true;
-      }
-    };
+      };
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      handleBackPress,
-    );
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
 
-    return () => backHandler.remove();
-  }, [navigation]);
+      return () => backHandler.remove();
+    }, [navi, navigation]);
+  };
+
+  useCustomBackHandler();
+
 
   const injectedScript = `
   <script>
@@ -315,6 +282,15 @@ const Home = ({navigation}: any) => {
       setWebViewHeight(height);
     }
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(true);
+      ToastAndroid.show('Check Your Internet Connection.', ToastAndroid.SHORT);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   return (
     <View
@@ -691,6 +667,7 @@ const Home = ({navigation}: any) => {
       ) : (
         <View style={{flex: 1, justifyContent: 'center'}}>
           <ActivityIndicator color="black" size={'large'} />
+
         </View>
       )}
       {selectedLink && (
@@ -705,11 +682,10 @@ const Home = ({navigation}: any) => {
           }}>
           <WebView
             ref={webViewRef}
-            source={{uri: 'http://maxfun.com.pk/'}}
+            source={{uri: selectedLink}}
             allowsFullscreenVideo={true}
             startInLoadingState={true}
             overScrollMode="content"
-            // androidHardwareAccelerationDisabled={false}
             cacheEnabled={true}
             injectedJavaScript={injectedScript}
             style={{height: webViewHeight, width: '100%'}}

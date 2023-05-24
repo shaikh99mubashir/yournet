@@ -106,6 +106,7 @@ function CustomDrawerContent(props: any) {
   const logoutFun = () =>{
     props.navigation.replace('Login')
     AsyncStorage.removeItem('token')
+    AsyncStorage.removeItem('loginFields')
   }
   return (
     <View style={{flex: 1, backgroundColor: Color.white,paddingHorizontal:10}}>

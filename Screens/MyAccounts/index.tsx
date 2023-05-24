@@ -315,8 +315,8 @@ const MyAccounts = () => {
                 style={{
                   color: Color.textColor,
                   fontWeight: 'bold',
-                  fontSize: 24,
-                  width: '80%',
+                  fontSize: 22,
+                  width: '90%',
                 }}>
                 {getUserData?.email_address
                   ? getUserData?.email_address

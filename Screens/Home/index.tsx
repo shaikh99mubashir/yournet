@@ -26,49 +26,15 @@ import {WebView} from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
 import CheckWebView from '../CheckWebView';
+import Loader from '../../Components/Loader';
 const {height, width} = Dimensions.get('window');
 const Home = ({navigation}: any) => {
-  // let token: any;
-  // console.log('token====>1', token);
-  // const [userToken, setUserToken] = useState('');
-  // console.log('token ===>2', token);
-
-  // const focus = useIsFocused();
-  // AsyncStorage.getItem('token')
-  //   .then(value => {
-  //     console.log('value', value);
-
-  //     if (value !== null) {
-  //       token =JSON.parse(value);
-  //     } else {
-  //       console.log('No login fields found');
-  //     }
-  //   })
-  //   .catch(error => console.log('Error retrieving login fields: ', error));
-  // const navigateToLogin = () => {
-  //   // if (!userToken) {
-  //   //   console.log('running');
-  //   //   // navigation.replace('Login');
-  //   //   ToastAndroid.show('Session Expire Login Again', ToastAndroid.SHORT);
-  //   //   return;
-  //   // }
-  // };
-  // useEffect(() => {
-  //   const check = setInterval(() => {
-  //     if (focus) {
-  //       console.log('token===>3', token);
-  //       navigateToLogin();
-  //     }
-  //   }, 10000);
-  //   return () => clearInterval(check);
-  // }, [focus]);
-
-  // AsyncStorage.removeItem('token')
 
   // To retrieve the loginFields
   const focus = useIsFocused();
   const [nickName, setNickName] = useState<any>('');
   const [userId, setUserId] = useState<any>('');
+
   const gettingUserData = () => {
     AsyncStorage.getItem('loginFields')
       .then(value => {
@@ -83,6 +49,10 @@ const Home = ({navigation}: any) => {
   useEffect(() => {
     gettingUserData();
   }, []);
+
+  console.log('userId===>',userId);
+  
+
   const [userToken, setUserToken] = useState('');
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('token')
@@ -95,9 +65,7 @@ const Home = ({navigation}: any) => {
       })
       .catch(error => console.log('Error retrieving login fields: ', error));
   };
-
   useEffect(() => {
-    gettingUserData();
     gettingUserDatatoken();
   }, []);
   // get User DATA
@@ -107,6 +75,7 @@ const Home = ({navigation}: any) => {
   const [webPortalData, WebPortalData] = useState([]);
   const [loading, setLoading] = useState(false);
   const getData = () => {
+    setLoading(!loading);
     const config = {
       headers: {
         Authorization: userToken,
@@ -119,26 +88,33 @@ const Home = ({navigation}: any) => {
         config, // pass the config object as the third parameter
       )
       .then((res: any) => {
-        console.log('res data', res.data.receipts);
+        // console.log('res data', res.data.receipts);
         setUserData(res.data.customer);
         WebPortalData(res.data.portals);
         setUserPackage(res.data.package);
         setPromotionData(res.data.promotions);
-        setLoading(true);
+        setLoading(!loading);
       })
       .catch(error => {
-        console.log('error==>', error);
+        // console.log('error==>', error);
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+        setLoading(!loading);
       });
-  };
-
-  useEffect(() => {
+    };
+    
+    useEffect(() => {
     getData();
-  }, [userToken]);
+  }, [userToken, focus]);
 
   const [selectedLink, setSelectedLink] = useState('');
-  const handelWebView = (link: any) => {
-    setSelectedLink(link);
+  const handelWebView = (link: string) => {
+    if (link) {
+      navigation.navigate('CheckWebView', { selectedLink: link });
+      // console.log(link);
+    }
+    else{
+      ToastAndroid.show('contact to admin',ToastAndroid.SHORT)
+    }
   };
 
   const [currentIndex, setCurrentIndex] = useState<any>(0);
@@ -173,7 +149,7 @@ const Home = ({navigation}: any) => {
   const gettingUserNickName = async () => {
     let value = await AsyncStorage.getItem('nickName');
     if (value !== null) {
-      console.log(value, 'value');
+      // console.log(value, 'value');
       setNickName(JSON.parse(value));
     }
   };
@@ -184,14 +160,7 @@ const Home = ({navigation}: any) => {
   // console.log(getUserData?.activation_date, 'getUserData?.activation_date');
 
   const date = new Date(getUserData?.activation_date);
-  const date1 = new Date(getUserData?.expiry_date);
   const RenewalDate = date.toLocaleDateString('en-US', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-  const expiryDate = date1.toLocaleDateString('en-US', {
     weekday: 'short',
     month: 'short',
     day: 'numeric',
@@ -282,16 +251,7 @@ const Home = ({navigation}: any) => {
       setWebViewHeight(height);
     }
   };
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setLoading(true);
-      ToastAndroid.show('Check Your Internet Connection.', ToastAndroid.SHORT);
-    }, 5000);
-
-    return () => clearTimeout(timeout);
-  }, []);
-
+  
   return (
     <View
       style={{
@@ -299,11 +259,15 @@ const Home = ({navigation}: any) => {
         height: '100%',
         paddingHorizontal: 10,
       }}>
-      {getUserData &&
-      userPackage &&
-      promotionData &&
-      webPortalData &&
-      loading ? (
+      {loading ? (
+        <View style={{flex: 1, justifyContent: 'center',backgroundColor: Color.white,
+        opacity: 0.9,}}>
+        <ActivityIndicator color="black" size={'large'} />
+      </View>
+      
+      // <Loader />
+        
+      ) : (
         <>
           <View style={{marginHorizontal: 10}}>
             <Header navigation={navigation} Drawer Notification />
@@ -401,7 +365,7 @@ const Home = ({navigation}: any) => {
                         ]}>
                         Last Renewal Date: {'\n'}
                         <Text style={{color: Color.textColor}}>
-                          {RenewalDate}
+                          {getUserData?.activation_date}
                         </Text>
                       </Text>
                     </View>
@@ -423,7 +387,7 @@ const Home = ({navigation}: any) => {
                         ]}>
                         Last Expiry Date: {'\n'}
                         <Text style={{color: Color.textColor}}>
-                          {expiryDate}
+                          {getUserData?.expiry_date}
                         </Text>
                       </Text>
                     </View>
@@ -505,9 +469,11 @@ const Home = ({navigation}: any) => {
                   nestedScrollEnabled
                   horizontal
                   renderItem={({item, index}: any) => {
+                    console.log('item?.portal_link===>',item?.portal_link);
                     return (
                       <TouchableOpacity
                         onPress={() => handelWebView(item?.portal_link)}
+                        // onPress={() => }
                         activeOpacity={0.8}
                         style={{paddingRight: 15}}>
                         <Image
@@ -664,11 +630,6 @@ const Home = ({navigation}: any) => {
             </View>
           </ScrollView>
         </>
-      ) : (
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <ActivityIndicator color="black" size={'large'} />
-
-        </View>
       )}
       {selectedLink && (
         <TouchableOpacity

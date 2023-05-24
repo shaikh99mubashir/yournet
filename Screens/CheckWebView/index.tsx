@@ -1,16 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { BackHandler, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useRef } from 'react'
 import WebView from 'react-native-webview'
 
-const CheckWebView = (props:any) => {
-    const {selectedLink} = props
-    console.log('selectedLink',selectedLink);
+const CheckWebView = ({route, navigation}:any) => {
+    const link = route.params
+    console.log('link', link);
+    
+
     
   return (
-    <View>
-      {/* <Text>CheckWebView</Text> */}
-      <WebView scrollView={true} source={{ uri: selectedLink }} />
-    </View>
+    <WebView
+    allowsFullscreenVideo={true}
+    source={{uri: link.selectedLink}} 
+    startInLoadingState={true}
+    style={{flex: 1}}
+  />
   )
 }
 

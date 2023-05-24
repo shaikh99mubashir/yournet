@@ -84,8 +84,6 @@ const Login = ({navigation}: any) => {
       .then((res: any) => {
         setLoading(false);
         setSuccess(false);
-        console.log('res===>', res.data.token);
-
         // To store the loginFields
         AsyncStorage.setItem('token', JSON.stringify(res.data.token))
           .then(() => console.log('Token Saved'))

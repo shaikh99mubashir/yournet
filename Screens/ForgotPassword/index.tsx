@@ -8,13 +8,13 @@ const ForgotPassword = ({navigation} :any) => {
     const [forgotPassword, setForgotPassword] = useState('')
     
     const SendOtp = () => {
-        navigation.navigate('Verification')
+    
     }
   return (
     <View style={{
-        backgroundColor: Color.backgroundColor,
+        backgroundColor: Color.white,
         height: Dimensions.get('window').height,
-        paddingHorizontal: 10
+        paddingHorizontal: 14
       }}>
         <Header
           navigation={navigation}

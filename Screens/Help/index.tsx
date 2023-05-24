@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View,TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View,TouchableOpacity, ScrollView} from 'react-native';
 import React from 'react';
 import {Color} from '../../Constants';
 import Header from '../../Components/Header';
@@ -6,7 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const Help = ({navigation}: any) => {
   return (
-    <View
+    <ScrollView
       style={{
         backgroundColor: Color.white,
         height: '100%',
@@ -38,6 +38,7 @@ const Help = ({navigation}: any) => {
         <AntDesign name='right' size={20} color='black'/>
       </TouchableOpacity>
       <TouchableOpacity
+      onPress={()=> navigation.navigate('Complaint')}
       activeOpacity={0.8}
         style={{
           backgroundColor: 'white',
@@ -94,7 +95,7 @@ const Help = ({navigation}: any) => {
         <AntDesign name='right' size={20} color='black'/>
       </TouchableOpacity>
       
-    </View>
+    </ScrollView>
   );
 };
 

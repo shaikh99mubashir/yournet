@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View,Image,ScrollView} from 'react-native';
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Header from '../../Components/Header';
@@ -10,14 +10,14 @@ const TransactionDetails = ({navigation, route}: any) => {
   console.log('data===>', data);
 
   return (
-    <View style={{paddingTop: 10, paddingHorizontal: 15}}>
+    <ScrollView style={{paddingTop: 10, paddingHorizontal: 15}} showsVerticalScrollIndicator={false}>
       <Header navigation={navigation} backBtn noLogo />
 
       <View style={{marginTop: 10}}>
         <View
           style={{
             display: 'flex',
-            elevation: 20,
+            elevation: 5,
             flexDirection: 'column',
             borderRadius: 10,
           }}>
@@ -43,14 +43,14 @@ const TransactionDetails = ({navigation, route}: any) => {
                 }}>
                 Transaction Details
               </Text>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        color: Color.textColor,
-                        fontWeight: 'bold',
-                      }}>
-                      3202302020
-                    </Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: Color.textColor,
+                  fontWeight: 'bold',
+                }}>
+                3202302020
+              </Text>
               <View
                 style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Text
@@ -70,11 +70,6 @@ const TransactionDetails = ({navigation, route}: any) => {
                   23:200
                 </Text>
               </View>
-              {/* <MaterialIcons name="support-agent" size={22} color="#fff" /> */}
-              {/* <Text style={{fontSize: 18, color: 'black', fontWeight: '700'}}>
-            {data?.user_name}
-          </Text> */}
-              {/* <Text style={{color: 'gray', fontSize: 14}}>{data?.user_id}</Text> */}
             </View>
           </LinearGradient>
           {/* </View> */}
@@ -82,9 +77,10 @@ const TransactionDetails = ({navigation, route}: any) => {
             style={{
               backgroundColor: 'white',
               padding: 10,
-              borderBottomLeftRadius: 30,
-              borderBottomEndRadius: 30,
+              borderBottomLeftRadius: 10,
+              borderBottomEndRadius: 10,
             }}>
+            {/* customer Id */}
             <View
               style={{
                 display: 'flex',
@@ -96,13 +92,14 @@ const TransactionDetails = ({navigation, route}: any) => {
                 paddingBottom: 10,
                 // justifyContent:'space-between'
               }}>
-              <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>
+              <Text style={{fontSize: 18, color: 'black', fontWeight: '700'}}>
                 Customer ID :
               </Text>
               <Text style={{fontSize: 16, color: 'black'}}>
                 {data?.user_id}
               </Text>
             </View>
+            {/* customer name */}
             <View
               style={{
                 display: 'flex',
@@ -112,15 +109,15 @@ const TransactionDetails = ({navigation, route}: any) => {
                 borderBottomWidth: 1,
                 borderColor: '#eee',
                 paddingVertical: 10,
-                // justifyContent:'space-between'
               }}>
-              <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>
+              <Text style={{fontSize: 18, color: 'black', fontWeight: '700'}}>
                 Customer Name :
               </Text>
               <Text style={{fontSize: 16, color: 'black'}}>
                 {data?.user_name}
               </Text>
             </View>
+            {/* package */}
             <View
               style={{
                 display: 'flex',
@@ -130,16 +127,15 @@ const TransactionDetails = ({navigation, route}: any) => {
                 borderBottomWidth: 1,
                 borderColor: '#eee',
                 paddingVertical: 10,
-                // justifyContent:'space-between'
               }}>
-              <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>
+              <Text style={{fontSize: 18, color: 'black', fontWeight: '700'}}>
                 Package :
               </Text>
               <Text style={{fontSize: 16, color: 'black'}}>
                 {data?.package_name}
               </Text>
             </View>
-            
+            {/* for period */}
             <View
               style={{
                 display: 'flex',
@@ -149,9 +145,8 @@ const TransactionDetails = ({navigation, route}: any) => {
                 borderBottomWidth: 1,
                 borderColor: '#eee',
                 paddingVertical: 10,
-                // justifyContent:'space-between'
               }}>
-              <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>
+              <Text style={{fontSize: 18, color: 'black', fontWeight: '700'}}>
                 For Period :
               </Text>
               <Text style={{fontSize: 16, color: 'black'}}>21</Text>
@@ -166,9 +161,8 @@ const TransactionDetails = ({navigation, route}: any) => {
                 borderBottomWidth: 1,
                 borderColor: '#eee',
                 paddingVertical: 10,
-                // justifyContent:'space-between'
               }}>
-              <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>
+              <Text style={{fontSize: 18, color: 'black', fontWeight: '700'}}>
                 Status :
               </Text>
               <Text style={{fontSize: 16, color: 'black'}}>add</Text>
@@ -176,109 +170,134 @@ const TransactionDetails = ({navigation, route}: any) => {
           </View>
         </View>
       </View>
-      {/* invoice  dis */}
       <View
         style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: 5,
-          alignItems: 'center',
-          borderBottomWidth: 1,
-          borderColor: '#eee',
-          paddingVertical: 10,
-          // justifyContent:'space-between'
+          backgroundColor: 'white',
+          padding: 10,
+          borderRadius: 10,
+          marginTop:15,
+          elevation: 5,
+          // borderBottomLeftRadius: 10,
+          // borderBottomEndRadius: 10,
         }}>
-        <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>
-          Total Amount :
-        </Text>
-        <Text style={{fontSize: 16, color: 'black'}}>
-          {data?.invoice_discount}
-        </Text>
-      </View>
-      {/* days */}
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: 5,
-          alignItems: 'center',
-          borderBottomWidth: 1,
-          borderColor: '#eee',
-          paddingVertical: 10,
-          // justifyContent:'space-between'
-        }}>
-        <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>
-          Days :
-        </Text>
-        <Text style={{fontSize: 16, color: 'black'}}>{data?.total_days}</Text>
-      </View>
-      
-
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: 5,
-          alignItems: 'center',
-          borderBottomWidth: 1,
-          borderColor: '#eee',
-          paddingVertical: 10,
-          // justifyContent:'space-between'
-        }}>
-        <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>
-          Payment Method :
-        </Text>
-        <Text style={{fontSize: 16, color: 'black'}}>dfdsf</Text>
-      </View>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: 5,
-          alignItems: 'center',
-          borderBottomWidth: 1,
-          borderColor: '#eee',
-          paddingVertical: 10,
-          // justifyContent:'space-between'
-        }}>
-        <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>
-          Recive By :
-        </Text>
-        <Text style={{fontSize: 16, color: 'black'}}>name</Text>
+        {/* Days */}
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 5,
+            alignItems: 'center',
+            borderBottomWidth: 1,
+            borderColor: '#eee',
+            paddingBottom: 10,
+            // justifyContent:'space-between'
+          }}>
+          <Text style={{fontSize: 18, color: 'black', fontWeight: '700'}}>
+            Days :
+          </Text>
+          <Text style={{fontSize: 16, color: 'black'}}>{data?.user_id}</Text>
+        </View>
+        {/* Balance Amount */}
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 5,
+            alignItems: 'center',
+            borderBottomWidth: 1,
+            borderColor: '#eee',
+            paddingVertical: 10,
+          }}>
+          <Text style={{fontSize: 18, color: 'black', fontWeight: '700'}}>
+            Balance Amount :
+          </Text>
+          <Text style={{fontSize: 16, color: 'black'}}>{data?.user_name}</Text>
+        </View>
+        {/* Total Amount */}
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 5,
+            alignItems: 'center',
+            borderBottomWidth: 1,
+            borderColor: '#eee',
+            paddingVertical: 10,
+          }}>
+          <Text style={{fontSize: 18, color: 'black', fontWeight: '700'}}>
+            Total Amount :
+          </Text>
+          <Text style={{fontSize: 16, color: 'black'}}>
+            {data?.package_name}
+          </Text>
+        </View>
       </View>
       <View
         style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: 5,
-          alignItems: 'center',
-          borderBottomWidth: 1,
-          borderColor: '#eee',
-          paddingVertical: 10,
-          // justifyContent:'space-between'
+          backgroundColor: 'white',
+          padding: 10,
+          borderRadius: 10,
+          marginTop:15,
+          elevation: 5,
+          // borderBottomLeftRadius: 10,
+          // borderBottomEndRadius: 10,
         }}>
-        <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>
-          Balance :
-        </Text>
-        <Text style={{fontSize: 16, color: 'black'}}>6262</Text>
+        {/* Payment Method */}
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 5,
+            alignItems: 'center',
+            borderBottomWidth: 1,
+            borderColor: '#eee',
+            paddingBottom: 10,
+            
+          }}>
+          <Text style={{fontSize: 18, color: 'black', fontWeight: '700'}}>
+            Payment Method :
+          </Text>
+          <Text style={{fontSize: 16, color: 'black'}}>{data?.user_id}</Text>
+        </View>
+        {/* Recived By */}
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 5,
+            alignItems: 'center',
+            borderBottomWidth: 1,
+            borderColor: '#eee',
+            paddingVertical: 10,
+          }}>
+          <Text style={{fontSize: 18, color: 'black', fontWeight: '700'}}>
+            Recived By :
+          </Text>
+          <Text style={{fontSize: 16, color: 'black'}}>{data?.user_name}</Text>
+        </View>
+        {/*  Amount Recived */}
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 5,
+            alignItems: 'center',
+            borderBottomWidth: 1,
+            borderColor: '#eee',
+            paddingVertical: 10,
+          }}>
+          <Text style={{fontSize: 18, color: 'black', fontWeight: '700'}}>
+            Amount Recived :
+          </Text>
+          <Text style={{fontSize: 16, color: 'black'}}>
+            {data?.package_name}
+          </Text>
+        </View>
       </View>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: 5,
-          alignItems: 'center',
-          borderBottomWidth: 1,
-          borderColor: '#eee',
-          paddingVertical: 10,
-          // justifyContent:'space-between'
-        }}>
-        <Text style={{fontSize: 20, color: 'black', fontWeight: '700'}}>
-          Recipt :
-        </Text>
-        <Text style={{fontSize: 16, color: 'black'}}>6262611</Text>
+      <View style={{alignItems:'center', marginVertical:40}}>
+          <Image source={require('../../Images/ISP.png')} style={{width:80, height:60}} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

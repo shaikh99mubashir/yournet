@@ -21,7 +21,17 @@ const Help = ({navigation}: any) => {
         height: '100%',
         paddingHorizontal: 15,
       }}>
-      <Header navigation={navigation} backBtn title="Customer Support" />
+      <Header navigation={navigation} backBtn noLogo />
+      <Text
+          style={{
+            textAlign: 'center',
+            fontSize: 22,
+            marginVertical: 10,
+            color: Color.mainColor,
+            fontWeight: 'bold',
+          }}>
+          Help & Customer Support
+        </Text>
       <View
         style={{
           alignItems: 'center',

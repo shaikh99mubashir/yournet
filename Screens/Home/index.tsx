@@ -42,7 +42,7 @@ const Home = ({navigation}: any) => {
         if (value !== null) {
           setUserId(JSON.parse(value));
         } else {
-          console.log('No login fields found');
+          // console.log('No login fields found');
         }
       })
       .catch(error => console.log('Error retrieving login fields: ', error));
@@ -51,24 +51,22 @@ const Home = ({navigation}: any) => {
     gettingUserData();
   }, []);
 
-  console.log('userId===>',userId);
-  
-
-  const [userToken, setUserToken] = useState('');
+  const [user_id, setUser_id] = useState('');
   const gettingUserDatatoken = () => {
-    AsyncStorage.getItem('token')
+    AsyncStorage.getItem('user_id')
       .then(value => {
         if (value !== null) {
-          setUserToken(JSON.parse(value));
+          setUser_id(JSON.parse(value));
         } else {
           console.log('No login fields found');
         }
       })
       .catch(error => console.log('Error retrieving login fields: ', error));
   };
+  
   useEffect(() => {
     gettingUserDatatoken();
-  }, []);
+  }, [focus]);
   // get User DATA
   const [getUserData, setUserData] = useState<any>([]);
   const [userPackage, setUserPackage] = useState<any>([]);
@@ -79,7 +77,7 @@ const Home = ({navigation}: any) => {
     setLoading(!loading);
     const config = {
       headers: {
-        Authorization: userToken,
+        User_ID: user_id,
       },
     };
     axios
@@ -89,7 +87,7 @@ const Home = ({navigation}: any) => {
         config, // pass the config object as the third parameter
       )
       .then((res: any) => {
-        // console.log('res data', res.data.receipts);
+        console.log('res data', res.data);
         setUserData(res.data.customer);
         WebPortalData(res.data.portals);
         setUserPackage(res.data.package);
@@ -105,7 +103,7 @@ const Home = ({navigation}: any) => {
     
     useEffect(() => {
     getData();
-  }, [userToken, focus]);
+  }, [user_id, focus]);
 
   const [selectedLink, setSelectedLink] = useState('');
   const handelWebView = (link: string) => {
@@ -478,10 +476,10 @@ const Home = ({navigation}: any) => {
                   nestedScrollEnabled
                   horizontal
                   renderItem={({item, index}: any) => {
-                    console.log('item?.portal_link===>',item?.portal_link);
+                    // console.log('item?.portal_link===>',item?.portal_link);
                     return (
                       <TouchableOpacity
-                        onPress={() => handelWebView('http://maxfun.com.pk')}
+                        onPress={() => handelWebView('https://www.youtube.com/')}
                         // onPress={() => }
                         activeOpacity={0.8}
                         style={{paddingRight: 15}}>

@@ -4,7 +4,7 @@ import {Color} from '../../Constants';
 import Header from '../../Components/Header';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const Contact = () => {
+const Contact = ({navigation}:any) => {
   const mobileNumber = [
     {
       id: 1,
@@ -31,17 +31,17 @@ const Contact = () => {
         height: '100%',
         paddingHorizontal: 10,
       }}>
-      <Header backBtn />
+      <Header backBtn navigation={navigation} noLogo />
       <Text
-        style={{
-          textAlign: 'center',
-          fontSize: 22,
-          marginVertical: 10,
-          color: Color.textColor,
-          fontWeight: 'bold',
-        }}>
-        Contact Us
-      </Text>
+          style={{
+            textAlign: 'center',
+            fontSize: 22,
+            marginVertical: 10,
+            color: Color.mainColor,
+            fontWeight: 'bold',
+          }}>
+          Contact Us
+        </Text>
       <Text
         style={{
           textAlign: 'center',

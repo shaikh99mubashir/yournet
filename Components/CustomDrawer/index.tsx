@@ -49,11 +49,9 @@ function CustomDrawerContent(props: any) {
     axios
       .post(`${BaseUrl}getdata`, formData, config)
       .then((res: any) => {
-        // console.log('res',res.data);
         setUserData(res.data.customer);
       })
       .catch(error => {
-        console.log('error==>', error);
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
       });
   };
@@ -67,7 +65,6 @@ function CustomDrawerContent(props: any) {
   
 
   const share = async () => {
-    console.log('running share');
 
     const options = {
       message:
@@ -105,11 +102,11 @@ function CustomDrawerContent(props: any) {
   }, []);
   const logoutFun = () =>{
     props.navigation.replace('Login')
-    AsyncStorage.removeItem('token')
+    AsyncStorage.removeItem('user_id')
     AsyncStorage.removeItem('loginFields')
   }
   return (
-    <View style={{flex: 1, backgroundColor: Color.white,paddingHorizontal:10}}>
+    <View style={{flex: 1, backgroundColor:Color.white,paddingHorizontal:10}}>
       <DrawerContentScrollView
         {...props}
         contentContainerStyle={styles.drawerContent} showsVerticalScrollIndicator={false}>
@@ -220,8 +217,8 @@ function CustomDrawerContent(props: any) {
               }}>
               <View style={{}}>
                 <TouchableOpacity
-                  // onPress={() => navigateToScreen('CustomerSupport')}
-                  onPress={ShowMessage}
+                  onPress={() => navigateToScreen('Help')}
+                  // onPress={ShowMessage}
                   style={{
                     backgroundColor: Color.white,
                     padding: 10,
@@ -295,7 +292,7 @@ function CustomDrawerContent(props: any) {
                     height: 55,
                   }}>
                   <Image source={require('../../Images/share.png')} style={{width:25, height:25}} resizeMode='contain'/>
-                  <Text> Share</Text>
+                  <Text style={{color:Color.textColor}}> Share</Text>
                 </TouchableOpacity>
               </View>
             </View>

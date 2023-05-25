@@ -16,39 +16,38 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {BaseUrl} from '../../Constants/BaseUrl';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useIsFocused} from '@react-navigation/native';
 
 const MyAccounts = () => {
   const [editNickName, setEditNickName] = useState<boolean>(false);
   const [nickName, setNickName] = useState<any>('');
   const [getUserData, setUserData] = useState<any>([]);
-  console.log('nickName', nickName);
 
   AsyncStorage.setItem('nickName', JSON.stringify(nickName))
-    .then(() => console.log('nickName fields saved'))
-    .catch(error => console.log('Error saving nickName fields: ', error));
-
-  const [userToken, setUserToken] = useState('');
+  .then((res) => res)
+  .catch(error => console.log('Error saving nickName: ', error));
+  const focus = useIsFocused()
+  const [user_id, setUser_id] = useState('');
   const gettingUserDatatoken = () => {
-    AsyncStorage.getItem('token')
+    AsyncStorage.getItem('user_id')
       .then(value => {
         if (value !== null) {
-          setUserToken(JSON.parse(value));
+          setUser_id(JSON.parse(value));
         } else {
           console.log('No login fields found');
         }
       })
       .catch(error => console.log('Error retrieving login fields: ', error));
   };
-
+  
   useEffect(() => {
     gettingUserDatatoken();
-  }, []);
+  }, [focus]);
 
-  console.log('user Token', userToken);
   const getCusData = () => {
     const config = {
       headers: {
-        Authorization: userToken,
+        user_id: user_id,
       },
     };
 
@@ -69,16 +68,7 @@ const MyAccounts = () => {
 
   useEffect(() => {
     getCusData();
-  }, [userToken]);
-
-  const date = new Date(getUserData?.created_at);
-  const created_at = date.toLocaleDateString('en-US', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-  console.log('getUserData', getUserData);
+  }, [user_id]);
 
   const [email_address, setEmail_address] = useState('');
   const [updateEmail, setUpdateEmail] = useState(false);
@@ -100,7 +90,7 @@ const MyAccounts = () => {
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: userToken,
+        user_id: user_id,
       },
     };
 
@@ -139,7 +129,7 @@ const MyAccounts = () => {
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: userToken,
+        user_id: user_id,
       },
     };
 
@@ -499,7 +489,7 @@ const MyAccounts = () => {
                 fontWeight: 'bold',
                 fontSize: 20,
               }}>
-              {created_at}
+              {getUserData?.created_at}
             </Text>
           </View>
         </View>

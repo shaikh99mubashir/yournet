@@ -12,14 +12,15 @@ import {Color} from '../../Constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BaseUrl} from '../../Constants/BaseUrl';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const TransactionHistory = ({navigation}: any) => {
-  const [userToken, setUserToken] = useState('');
+  const [user_id, setUser_id] = useState('');
   const gettingUserDatatoken = () => {
-    AsyncStorage.getItem('token')
+    AsyncStorage.getItem('user_id')
       .then(value => {
         if (value !== null) {
-          setUserToken(JSON.parse(value));
+          setUser_id(JSON.parse(value));
         } else {
           console.log('No login fields found');
         }
@@ -31,12 +32,11 @@ const TransactionHistory = ({navigation}: any) => {
     gettingUserDatatoken();
   }, []);
 
-  console.log('user Token', userToken);
   const [receipts, setReceipts] = useState([]);
   const getTransData = () => {
     const config = {
       headers: {
-        Authorization: userToken,
+        User_ID: user_id,
       },
     };
 
@@ -58,10 +58,16 @@ const TransactionHistory = ({navigation}: any) => {
 
   useEffect(() => {
     getTransData();
-  }, [userToken]);
+  }, [user_id]);
 
   return (
-    <View style={{paddingTop: 10, paddingHorizontal: 15, backgroundColor:Color.white, height:'100%'}}>
+    <View
+      style={{
+        paddingTop: 10,
+        paddingHorizontal: 15,
+        backgroundColor: Color.white,
+        height: '100%',
+      }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header backBtn navigation={navigation} noLogo />
         <Text
@@ -85,19 +91,26 @@ const TransactionHistory = ({navigation}: any) => {
             return (
               <TouchableOpacity
                 onPress={() => navigation.navigate('TransactionDetails', e)}
-                activeOpacity={0.8}
+                activeOpacity={1}
                 key={i}
                 style={[styles.mainBox, {marginTop: 10, marginBottom: 5}]}>
-                <View style={[styles.box]}>
+                <View style={[styles.box, {}]}>
                   <View style={[styles.innerBox, {alignItems: 'center'}]}>
-                    <View>
+                    {/* day or month */}
+                    <View
+                      style={{
+                        backgroundColor: '#eee',
+                        width: 60,
+                        borderTopLeftRadius: 20,
+                        borderTopRightRadius: 20,
+                      }}>
                       <Text
                         style={{
                           fontSize: 12,
-                          top:10,
+                          top: 10,
                           color: 'black',
                           alignSelf: 'center',
-                          paddingBottom:2,
+                          paddingBottom: 2,
                         }}>
                         {month}
                         {/* jan */}
@@ -105,7 +118,7 @@ const TransactionHistory = ({navigation}: any) => {
                       <Text
                         style={{
                           fontSize: 23,
-                          top:5,
+                          top: 5,
                           paddingBottom: 3,
                           color: 'black',
                           fontWeight: '700',
@@ -114,6 +127,7 @@ const TransactionHistory = ({navigation}: any) => {
                         {day}
                       </Text>
                     </View>
+                    {/* year */}
                     <Text
                       style={{
                         fontSize: 12,
@@ -123,13 +137,14 @@ const TransactionHistory = ({navigation}: any) => {
                         borderBottomLeftRadius: 20,
                         borderBottomRightRadius: 20,
                         fontWeight: '700',
-                        marginTop:2,
+                        marginTop: 0,
                         textAlign: 'center',
                         // backgroundColor: '#e8e9eb',
                         backgroundColor: '#e2e5de',
                       }}>
                       {year}
                     </Text>
+
                     <View
                       style={{
                         backgroundColor: '#22b14c',
@@ -141,26 +156,35 @@ const TransactionHistory = ({navigation}: any) => {
                         paddingVertical: 2,
                         borderRadius: 50,
                       }}>
-                      <Text style={{textAlign: 'center', color:'white'}}>Paid</Text>
+                      <Text style={{textAlign: 'center', color: 'white'}}>
+                        Paid
+                      </Text>
                     </View>
                   </View>
                 </View>
-                <View style={styles.boxOne}>
-                <View>
-                    <Text style={{fontSize: 15, color: 'gray'}}>
-                      Transaction ID
-                    </Text>
-                    <Text
-                      style={{fontSize: 14,  color: 'black'}}>
-                      100000
-                    </Text>
+                <View style={styles.box1}>
+                  <View style={{gap:10}}>
+                    <View>
+                      <Text style={{fontSize: 15, color: 'gray'}}>
+                        Transaction ID
+                      </Text>
+                      <Text style={{fontSize: 14, color: 'black'}}>100000</Text>
+                    </View>
+                    <View>
+                      <Text style={{fontSize: 16, color: 'gray'}}>Amount</Text>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: '700',
+                          color: 'black',
+                        }}>
+                        Rs.{e.package_price}/-
+                      </Text>
+                    </View>
                   </View>
                   <View>
-                    <Text style={{fontSize: 16, color: 'gray'}}>Amount</Text>
-                    <Text
-                      style={{fontSize: 20, fontWeight: '700', color: 'black'}}>
-                     Rs.{e.package_price}/-
-                    </Text>
+                    {/* <Text style={{color:Color.mainColor, fontSize:14, fontWeight:'700'}}>View Details</Text> */}
+                    <AntDesign name="right" size={15} color={Color.textColor} />
                   </View>
                 </View>
               </TouchableOpacity>
@@ -179,26 +203,24 @@ const styles = StyleSheet.create({
     display: 'flex',
     width: '100%',
     flexDirection: 'row',
-    
   },
   box: {
     display: 'flex',
     backgroundColor: '#f5f5f5',
-    paddingHorizontal:20,
-    paddingVertical:10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     elevation: 5,
-    // borderColor: 'black',
-    // borderWidth: 10,
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20,
     flexDirection: 'row',
     width: '30%',
-
   },
   boxOne: {
+   gap:10,
+  },
+  box1: {
     backgroundColor: 'white',
-    // width: Dimensions.get('screen').width / 1.6,
-    width: '70%',
+    width: '69%',
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
     display: 'flex',
@@ -206,14 +228,14 @@ const styles = StyleSheet.create({
     elevation: 5,
     gap: 7,
     justifyContent: 'space-between',
-    flexDirection: 'column',
+    flexDirection: 'row',
+    alignItems:'center'
   },
   innerBox: {
     justifyContent: 'center',
     textAlign: 'center',
     width: 60,
     height: 100,
-    backgroundColor: '#eee',
     borderRadius: 20,
     display: 'flex',
     flexDirection: 'column',

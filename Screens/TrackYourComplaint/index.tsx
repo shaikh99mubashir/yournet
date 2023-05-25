@@ -201,7 +201,7 @@ console.log('complaintData====>',complaintData);
                   color: 'white',
                   paddingVertical: 5,
                   paddingHorizontal: 15,
-                  fontSize: 18,
+                  fontSize: 17,
                   borderRadius: 20,
                   marginTop: 5,
                   fontWeight: 'bold',
@@ -310,7 +310,7 @@ console.log('complaintData====>',complaintData);
                   color: 'white',
                   paddingVertical: 5,
                   paddingHorizontal: 15,
-                  fontSize: 18,
+                  fontSize: 17,
                   borderRadius: 20,
                   marginTop: 5,
                   fontWeight: 'bold',
@@ -419,7 +419,7 @@ console.log('complaintData====>',complaintData);
                 color: 'white',
                 paddingVertical: 5,
                 paddingHorizontal: 15,
-                fontSize: 18,
+                fontSize: 17,
                 borderRadius: 20,
                 marginTop: 5,
                 fontWeight: 'bold',
@@ -524,9 +524,19 @@ console.log('complaintData====>',complaintData);
       :
       <View
         style={{
-          marginHorizontal: 10,
+          marginHorizontal: 15,
         }}>
-        <Header navigation={navigation} backBtn={true} title='Complaint Status' />
+        <Header navigation={navigation} backBtn={true} noLogo />
+        <Text
+          style={{
+            textAlign: 'center',
+            fontSize: 22,
+            marginVertical: 10,
+            color: Color.mainColor,
+            fontWeight: 'bold',
+          }}>
+         Complaint Status
+        </Text>
         <View style={{marginTop:10}}></View>
         <CustomTabView
           currentTab={currentTab}

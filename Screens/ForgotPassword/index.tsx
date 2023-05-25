@@ -1,14 +1,47 @@
-import { Dimensions, StyleSheet, Text, TextInput, View,TouchableOpacity } from 'react-native'
+import { Dimensions, StyleSheet, Text, TextInput, View,TouchableOpacity,ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
 import Header from '../../Components/Header'
 import Color from '../../Constants/Color';
+import axios from 'axios';
+import { BaseUrl } from '../../Constants/BaseUrl';
 
 const ForgotPassword = ({navigation} :any) => {
     const [user, setUser] = useState(false);
-    const [forgotPassword, setForgotPassword] = useState('')
+    const [email, setForgotPassword] = useState('')
     
     const SendOtp = () => {
-    
+      let flag = Object.values(email);
+
+      let flag2 = flag.some((e, i) => e == '');
+  
+      if (flag2) {
+        ToastAndroid.show('Required fields are missing', ToastAndroid.BOTTOM);
+        return;
+      }
+  
+      const formData = new FormData();
+      formData.append('email', email);
+  
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+  
+      axios
+        .post(
+          `${BaseUrl}forgotPassword`,
+          formData,
+          config,
+        )
+        .then((res: any) => {
+          console.log('res data', res.data.message);
+          // navigation.replace('Login')
+          ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);
+        })
+        .catch(error => {
+          ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+        });
     }
   return (
     <View style={{

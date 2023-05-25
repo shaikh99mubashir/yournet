@@ -26,7 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({navigation}: any) => {
   const [passwordEye, setPasswordEye] = useState(true);
-  const [rememberMe, setRememberMe] = useState(false);
+  // const [rememberMe, setRememberMe] = useState(false);
   const [loginFields, setLoginFields] = useState<any>({
     customer_id: '',
     password: null,
@@ -36,23 +36,6 @@ const Login = ({navigation}: any) => {
   AsyncStorage.setItem('loginFields', JSON.stringify(loginFields))
     .then(() => console.log('Login fields saved'))
     .catch(error => console.log('Error saving login fields: ', error));
-  // const [isLoginFieldsAvaiable, setIsLoginFieldsAvaiable] = useState<any>([]);
-  // console.log('getUserData', isLoginFieldsAvaiable);
-  // console.log('userId',userId.customer_id);
-  // const gettingUserData = () => {
-  //   AsyncStorage.getItem('loginFields')
-  //     .then(value => {
-  //       if (value !== null) {
-  //         setIsLoginFieldsAvaiable(JSON.parse(value));
-  //       } else {
-  //         console.log('No login fields found');
-  //       }
-  //     })
-  //     .catch(error => console.log('Error retrieving login fields: ', error));
-  // };
-  // useEffect(() => {
-  //   gettingUserData();
-  // }, []);
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -85,8 +68,8 @@ const Login = ({navigation}: any) => {
         setLoading(false);
         setSuccess(false);
         // To store the loginFields
-        AsyncStorage.setItem('token', JSON.stringify(res.data.token))
-          .then(() => console.log('Token Saved'))
+        AsyncStorage.setItem('user_id', JSON.stringify(res.data.user_id))
+          .then(() => console.log('user_id Saved'))
           .catch(error => console.log('Error saving login fields: ', error));
 
         if (res.data.status == 'success') {
@@ -236,7 +219,7 @@ const Login = ({navigation}: any) => {
                 alignItems: 'center',
                 gap: 6,
               }}>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={{width: 14, height: 14, borderWidth: 1, borderRadius: 5}}
                 onPress={() => setRememberMe(!rememberMe)}>
                 {rememberMe ? (
@@ -249,13 +232,13 @@ const Login = ({navigation}: any) => {
                 ) : (
                   ''
                 )}
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <Text
                 style={{
                   color: Color.mainColor,
                   fontFamily: 'Poppins-SemiBold',
                 }}>
-                Remember
+                
               </Text>
             </View>
             <View>

@@ -13,32 +13,32 @@ import {Color} from '../../Constants';
 import axios from 'axios';
 import {BaseUrl} from '../../Constants/BaseUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {useIsFocused} from '@react-navigation/native';
 const Promotions = ({navigation}: any) => {
 
-  const [userToken, setUserToken] = useState('');
+  const [user_id, setUser_id] = useState('');
+  const focus = useIsFocused()
   const gettingUserDatatoken = () => {
-    AsyncStorage.getItem('token')
+    AsyncStorage.getItem('user_id')
       .then(value => {
         if (value !== null) {
-          setUserToken(JSON.parse(value));
+          setUser_id(JSON.parse(value));
         } else {
           console.log('No login fields found');
         }
       })
       .catch(error => console.log('Error retrieving login fields: ', error));
   };
-
+  
   useEffect(() => {
     gettingUserDatatoken();
-  }, []);
+  }, [focus]);
 
-  console.log('user Token', userToken);
   const [promotionData, setPromotionData] = useState([]);
   const getPromoData = () => {
     const config = {
       headers: {
-        Authorization: userToken,
+        user_id: user_id,
       },
     };
 
@@ -59,10 +59,10 @@ const Promotions = ({navigation}: any) => {
 
   useEffect(() => {
     getPromoData();
-  }, [userToken]);
+  }, [user_id]);
 
   return (
-    <View style={{backgroundColor: Color.white, marginBottom: 200, paddingHorizontal:10}}>
+    <View style={{backgroundColor: Color.white, marginBottom: 200, paddingHorizontal:10, height:'100%'}}>
       <Header />
       <Text
         style={{

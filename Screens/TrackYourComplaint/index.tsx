@@ -522,22 +522,12 @@ console.log('complaintData====>',complaintData);
         {loading ? 
         <Loader/>
       :
-
       <View
         style={{
           marginHorizontal: 10,
         }}>
-        <Header navigation={navigation} backBtn={true} />
-        <Text
-          style={{
-            textAlign: 'center',
-            fontSize: 22,
-            marginVertical: 20,
-            color: Color.textColor,
-            fontWeight: 'bold',
-          }}>
-          Track Complaint
-        </Text>
+        <Header navigation={navigation} backBtn={true} title='Complaint Status' />
+        <View style={{marginTop:10}}></View>
         <CustomTabView
           currentTab={currentTab}
           firstRoute={firstRoute}

@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, ToastAndroid, ScrollView,TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ToastAndroid,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
@@ -6,7 +13,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BaseUrl} from '../../Constants/BaseUrl';
 
-const TransactionHistory = ({navigation}:any) => {
+const TransactionHistory = ({navigation}: any) => {
   const [userToken, setUserToken] = useState('');
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('token')
@@ -54,15 +61,15 @@ const TransactionHistory = ({navigation}:any) => {
   }, [userToken]);
 
   return (
-    <View style={{paddingTop: 10, paddingHorizontal: 10}}>
+    <View style={{paddingTop: 10, paddingHorizontal: 15, backgroundColor:Color.white, height:'100%'}}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Header backBtn navigation={navigation} />
+        <Header backBtn navigation={navigation} noLogo />
         <Text
           style={{
             textAlign: 'center',
             fontSize: 22,
             marginVertical: 10,
-            color: Color.textColor,
+            color: Color.mainColor,
             fontWeight: 'bold',
           }}>
           Transaction History
@@ -73,28 +80,33 @@ const TransactionHistory = ({navigation}:any) => {
             const year = date.getFullYear();
             const month = date.getMonth(); // Months are zero-based, so 5 represents June
             const day = date.getDate();
+            console.log('e==>', e);
+
             return (
               <TouchableOpacity
-              onPress={()=> navigation.navigate('TransactionDetails',e)}
-              activeOpacity={0.8}
+                onPress={() => navigation.navigate('TransactionDetails', e)}
+                activeOpacity={0.8}
                 key={i}
                 style={[styles.mainBox, {marginTop: 10, marginBottom: 5}]}>
-                <View style={styles.box}>
-                  <View style={styles.innerBox}>
+                <View style={[styles.box]}>
+                  <View style={[styles.innerBox, {alignItems: 'center'}]}>
                     <View>
                       <Text
                         style={{
-                          fontSize: 15,
-                          padding: 2,
+                          fontSize: 12,
+                          top:10,
                           color: 'black',
                           alignSelf: 'center',
+                          paddingBottom:2,
                         }}>
                         {month}
+                        {/* jan */}
                       </Text>
                       <Text
                         style={{
-                          fontSize: 20,
-                          padding: 2,
+                          fontSize: 23,
+                          top:5,
+                          paddingBottom: 3,
                           color: 'black',
                           fontWeight: '700',
                           alignSelf: 'center',
@@ -104,36 +116,50 @@ const TransactionHistory = ({navigation}:any) => {
                     </View>
                     <Text
                       style={{
-                        fontSize: 18,
-                        padding: 5,
+                        fontSize: 12,
+                        padding: 3,
                         color: 'black',
-                        width: 100,
+                        width: 60,
                         borderBottomLeftRadius: 20,
                         borderBottomRightRadius: 20,
-                        fontWeight: '600',
+                        fontWeight: '700',
+                        marginTop:2,
                         textAlign: 'center',
-
-                        backgroundColor: '#767676',
+                        // backgroundColor: '#e8e9eb',
+                        backgroundColor: '#e2e5de',
                       }}>
                       {year}
                     </Text>
+                    <View
+                      style={{
+                        backgroundColor: '#22b14c',
+                        // backgroundColor: '#e60000',
+                        width: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginTop: 6,
+                        paddingVertical: 2,
+                        borderRadius: 50,
+                      }}>
+                      <Text style={{textAlign: 'center', color:'white'}}>Paid</Text>
+                    </View>
                   </View>
                 </View>
                 <View style={styles.boxOne}>
-                  <View>
-                    <Text style={{fontSize: 14, color: 'gray'}}>Amount</Text>
-                    <Text
-                      style={{fontSize: 20, fontWeight: '700', color: 'black'}}>
-                      {e.package_price}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text style={{fontSize: 14, color: 'gray'}}>
+                <View>
+                    <Text style={{fontSize: 15, color: 'gray'}}>
                       Transaction ID
                     </Text>
                     <Text
-                      style={{fontSize: 18, fontWeight: '700', color: 'black'}}>
-                      79297
+                      style={{fontSize: 14,  color: 'black'}}>
+                      100000
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={{fontSize: 16, color: 'gray'}}>Amount</Text>
+                    <Text
+                      style={{fontSize: 20, fontWeight: '700', color: 'black'}}>
+                     Rs.{e.package_price}/-
                     </Text>
                   </View>
                 </View>
@@ -153,28 +179,31 @@ const styles = StyleSheet.create({
     display: 'flex',
     width: '100%',
     flexDirection: 'row',
+    
   },
   box: {
     display: 'flex',
-    backgroundColor: '#c7c7c7',
-    padding: 10,
-    elevation: 0,
+    backgroundColor: '#f5f5f5',
+    paddingHorizontal:20,
+    paddingVertical:10,
+    elevation: 5,
     // borderColor: 'black',
     // borderWidth: 10,
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20,
     flexDirection: 'row',
-    width: '36%',
+    width: '30%',
+
   },
   boxOne: {
     backgroundColor: 'white',
     // width: Dimensions.get('screen').width / 1.6,
-    width: '64%',
+    width: '70%',
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
     display: 'flex',
     padding: 10,
-    elevation: 0,
+    elevation: 5,
     gap: 7,
     justifyContent: 'space-between',
     flexDirection: 'column',
@@ -182,8 +211,9 @@ const styles = StyleSheet.create({
   innerBox: {
     justifyContent: 'center',
     textAlign: 'center',
-    width: 100,
-    backgroundColor: '#bbbbbb',
+    width: 60,
+    height: 100,
+    backgroundColor: '#eee',
     borderRadius: 20,
     display: 'flex',
     flexDirection: 'column',

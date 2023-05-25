@@ -140,11 +140,11 @@ const Login = ({navigation}: any) => {
         <ScrollView
           contentContainerStyle={{flexGrow: 1}}
           showsVerticalScrollIndicator={false}>
-          <View style={{alignItems: 'center', marginTop: 60, marginBottom: 10}}>
+          <View style={{alignItems: 'center', marginTop: 100, marginBottom: 10}}>
             <Image
-              source={require('../../Images/Logo.png')}
-              resizeMode="contain"
-              style={styles.logo}
+              source={require('../../Images/ISP.png')}
+              resizeMode="cover"
+              style={[styles.logo,{width:120, height:150}]}
             />
           </View>
           <View style={{alignItems: 'center'}}>
@@ -341,6 +341,6 @@ export default Login;
 const styles = StyleSheet.create({
   logo: {
     height: Dimensions.get('window').height / 6,
-    width: Dimensions.get('window').width / 1.4,
+    width: Dimensions.get('window').width ,
   },
 });

@@ -39,7 +39,7 @@ import {
       return (
         <View
           style={{
-            width: width / 1.06,
+            width: width / 1.12,
             backgroundColor: 'white',
             shadowColor: Color.textColor,
             shadowOffset: {
@@ -80,12 +80,13 @@ import {
       );
     };
     return (
-      <View>
+      <>
         <View
           style={{
             backgroundColor: Color.white,
             height: Dimensions.get('screen').height,
-            paddingHorizontal: 10,
+            paddingHorizontal: 15,
+            alignItems:'center',
           }}>
           <Header
             navigation={navigation}
@@ -116,7 +117,7 @@ import {
             </View>
           )}
         </View>
-      </View>
+      </>
     );
   };
   

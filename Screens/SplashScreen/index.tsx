@@ -23,8 +23,8 @@ const SplashScreen = ({navigation}:any) => {
     navigateToHomeScreen();
   }, []);
   return (
-    <View style={{backgroundColor:Color.white,height:'100%', width:'100%', alignItems:'center', justifyContent:'center'}}>
-      <Image source={require('../../Images/Logo.png')} resizeMode='contain' style={{ height: Dimensions.get('window').height/5,
+    <View style={{backgroundColor:Color.mainColor,height:'100%', width:'100%', alignItems:'center', justifyContent:'center'}}>
+      <Image source={require('../../Images/ISP.png')} resizeMode='contain' style={{ height: Dimensions.get('window').height/5,
     width: Dimensions.get('window').width/1.1,}}/>
     </View>
   )

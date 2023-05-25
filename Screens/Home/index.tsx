@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React, {useState, useRef, useEffect} from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
@@ -257,7 +258,7 @@ const Home = ({navigation}: any) => {
       style={{
         backgroundColor: Color.white,
         height: '100%',
-        paddingHorizontal: 10,
+        paddingHorizontal: 12,
       }}>
       {loading ? (
         <View style={{flex: 1, justifyContent: 'center',backgroundColor: Color.white,
@@ -293,7 +294,7 @@ const Home = ({navigation}: any) => {
                     fontFamily: 'Poppins-Regular',
                     color: Color.textColor,
                   }}>
-                  User Id: {getUserData?.customer_id}
+                  Customer ID : {getUserData?.customer_id}
                 </Text>
               </View>
             </View>
@@ -308,7 +309,7 @@ const Home = ({navigation}: any) => {
                   marginTop: 5,
                   color: Color.mainColor,
                 }}>
-                Welcome Back!
+                Hi there!
               </Text>
               {/* Account Information */}
               <View style={styles.container}>
@@ -317,9 +318,9 @@ const Home = ({navigation}: any) => {
                     <Text
                       style={[
                         styles.package,
-                        {fontSize: 30, textAlign: 'center'},
+                        {fontSize: 30, textAlign: 'center', fontWeight:'600'},
                       ]}>
-                      Account {'\n'} Status{' '}
+                      Account{'\n'}Status{' '}
                     </Text>
                     <View style={{alignItems: 'center'}}>
                       <Text
@@ -330,14 +331,14 @@ const Home = ({navigation}: any) => {
                             fontSize: 25,
                             backgroundColor:
                               getUserData?.status == 'Active'
-                                ? '#4ecc05'
+                                ? '#8cce78'
                                 : getUserData?.status == 'Inactive '
-                                ? 'red'
+                                ? '#c73d3d'
                                 : getUserData?.status == 'Registered'
-                                ? '#eee'
-                                : getUserData?.status == 'Terminate'
                                 ? 'darkgrey'
-                                : 'pink',
+                                : getUserData?.status == 'Terminate'
+                                ? 	'#999999'
+                                : '',
                             paddingHorizontal: 10,
                             paddingVertical: 3,
                           },
@@ -350,14 +351,17 @@ const Home = ({navigation}: any) => {
                     <View
                       style={{
                         flexDirection: 'row',
-                        alignItems: 'center',
+                        // alignItems: 'center',
                         gap: 10,
                         marginTop: 10,
                       }}>
-                      <Image
+                      {/* <Image
                         source={require('../../Images/redIcon.png')}
                         style={{width: 15, height: 15}}
-                      />
+                      /> */}
+                      <View style={{marginTop:6}}>
+                      <FontAwesome name='circle' size={15} color={Color.mainColor}/>
+                      </View>
                       <Text
                         style={[
                           styles.package,
@@ -372,20 +376,23 @@ const Home = ({navigation}: any) => {
                     <View
                       style={{
                         flexDirection: 'row',
-                        alignItems: 'center',
+                        // alignItems: 'center',
                         gap: 10,
                         marginVertical: 10,
                       }}>
-                      <Image
+                      {/* <Image
                         source={require('../../Images/redIcon.png')}
                         style={{width: 15, height: 15}}
-                      />
+                      /> */}
+                      <View style={{marginTop:6}}>
+                      <FontAwesome name='circle' size={15} color={Color.mainColor}/>
+                      </View>
                       <Text
                         style={[
                           styles.package,
                           {fontWeight: 'bold', fontSize: 18},
                         ]}>
-                        Last Expiry Date: {'\n'}
+                        Expiry Date: {'\n'}
                         <Text style={{color: Color.textColor}}>
                           {getUserData?.expiry_date}
                         </Text>
@@ -406,10 +413,12 @@ const Home = ({navigation}: any) => {
                 </View> */}
                     <ImageBackground
                       source={require('../../Images/packagebg.png')}
+                      resizeMode='contain'
                       style={{
                         flex: 1,
                         alignItems: 'center',
                         justifyContent: 'center',
+                        height:125
                       }}>
                       <Text
                         style={{
@@ -472,7 +481,7 @@ const Home = ({navigation}: any) => {
                     console.log('item?.portal_link===>',item?.portal_link);
                     return (
                       <TouchableOpacity
-                        onPress={() => handelWebView(item?.portal_link)}
+                        onPress={() => handelWebView('http://maxfun.com.pk')}
                         // onPress={() => }
                         activeOpacity={0.8}
                         style={{paddingRight: 15}}>

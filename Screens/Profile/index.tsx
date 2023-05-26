@@ -70,13 +70,13 @@ const Profile = ({navigation}:any) => {
     <View       style={{paddingHorizontal: 15}}>
     <ScrollView
       showsVerticalScrollIndicator={false}>
-      <Header navigation={navigation}  backBtn />
+      <Header navigation={navigation}  backBtn noLogo/>
       <Text
         style={{
           fontSize: 26,
           fontWeight: 'bold',
           marginTop: 15,
-          color: Color.textColor,
+          color: Color.mainColor,
           textAlign: 'center',
         }}>
         Profile

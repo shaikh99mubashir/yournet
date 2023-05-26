@@ -1,8 +1,9 @@
-import {Linking, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Linking, StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import {Color} from '../../Constants';
 import Header from '../../Components/Header';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Contact = ({navigation}:any) => {
   const mobileNumber = [
@@ -42,6 +43,9 @@ const Contact = ({navigation}:any) => {
           }}>
           Contact Us
         </Text>
+        <View style={{alignItems:'center'}}>
+        <Image source={require('../../Images/cus.jpg')} style={{width:150, height:150}} resizeMode='contain'/>
+        </View>
       <Text
         style={{
           textAlign: 'center',
@@ -59,7 +63,7 @@ const Contact = ({navigation}:any) => {
           justifyContent: 'center',
           gap: 10,
         }}>
-        <MaterialIcons name="support-agent" size={30} color="black" />
+        <MaterialIcons name="local-phone" size={30} color={Color.mainColor} />
         <Text
           style={{
             textAlign: 'center',
@@ -68,7 +72,7 @@ const Contact = ({navigation}:any) => {
             color: Color.textColor,
             fontWeight: 'bold',
           }}>
-          All Network Customer
+          For Calls
         </Text>
       </View>
       {mobileNumber &&
@@ -98,7 +102,7 @@ const Contact = ({navigation}:any) => {
           gap: 10,
           marginTop: 20,
         }}>
-        <MaterialIcons name="support-agent" size={30} color="black" />
+        <MaterialCommunityIcons name="whatsapp" size={30} color={Color.mainColor} />
         <Text
           style={{
             textAlign: 'center',
@@ -108,7 +112,7 @@ const Contact = ({navigation}:any) => {
             fontWeight: 'bold',
             borderColor:Color.mainColor
           }}>
-          Information Through Whatsapp
+          For WhatsApp
         </Text>
       </View>
 

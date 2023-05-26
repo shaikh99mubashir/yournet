@@ -101,7 +101,7 @@ const Header = (Props: any) => {
               justifyContent: 'flex-end',
             }}>
             <TouchableOpacity style={{}} onPress={() => navigation.goBack()}>
-              <Icon name="ios-arrow-back-sharp" size={27} color="black" />
+              <Icon name="ios-arrow-back-circle-outline" size={30} color={Color.mainColor} />
             </TouchableOpacity>
           </View>
         ) : (

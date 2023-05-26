@@ -121,10 +121,10 @@ function CustomDrawerContent(props: any) {
                 paddingHorizontal: 10,
                 borderRadius: 10,
               }}>
-              <Text style={[styles.closeButton,{fontWeight:'bold'}]}>Log Out</Text>
+              <Text style={[styles.closeButton,{fontWeight:'400'}]}>Log Out</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => props.navigation.closeDrawer()}>
-              <Icon name="ios-arrow-back-sharp" size={27} color="black" />
+              <Icon name="ios-arrow-back-circle-outline" size={27} color={Color.mainColor} />
             </TouchableOpacity>
           </View>
           {/* Name Profile And setting */}
@@ -136,8 +136,8 @@ function CustomDrawerContent(props: any) {
             angle={45}
             style={{
               marginHorizontal: 10,
-              padding: 10,
-              borderRadius: 10,
+              // padding: 10,
+              borderRadius: 20,
               alignItems: 'center',
               marginVertical: 20,
             }}>
@@ -156,24 +156,23 @@ function CustomDrawerContent(props: any) {
             <Text style={{fontSize: 20, color: Color.textColor}}>
             {nickName ? nickName : getUserData?.first_name}
             </Text>
-            <Text style={{fontSize: 20, color: Color.textColor}}>{getUserData?.customer_id}</Text>
-            <View style={{flexDirection: 'row', gap: 10, marginVertical: 20}}>
+            {/* <Text style={{fontSize: 20, color: Color.textColor}}>{getUserData?.customer_id}</Text> */}
+            <View style={{flexDirection: 'row', gap: 20, marginVertical: 10}}>
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => navigateToScreen('Profile')}
                 style={{
                   backgroundColor: Color.white,
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
                   borderRadius: 10,
                   flexDirection:'row',
                   gap:5,
                   alignItems:'center',
                   justifyContent:'center',
-                  width:'35%'
+                  width:'30%',
+                  paddingVertical:5
                 }}>
-                  <Image source={require('../../Images/myacount.png')} style={{width:18, height:18}}/>
-                <Text style={{fontSize: 15, color: Color.textColor}}>
+                  <Image source={require('../../Images/myacount.png')} style={{width:14, height:14}} resizeMode='contain'/>
+                <Text style={{fontSize: 14, color: Color.textColor,fontWeight:'500'}}>
                   Profile
                 </Text>
               </TouchableOpacity>
@@ -182,18 +181,17 @@ function CustomDrawerContent(props: any) {
                 onPress={() => navigateToScreen('Settings')}
                 style={{
                   backgroundColor: Color.white,
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
                   borderRadius: 10,
                   flexDirection:'row',
                   gap:5,
                   alignItems:'center',
                   justifyContent:'center',
-                  width:'35%'
+                  width:'30%',
+                  paddingVertical:5
                 }}>
-                <Image source={require('../../Images/settings.png')} style={{width:18, height:18}}/>
-                <Text style={{fontSize: 15, color: Color.textColor}}>
-                  Setting
+                <Image source={require('../../Images/settings.png')} style={{width:14, height:14}} resizeMode='contain'/>
+                <Text style={{fontSize: 14, color: Color.textColor, fontWeight:'500'}}>
+                  Settings
                 </Text>
               </TouchableOpacity>
             </View>
@@ -260,8 +258,8 @@ function CustomDrawerContent(props: any) {
               }}>
               <View style={{}}>
                 <TouchableOpacity
-                  // onPress={() => navigateToScreen('FAQs')}
-                  onPress={ShowMessage}
+                  onPress={() => navigateToScreen('FAQs')}
+                  // onPress={ShowMessage}
                   style={{
                     backgroundColor: Color.white,
                     padding: 10,
@@ -348,8 +346,9 @@ function CustomDrawerContent(props: any) {
                     width: 140,
                     height: 120,
                   }}>
-                  <MaterialIcons name="next-plan" color="black" size={35} />
-                  <Text style={{color:Color.textColor}}> Packages {'\n'} Plans</Text>
+                  {/* <MaterialIcons name="next-plan" color="black" size={35} /> */}
+                  <Image source={require('../../Images/packagesandplan.png')} style={{width:40, height:40}}/>
+                  <Text style={{color:Color.textColor}}> Packages {'\n'} & Plans</Text>
                 </TouchableOpacity>
               </View>
             </View>

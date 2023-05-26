@@ -11,13 +11,13 @@ const Language = ({navigation}: any) => {
         height: '100%',
         paddingHorizontal: 15,
       }}>
-      <Header navigation={navigation} backBtn />
+      <Header navigation={navigation} backBtn noLogo />
       <Text
         style={{
           textAlign: 'center',
           fontSize: 22,
           marginVertical: 10,
-          color: Color.textColor,
+          color: Color.mainColor,
           fontWeight: 'bold',
         }}>
         Language

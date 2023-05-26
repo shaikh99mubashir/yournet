@@ -20,34 +20,33 @@ function CustomDrawerContent(props: any) {
     props.navigation.navigate(screenName);
   };
 
-  const [userId, setUserId] = useState<any>('');
-  const gettingUserData = () => {
-    AsyncStorage.getItem('loginFields')
+  const [user_id, setUser_id] = useState('');
+  const gettingUserDatatoken = () => {
+    AsyncStorage.getItem('user_id')
       .then(value => {
         if (value !== null) {
-          setUserId(JSON.parse(value));
+          setUser_id(JSON.parse(value));
         } else {
           console.log('No login fields found');
         }
       })
       .catch(error => console.log('Error retrieving login fields: ', error));
   };
+
   useEffect(() => {
-    gettingUserData();
+    gettingUserDatatoken();
   }, []);
  
   // get User DATA
   const [getUserData, setUserData] = useState<any>([]);
   const getData = () => {
-    const formData = new FormData();
-    formData.append('customer_id', userId?.customer_id);
     const config = {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        User_ID: user_id,
       },
     };
     axios
-      .post(`${BaseUrl}getdata`, formData, config)
+      .post(`${BaseUrl}getAllData`, null, config)
       .then((res: any) => {
         setUserData(res.data.customer);
       })
@@ -58,7 +57,7 @@ function CustomDrawerContent(props: any) {
 
   useEffect(() => {
     getData();
-  }, [userId?.customer_id]);
+  }, [user_id]);
 
 
   console.log('getUserData',getUserData);

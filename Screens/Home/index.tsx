@@ -74,7 +74,7 @@ const Home = ({navigation}: any) => {
   const [webPortalData, WebPortalData] = useState([]);
   const [loading, setLoading] = useState(false);
   const getData = () => {
-    setLoading(!loading);
+    setLoading(true);
     const config = {
       headers: {
         User_ID: user_id,
@@ -92,12 +92,12 @@ const Home = ({navigation}: any) => {
         WebPortalData(res.data.portals);
         setUserPackage(res.data.package);
         setPromotionData(res.data.promotions);
-        setLoading(!loading);
+        setLoading(false);
       })
       .catch(error => {
         // console.log('error==>', error);
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-        setLoading(!loading);
+        setLoading(false);
       });
     };
     

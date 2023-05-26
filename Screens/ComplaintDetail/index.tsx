@@ -1,18 +1,18 @@
-import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View ,ScrollView, Image} from 'react-native'
+import React from 'react'
+import { Color } from '../../Constants';
 import Header from '../../Components/Header';
-import {Color} from '../../Constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import LinearGradient from 'react-native-linear-gradient';
+import Feather from 'react-native-vector-icons/Feather';
 
-const TransactionDetails = ({navigation, route}: any) => {
-  const data: any = route.params;
-  console.log('data===>', data);
-
-  return (
-    <ScrollView
+const ComplaintDetail = ({route, navigation}:any) => {
+    const data = route.params
+    console.log('daat========>',data);
+    
+    return (
+        <ScrollView
       style={{paddingTop: 0, paddingHorizontal: 0}}
       showsVerticalScrollIndicator={false}>
       <View
@@ -34,16 +34,16 @@ const TransactionDetails = ({navigation, route}: any) => {
             color: Color.white,
             fontWeight: 'bold',
           }}>
-          Transaction Details
+          Complaint Details
         </Text>
         <View style={{alignItems: 'center'}}>
-          <MaterialCommunityIcons
-            name="check-decagram"
+          <MaterialIcons
+            name="pending-actions"
             size={55}
             color={'white'}
           />
-          {/* <Entypo name='circle-with-cross' size={55} color={'white'}/> */}
-          <Text style={{color: 'white', marginTop: 10}}>51116156165</Text>
+          {/* <Feather name='check-circle' size={55} color={'white'}/> */}
+          <Text style={{color: 'white', marginTop: 10}}>Ticket No: {data.ID} </Text>
           <View
             style={{
               flexDirection: 'row',
@@ -52,15 +52,8 @@ const TransactionDetails = ({navigation, route}: any) => {
               marginTop: 20,
             }}>
             <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold'}}>
-              Paid
+              {data.Status}
             </Text>
-            <Text style={{color: 'white', fontWeight: '700'}}>by</Text>
-
-            <Image
-              source={require('../../Images/payment-method.png')}
-              style={{width: 40, height: 35}}
-              resizeMode="contain"
-            />
           </View>
         </View>
       </View>
@@ -75,7 +68,6 @@ const TransactionDetails = ({navigation, route}: any) => {
           paddingHorizontal: 15,
           paddingVertical: 15,
         }}>
-          <Text style={{color:'black', alignSelf:'center', fontSize:24, paddingVertical:10, fontWeight:'700'}}>Hi Speed Internet</Text>
           {/* Customer ID */}
         <View
           style={{
@@ -85,7 +77,7 @@ const TransactionDetails = ({navigation, route}: any) => {
             justifyContent: 'space-between',
             borderBottomWidth: 1,
             borderColor: '#eee',
-            paddingVertical: 10,
+            paddingBottom: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
             <FontAwesome name="circle" size={10} color={Color.mainColor} />
@@ -94,7 +86,7 @@ const TransactionDetails = ({navigation, route}: any) => {
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-            {data.user_id}
+            {data.customer_id}
           </Text>
         </View>
 
@@ -137,10 +129,10 @@ const TransactionDetails = ({navigation, route}: any) => {
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-            {data.customer_address}
+            {data.address}
           </Text>
         </View>
-        {/* forperiod */}
+        {/* Creation Date */}
         <View
           style={{
             flexDirection: 'row',
@@ -154,14 +146,14 @@ const TransactionDetails = ({navigation, route}: any) => {
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
             <FontAwesome name="circle" size={10} color={Color.mainColor} />
             <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-              For Period :
+              Creation Date
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-            12
+            12 May 2022 | 20:56
           </Text>
         </View>
-        {/* Balance */}
+        {/* Created By */}
         <View
           style={{
             flexDirection: 'row',
@@ -175,11 +167,11 @@ const TransactionDetails = ({navigation, route}: any) => {
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
             <FontAwesome name="circle" size={10} color={Color.mainColor} />
             <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-              Balance :
+              Created By :
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-            {data.oldamount}
+            {data.created_by_name} me
           </Text>
         </View>
         <View style={{flexDirection:"row", marginTop:6}}>
@@ -294,35 +286,38 @@ const TransactionDetails = ({navigation, route}: any) => {
         
         
           </View>
-        {/* Total Amount */}
+        {/* Resolved By */}
         <View
           style={{
-            flexDirection: 'row',
+            // flexDirection: 'row',
             alignItems: 'center',
             gap: 10,
-            justifyContent: 'space-between',
-            // borderBottomWidth: 1,
-            // borderColor: '#eee',
+            justifyContent:'center',
             paddingVertical: 10,
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            {/* <FontAwesome name="circle" size={10} color={Color.mainColor} /> */}
-            <Text style={{color: Color.mainColor, fontSize: 22, fontWeight: '600'}}>
-              Total Amount :
-            </Text>
-          </View>
           <Text style={{color: Color.mainColor, fontSize: 22, fontWeight: '600'}}>
-            Rs.{data.total_amount}/-
+            {data.complain_name}
+          </Text>
+          <Text style={{color: 'black', fontSize: 16, }}>
+            {data.description}
+          </Text>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600', }}>
+            {/* {data.resolvedby_name} */}
+            Resolved By : Sufiyan
+          </Text>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600',marginTop:-10 }}>
+            {/* {data.resolvedby_name} */}
+             20 may 2023 | 25:65
           </Text>
         </View>
       </View>
-        <View style={{alignItems:'center', marginVertical:10}}>
+        <View style={{alignItems:'center', marginVertical:40}}>
           <Image source={require('../../Images/ISP.png')} style={{width:130, height:130}} />
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
-export default TransactionDetails;
+export default ComplaintDetail
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({})

@@ -47,12 +47,14 @@ import {
                 borderRadius:10,
                 paddingVertical: 5,
                 borderColor: Color.textColor,
-                borderWidth:1,
-                backgroundColor:
-                  currentTab &&
-                  currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-                    ? Color.mainColor
-                    : 'white',
+                // borderWidth:1,
+
+                
+                // backgroundColor:
+                //   currentTab &&
+                //   currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
+                //     ? Color.mainColor
+                //     : 'white',
               }}>
               <Text
                 style={[
@@ -63,8 +65,9 @@ import {
                       currentTab.some(
                         (e: any, i: any) => e.index == 0 && e.selected,
                       )
-                        ? 'white'
+                        ? 'black'
                         : Color.textColor,
+                        borderBottomWidth:1
                   },
                 ]}>
                 {firstRouteTitle}
@@ -76,13 +79,13 @@ import {
                 width: '30%',
                 borderRadius:10,
                 paddingVertical: 5,
-                borderWidth:1,
+                // borderWidth:1,
                 borderColor: Color.textColor,
-                backgroundColor:
-                  currentTab &&
-                  currentTab.some((e: any, i: any) => e.index == 1 && e.selected)
-                    ? Color.mainColor
-                    : 'white',
+                // backgroundColor:
+                //   currentTab &&
+                //   currentTab.some((e: any, i: any) => e.index == 1 && e.selected)
+                //     ? Color.mainColor
+                //     : 'white',
               }}>
               <Text
                 style={[
@@ -93,8 +96,9 @@ import {
                       currentTab.some(
                         (e: any, i: any) => e.index == 1 && e.selected,
                       )
-                        ? 'white'
+                        ? 'black'
                         : Color.textColor,
+                        borderBottomWidth:1
                   },
                 ]}>
                 {secondRouteTitle}
@@ -106,13 +110,13 @@ import {
                 width: '30%',
                 borderRadius:10,
                 paddingVertical: 5,
-                borderWidth:1,
+                // borderWidth:1,
                 borderColor: Color.textColor,
-                backgroundColor:
-                  currentTab &&
-                  currentTab.some((e: any, i: any) => e.index == 2 && e.selected)
-                    ? Color.mainColor
-                    : 'white',
+                // backgroundColor:
+                //   currentTab &&
+                //   currentTab.some((e: any, i: any) => e.index == 2 && e.selected)
+                //     ? Color.mainColor
+                //     : 'white',
               }}>
               <Text
                 style={[
@@ -123,8 +127,9 @@ import {
                       currentTab.some(
                         (e: any, i: any) => e.index == 2 && e.selected,
                       )
-                        ? 'white'
+                        ? 'black'
                         : Color.textColor,
+                        borderBottomWidth:1
                   },
                 ]}>
                 {thirdRouteTitle}

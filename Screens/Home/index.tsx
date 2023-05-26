@@ -479,7 +479,7 @@ const Home = ({navigation}: any) => {
                     // console.log('item?.portal_link===>',item?.portal_link);
                     return (
                       <TouchableOpacity
-                        onPress={() => handelWebView('https://www.youtube.com/')}
+                        onPress={() => handelWebView('http://maxfun.com.pk/')}
                         // onPress={() => }
                         activeOpacity={0.8}
                         style={{paddingRight: 15}}>

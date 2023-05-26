@@ -19,6 +19,7 @@ import Language from '../../Screens/Language';
 import CheckWebView from '../../Screens/CheckWebView';
 import Contact from '../../Screens/Contact';
 import TrackYourComplaint from '../../Screens/TrackYourComplaint';
+import ComplaintDetail from '../../Screens/ComplaintDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,7 @@ const MyStack = () => {
         <Stack.Screen name="CheckWebView" component={CheckWebView} />
         <Stack.Screen name="Contact" component={Contact} />
         <Stack.Screen name="TrackYourComplaint" component={TrackYourComplaint} />
+        <Stack.Screen name="ComplaintDetail" component={ComplaintDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

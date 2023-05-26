@@ -191,6 +191,9 @@ const Complaint = ({navigation}: any) => {
           }}>
           Register Complaint
         </Text>
+        <View style={{alignItems:'center'}}>
+        <Image source={require('../../Images/complaint.jpg')} style={{width:190, height:190}}/>
+        </View>
         <View>
           <View style={{borderRadius: 12, overflow: 'hidden',marginHorizontal: 0, marginVertical: 5}}>
           <Text

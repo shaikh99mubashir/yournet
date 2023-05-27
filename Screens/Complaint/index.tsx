@@ -172,11 +172,10 @@ const Complaint = ({navigation}: any) => {
   }
 
   return (
-    <ScrollView nestedScrollEnabled={true}>
+    <ScrollView style={{height:'100%',}} nestedScrollEnabled={true}>
       <View
         style={{
           backgroundColor: Color.white,
-          height: Dimensions.get('window').height,
           paddingHorizontal: 15,
           paddingVertical: 20,
         }}>

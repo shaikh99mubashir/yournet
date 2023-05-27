@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = ({navigation}:any) => {
   const navigateToHomeScreen = () => {
-    AsyncStorage.getItem('token').then((val: any) => {
+    AsyncStorage.getItem('user_id').then((val: any) => {
       let date1 = JSON.parse(val);
       if (date1) {
         setTimeout(() => {

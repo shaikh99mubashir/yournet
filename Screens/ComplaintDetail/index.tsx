@@ -13,7 +13,7 @@ const ComplaintDetail = ({route, navigation}:any) => {
     
     return (
         <ScrollView
-      style={{paddingTop: 0, paddingHorizontal: 0}}
+      style={{paddingTop: 0, paddingHorizontal: 0 ,}}
       showsVerticalScrollIndicator={false}>
       <View
         style={{
@@ -24,7 +24,7 @@ const ComplaintDetail = ({route, navigation}:any) => {
           borderBottomRightRadius: 20,
         }}>
           <View style={{paddingHorizontal:15}}>
-        <Header navigation={navigation} backBtn noLogo />
+        <Header navigation={navigation} backBtn noLogo backBtnColor={'white'} />
           </View>
         <Text
           style={{
@@ -174,7 +174,7 @@ const ComplaintDetail = ({route, navigation}:any) => {
             {data.created_by_name} me
           </Text>
         </View>
-        <View style={{flexDirection:"row", marginTop:6}}>
+        <View style={{flexDirection:"row", marginTop:6, width:'100%', overflow:'hidden'}}>
         <Entypo
             name="dot-single"
             size={15}
@@ -311,9 +311,7 @@ const ComplaintDetail = ({route, navigation}:any) => {
           </Text>
         </View>
       </View>
-        <View style={{alignItems:'center', marginVertical:40}}>
-          <Image source={require('../../Images/ISP.png')} style={{width:130, height:130}} />
-      </View>
+      <View style={{marginBottom:20}}></View>
     </ScrollView>
   )
 }

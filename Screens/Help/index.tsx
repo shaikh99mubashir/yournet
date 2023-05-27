@@ -16,6 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const Help = ({navigation}: any) => {
   return (
     <ScrollView
+    showsVerticalScrollIndicator={true}
       style={{
         backgroundColor: Color.white,
         height: '100%',
@@ -137,6 +138,7 @@ const Help = ({navigation}: any) => {
         <AntDesign name="right" size={15} color={Color.textColor} />
         </View>
       </TouchableOpacity>
+      <View style={{marginBottom:50}}></View>
     </ScrollView>
   );
 };

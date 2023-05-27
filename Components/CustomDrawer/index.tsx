@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet,ToastAndroid,Image} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet,ToastAndroid,Image,Modal} from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -15,12 +15,14 @@ import Share from 'react-native-share';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { BaseUrl } from '../../Constants/BaseUrl';
+import { useIsFocused } from '@react-navigation/native';
 function CustomDrawerContent(props: any) {
   const navigateToScreen = (screenName: any) => {
     props.navigation.navigate(screenName);
   };
-
+  const focus = useIsFocused()
   const [user_id, setUser_id] = useState('');
+  const [openWWRModal, setOpenWWRModal] = useState(false)
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('user_id')
       .then(value => {
@@ -35,7 +37,7 @@ function CustomDrawerContent(props: any) {
 
   useEffect(() => {
     gettingUserDatatoken();
-  }, []);
+  }, [focus]);
  
   // get User DATA
   const [getUserData, setUserData] = useState<any>([]);
@@ -232,8 +234,8 @@ function CustomDrawerContent(props: any) {
               </View>
               <View style={{justifyContent: 'center'}}>
                 <TouchableOpacity
-                  // onPress={() => navigateToScreen('FeeDetails')}
-                  onPress={ShowMessage}
+                  onPress={() => setOpenWWRModal(!openWWRModal)}
+                  // onPress={ShowMessage}
                   style={{
                     backgroundColor: Color.white,
                     padding: 10,
@@ -361,6 +363,29 @@ function CustomDrawerContent(props: any) {
           ><Text style={{color:'blue'}}>Terms & Condition</Text></TouchableOpacity>
           </View>
         </View>
+        <View style={{flex: 1}}>
+            <Modal
+              visible={openWWRModal}
+              animationType="fade"
+              transparent={true}
+              onRequestClose={() => setOpenWWRModal(false)}>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View style={{backgroundColor:'white', padding:15, borderRadius:10, marginHorizontal:20}}>
+                  <TouchableOpacity onPress={()=> setOpenWWRModal(false)}>
+                  <Text style={{textAlign:'right', fontSize:16, fontWeight:'700'}}>X</Text>
+                  </TouchableOpacity>
+                  <Text style={{textAlign:'center',fontSize:22, fontWeight:'700', color:Color.mainColor}}>Who We Are?</Text>
+                  <Text style={{textAlign:'justify',fontSize:16,color:Color.textColor,}}>Filler text is text that shares some characteristics of a real written text, but is random or otherwise generated. It may be used to display a sample of fonts, generate text for testing, or to spoof an e-mail spam filter.</Text>
+                  </View>
+              </View>
+            </Modal>
+            </View>
       </DrawerContentScrollView>
     </View>
   );

@@ -11,7 +11,7 @@ import {
   Linking,
   SafeAreaView,
   ImageBackground,
-  BackHandler,
+  // BackHandler,
   Alert,
   ActivityIndicator,
 } from 'react-native';
@@ -165,61 +165,6 @@ const Home = ({navigation}: any) => {
     day: 'numeric',
     year: 'numeric',
   });
-
-  // const [backButtonPressedOnceToExit, setBackButtonPressedOnceToExit] =
-  //   useState(false);
-  // useEffect(() => {
-  //   // Add event listener for the hardware back button press
-  //   BackHandler.addEventListener('hardwareBackPress', handleBackButtonPress);
-  //   // Clean up the event listener when the component is unmounted
-  //   return () => {
-  //     BackHandler.removeEventListener(
-  //       'hardwareBackPress',
-  //       handleBackButtonPress,
-  //     );
-  //   };
-  // }, []);
-  // const handleBackButtonPress = () => {
-  //   if (!backButtonPressedOnceToExit) {
-  //     setBackButtonPressedOnceToExit(true);
-
-  //     // Show a confirmation modal
-  //     Alert.alert(
-  //       'Confirmation',
-  //       'Are you sure you want to go back To your Home Screen?',
-  //       [
-  //         {text: 'No', onPress: () => setBackButtonPressedOnceToExit(false)},
-  //         {text: 'Yes', onPress: () => BackHandler.exitApp()},
-  //       ],
-  //       {cancelable: true},
-  //     );
-
-  //     // Return `true` to prevent the default back button behavior
-  //     return true;
-  //   }
-  // };
-
-    const [isRefreshing, setIsRefreshing] = useState(false);
-    const webViewRef = useRef<WebView | null>(null);
-    const useCustomBackHandler = () => {
-      const navi = useNavigation();
-    React.useEffect(() => {
-      const handleBackPress = () => {
-        // Navigate to the home screen of your mobile application
-        if(webViewRef.current){
-          webViewRef.current.goBack();
-        }
-        navigation.replace('Home');
-        return true;
-      };
-
-      const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-
-      return () => backHandler.remove();
-    }, [navi, navigation]);
-  };
-
-  useCustomBackHandler();
 
 
   const injectedScript = `
@@ -479,7 +424,7 @@ const Home = ({navigation}: any) => {
                     // console.log('item?.portal_link===>',item?.portal_link);
                     return (
                       <TouchableOpacity
-                        onPress={() => handelWebView('http://maxfun.com.pk/')}
+                        onPress={() => handelWebView(item?.portal_link)}
                         // onPress={() => }
                         activeOpacity={0.8}
                         style={{paddingRight: 15}}>
@@ -649,7 +594,7 @@ const Home = ({navigation}: any) => {
             // height: '100%',
           }}>
           <WebView
-            ref={webViewRef}
+            // ref={webViewRef}
             source={{uri: 'http://maxfun.com.pk/'}}
             allowsFullscreenVideo={true}
             startInLoadingState={true}

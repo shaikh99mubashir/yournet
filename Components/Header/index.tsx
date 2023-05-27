@@ -20,6 +20,7 @@ const Header = (Props: any) => {
     user,
     Drawer,
     backBtn,
+    backBtnColor,
     Notification,
     title,
     noSignUp,
@@ -101,7 +102,7 @@ const Header = (Props: any) => {
               justifyContent: 'flex-end',
             }}>
             <TouchableOpacity style={{}} onPress={() => navigation.goBack()}>
-              <Icon name="ios-arrow-back-circle-outline" size={30} color={Color.mainColor} />
+              <Icon name="ios-arrow-back-circle-outline" size={30} color={backBtnColor ? backBtnColor : Color.mainColor} />
             </TouchableOpacity>
           </View>
         ) : (

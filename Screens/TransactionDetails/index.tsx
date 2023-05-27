@@ -24,7 +24,7 @@ const TransactionDetails = ({navigation, route}: any) => {
           borderBottomRightRadius: 20,
         }}>
           <View style={{paddingHorizontal:15}}>
-        <Header navigation={navigation} backBtn noLogo />
+        <Header navigation={navigation} backBtn noLogo backBtnColor='white' />
           </View>
         <Text
           style={{
@@ -161,6 +161,69 @@ const TransactionDetails = ({navigation, route}: any) => {
             12
           </Text>
         </View>
+        {/* Due Date */}
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 10,
+            justifyContent: 'space-between',
+            borderBottomWidth: 1,
+            borderColor: '#eee',
+            paddingVertical: 10,
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+            <FontAwesome name="circle" size={10} color={Color.mainColor} />
+            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+              Due Date :
+            </Text>
+          </View>
+          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            12989
+          </Text>
+        </View>
+        {/* Package Name */}
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 10,
+            justifyContent: 'space-between',
+            borderBottomWidth: 1,
+            borderColor: '#eee',
+            paddingVertical: 10,
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+            <FontAwesome name="circle" size={10} color={Color.mainColor} />
+            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+              Package Name :
+            </Text>
+          </View>
+          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            {data.package_name}
+          </Text>
+        </View>
+        {/* package Price */}
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 10,
+            justifyContent: 'space-between',
+            borderBottomWidth: 1,
+            borderColor: '#eee',
+            paddingVertical: 10,
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+            <FontAwesome name="circle" size={10} color={Color.mainColor} />
+            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+              Package Price :
+            </Text>
+          </View>
+          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            {data.package_price}
+          </Text>
+        </View>
         {/* Balance */}
         <View
           style={{
@@ -182,7 +245,7 @@ const TransactionDetails = ({navigation, route}: any) => {
             {data.oldamount}
           </Text>
         </View>
-        <View style={{flexDirection:"row", marginTop:6}}>
+        <View style={{flexDirection:"row", marginTop:6, width:'100%', overflow:'hidden'}}>
         <Entypo
             name="dot-single"
             size={15}

@@ -73,6 +73,7 @@ const Home = ({navigation}: any) => {
   const [promotionData, setPromotionData] = useState([]);
   const [webPortalData, WebPortalData] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const getData = () => {
     setLoading(true);
     const config = {
@@ -93,6 +94,9 @@ const Home = ({navigation}: any) => {
         setUserPackage(res.data.package);
         setPromotionData(res.data.promotions);
         setLoading(false);
+        AsyncStorage.setItem('userData', JSON.stringify(getUserData))
+        .then(() => console.log('userData Saved'))
+        .catch(error => console.log('Error saving userData: ', error));
       })
       .catch(error => {
         // console.log('error==>', error);
@@ -421,11 +425,9 @@ const Home = ({navigation}: any) => {
                   nestedScrollEnabled
                   horizontal
                   renderItem={({item, index}: any) => {
-                    // console.log('item?.portal_link===>',item?.portal_link);
                     return (
                       <TouchableOpacity
                         onPress={() => handelWebView(item?.portal_link)}
-                        // onPress={() => }
                         activeOpacity={0.8}
                         style={{paddingRight: 15}}>
                         <Image

@@ -11,6 +11,14 @@ const TransactionDetails = ({navigation, route}: any) => {
   const data: any = route.params;
   console.log('data===>', data);
 
+  const activationDate: Date = new Date(data.activation_date);
+const expiryDate: Date = new Date(data.expiry_date);
+
+const differenceInTime: number = expiryDate.getTime() - activationDate.getTime();
+const differenceInDays: number = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+
+console.log("Difference in days:", differenceInDays);
+
   return (
     <ScrollView
       style={{paddingTop: 0, paddingHorizontal: 0}}
@@ -94,7 +102,7 @@ const TransactionDetails = ({navigation, route}: any) => {
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-            {data.user_id}
+            {data.customer_id}
           </Text>
         </View>
 
@@ -158,7 +166,7 @@ const TransactionDetails = ({navigation, route}: any) => {
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-            12
+            {differenceInDays ? differenceInDays : 'NaN'}
           </Text>
         </View>
         {/* Due Date */}

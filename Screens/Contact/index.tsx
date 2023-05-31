@@ -1,9 +1,13 @@
-import {Linking, StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
-import React from 'react';
+import {Linking, StyleSheet, Text, View, TouchableOpacity, Image,ScrollView, ToastAndroid,Platform, Alert} from 'react-native';
+import React, { useEffect, useState } from 'react';
 import {Color} from '../../Constants';
 import Header from '../../Components/Header';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
+import { BaseUrl } from '../../Constants/BaseUrl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 const Contact = ({navigation}:any) => {
   const mobileNumber = [
@@ -16,14 +20,97 @@ const Contact = ({navigation}:any) => {
       number: '03353375813',
     },
   ];
-  const handleMobileNumberPress = (mobileNumber: number) => {
-    const phoneUrl = `tel:${mobileNumber}`;
-    Linking.openURL(phoneUrl);
-  };
 
-  const MobileNumberWhatsapp = (mobileNumber: number) => {
-    const whatsappUrl = `whatsapp://send?phone=${mobileNumber}`;
-    Linking.openURL(whatsappUrl);
+  const [number, setNumber] = useState([])
+  const [userData, setUserData ] :any = useState()
+  const focus = useIsFocused()
+  const gettingUserDatatoken = () => {
+    AsyncStorage.getItem('userData')
+      .then(value => {
+        if (value !== null) {
+          setUserData(JSON.parse(value));
+        } else {
+          console.log('No login fields found');
+        }
+      })
+      .catch(error => console.log('Error retrieving login fields: ', error));
+  };
+  // console.log('userData0',userData);
+  
+  useEffect(() => {
+    gettingUserDatatoken();
+  }, [focus]);
+  console.log('number',number);
+  
+  const getData = () => {
+    const formData = new FormData();
+    formData.append('company_id', userData?.company_id);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}getContactNumbersByCompanyId`, formData, config)
+      .then((res: any) => {
+        // console.log('res data====>', res?.data?.companycontacts);
+        setNumber(res?.data?.companycontacts);
+      })
+      .catch(error => {
+        console.log('error==>', error);
+        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+      });
+    };
+    useEffect(()=>{
+      getData()
+    },[focus,userData?.company_id])
+  // const handleMobileNumberPress = (mobileNumber: number) => {
+  //   const phoneUrl = `tel:${mobileNumber}`;
+  //   Linking.openURL(phoneUrl);
+  // };
+
+  // const MobileNumberWhatsapp = (mobileNumber: number) => {
+  //   const whatsappUrl = `whatsapp://send?phone=${mobileNumber}`;
+  //   Linking.openURL(whatsappUrl);
+  // };
+
+  const handleMobileNumberPress = (inputObj: { number: string }) => {
+    console.log('number',number);
+    
+    const item :any = number.find((item:any) => item.number === inputObj.number);
+
+    if (item) {
+      if (item?.call === "yes" && item?.whatsapp === "yes") {
+        Alert.alert(
+          'Choose an option',
+          'Select the option you want to use:',
+          [
+            {
+              text: 'Phone Call',
+              onPress: () => Linking.openURL(`tel:${item.number}`),
+              style: 'default',
+            },
+            {
+              text: 'WhatsApp',
+              onPress: () => Linking.openURL(`whatsapp://send?phone=${item.number}`),
+              style: 'default',
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+        );
+      } else if (item.call === "yes") {
+        Linking.openURL(`tel:${item.number}`);
+      } else if (item.whatsapp === "yes") {
+        Linking.openURL(`whatsapp://send?phone=${item.number}`);
+      } else {
+        console.log("No available options for this item");
+      }
+    } else {
+      console.log("Item not found");
+    }
   };
   return (
     <View
@@ -32,6 +119,7 @@ const Contact = ({navigation}:any) => {
         height: '100%',
         paddingHorizontal: 10,
       }}>
+        <ScrollView>
       <Header backBtn navigation={navigation} noLogo />
       <Text
           style={{
@@ -75,8 +163,8 @@ const Contact = ({navigation}:any) => {
           For Calls
         </Text>
       </View>
-      {mobileNumber &&
-        mobileNumber.map((e: any, i: number) => (
+      {number &&
+        number.map((e: any, i: number) => (
           <TouchableOpacity
             style={{
               borderWidth: 1,
@@ -87,54 +175,15 @@ const Contact = ({navigation}:any) => {
               borderColor:Color.mainColor
             }}
             key={i}
-            onPress={() => handleMobileNumberPress(e.number)}>
+            onPress={() => handleMobileNumberPress(e)}>
             <Text style={{color: 'black', fontSize: 16, fontWeight: 'bold'}}>
               Call {e.number}
             </Text>
           </TouchableOpacity>
         ))}
 
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 10,
-          marginTop: 20,
-        }}>
-        <MaterialCommunityIcons name="whatsapp" size={30} color={Color.mainColor} />
-        <Text
-          style={{
-            textAlign: 'center',
-            fontSize: 18,
-            marginVertical: 10,
-            color: Color.textColor,
-            fontWeight: 'bold',
-            borderColor:Color.mainColor
-          }}>
-          For WhatsApp
-        </Text>
-      </View>
-
-      {mobileNumber &&
-        mobileNumber.map((e: any, i: number) => {
-          return (
-            <TouchableOpacity
-              style={{
-                borderWidth: 1,
-                alignItems: 'center',
-                padding: 10,
-                borderRadius: 20,
-                marginBottom: 10,
-              }}
-              key={i}
-              onPress={() => MobileNumberWhatsapp(e.number)}>
-              <Text style={{color: 'black', fontSize: 16, fontWeight: 'bold'}}>
-                Call {e.number}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
+  
+        </ScrollView>
     </View>
   );
 };

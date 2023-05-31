@@ -59,11 +59,7 @@ function CustomDrawerContent(props: any) {
 
   useEffect(() => {
     getData();
-  }, [user_id]);
-
-
-  console.log('getUserData',getUserData);
-  
+  }, [user_id, focus]);  
 
   const share = async () => {
 
@@ -100,7 +96,7 @@ function CustomDrawerContent(props: any) {
   };
   useEffect(() => {
     gettingUserNickName();
-  }, []);
+  }, [focus]);
   const logoutFun = () =>{
     props.navigation.replace('Login')
     AsyncStorage.removeItem('user_id')

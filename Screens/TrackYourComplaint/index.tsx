@@ -71,7 +71,8 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
     axios
       .post(`${BaseUrl}getAllComplain`, formData, config)
       .then((res: any) => {
-        setComplaintData(res?.data?.complaints);
+        setComplaintData(res?.data?.complaints);  
+
         const pendingComplaints = res.data.complaints.filter(
           (complaint: any) => complaint.Status === 'Pending',
         );
@@ -135,8 +136,45 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
     );
   };
 
+  const [resolvedDateTime, setResolvedDateTime] = useState('')
+  const [creationDateTime, setCreationDateTime] = useState('')
+console.log('resolvedDateTime',resolvedDateTime);
+
 
   const renderAllComplaint: any = ({item}: any) => {
+    const dateTimeString: string = item?.created_it;
+    const dateTime: Date = new Date(dateTimeString);
+    const CreatedDate: string = dateTime.toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+    const CreatedTime: string = dateTime.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: "numeric",
+      hour12: false,
+    });
+
+    console.log('creationDateTime',creationDateTime);
+    let resolvedDate:any;
+    let resolvedTime:any;
+      if(item?.resolved_it){
+        const resolved_it: string = item?.resolved_it;
+        const date: Date = new Date(resolved_it);
+         resolvedDate = date.toLocaleDateString('en-US', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        });
+         resolvedTime = date.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: "numeric",
+          hour12: false,
+        });
+      }
+    
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('ComplaintDetail', item)}
@@ -191,7 +229,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
                 // backgroundColor: '#e8e9eb',
                 backgroundColor: '#e2e5de',
               }}>
-              20:20:20
+              {CreatedTime}
             </Text>
 
             <View
@@ -213,7 +251,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
           </View>
         </View>
         <View style={styles.box1}>
-          <View style={{gap: 10}}>
+          <View style={{gap: 10, width:'90%'}}>
             <View>
               <Text style={{fontSize: 20, color: 'black', fontWeight: '500'}}>
                 {item.complain_name}
@@ -226,7 +264,10 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
             </View>
             <View>
               <Text style={{fontSize: 16, color: 'black', fontWeight: '500'}}>
-                26 may 2023 | 52:23
+              {CreatedDate}
+              </Text>
+              <Text style={{fontSize: 16, color: 'black', fontWeight: '500'}}>
+                {resolvedDate ? resolvedDate :''}
               </Text>
               <Text
                 style={{
@@ -234,12 +275,11 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
                   fontWeight: '500',
                   color: 'black',
                 }}>
-                {item.created_by_name}
+                {item.created_by_name ? item.created_by_name :'Me'}
               </Text>
             </View>
           </View>
           <View>
-            {/* <Text style={{color:Color.mainColor, fontSize:14, fontWeight:'700'}}>View Details</Text> */}
             <AntDesign name="right" size={15} color={Color.textColor} />
           </View>
         </View>

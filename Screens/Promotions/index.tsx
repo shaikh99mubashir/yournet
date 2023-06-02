@@ -52,7 +52,6 @@ const Promotions = ({navigation}: any) => {
         setPromotionData(res.data.promotions);
       })
       .catch(error => {
-        console.log('error==>', error);
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
       });
   };

@@ -42,7 +42,6 @@ const Home = ({navigation}: any) => {
         if (value !== null) {
           setUserId(JSON.parse(value));
         } else {
-          // console.log('No login fields found');
         }
       })
       .catch(error => console.log('Error retrieving login fields: ', error));
@@ -88,7 +87,6 @@ const Home = ({navigation}: any) => {
         config, // pass the config object as the third parameter
       )
       .then((res: any) => {
-        console.log('res data', res.data);
         setUserData(res.data.customer);
         WebPortalData(res.data.portals);
         setUserPackage(res.data.package);
@@ -99,7 +97,6 @@ const Home = ({navigation}: any) => {
         .catch(error => console.log('Error saving userData: ', error));
       })
       .catch(error => {
-        // console.log('error==>', error);
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
         setLoading(false);
       });
@@ -113,7 +110,6 @@ const Home = ({navigation}: any) => {
   const handelWebView = (link: string) => {
     if (link) {
       navigation.navigate('CheckWebView', { selectedLink: link });
-      // console.log(link);
     }
     else{
       ToastAndroid.show('contact to admin',ToastAndroid.SHORT)
@@ -152,7 +148,6 @@ const Home = ({navigation}: any) => {
   const gettingUserNickName = async () => {
     let value = await AsyncStorage.getItem('nickName');
     if (value !== null) {
-      // console.log(value, 'value');
       setNickName(JSON.parse(value));
     }
   };
@@ -160,7 +155,6 @@ const Home = ({navigation}: any) => {
     gettingUserNickName();
   }, []);
 
-  // console.log(getUserData?.activation_date, 'getUserData?.activation_date');
 
   const date = new Date(getUserData?.activation_date);
   const RenewalDate = date.toLocaleDateString('en-US', {
@@ -208,7 +202,7 @@ const Home = ({navigation}: any) => {
         paddingHorizontal: 12,
       }}>
       {loading ? (
-        <View style={{flex: 1, justifyContent: 'center',backgroundColor: Color.white,
+        <View style={{flex: 1, justifyContent: 'center',backgroundColor:Color.white,
         opacity: 0.9,}}>
         <ActivityIndicator color="black" size={'large'} />
       </View>
@@ -298,14 +292,9 @@ const Home = ({navigation}: any) => {
                     <View
                       style={{
                         flexDirection: 'row',
-                        // alignItems: 'center',
                         gap: 10,
                         marginTop: 10,
                       }}>
-                      {/* <Image
-                        source={require('../../Images/redIcon.png')}
-                        style={{width: 15, height: 15}}
-                      /> */}
                       <View style={{marginTop:6}}>
                       <FontAwesome name='circle' size={15} color={Color.mainColor}/>
                       </View>
@@ -327,10 +316,6 @@ const Home = ({navigation}: any) => {
                         gap: 10,
                         marginVertical: 10,
                       }}>
-                      {/* <Image
-                        source={require('../../Images/redIcon.png')}
-                        style={{width: 15, height: 15}}
-                      /> */}
                       <View style={{marginTop:6}}>
                       <FontAwesome name='circle' size={15} color={Color.mainColor}/>
                       </View>
@@ -347,17 +332,6 @@ const Home = ({navigation}: any) => {
                     </View>
                   </View>
                   <View style={{}}>
-                    {/* <View
-                  style={{
-                    backgroundColor: Color.mainColor,
-                    paddingHorizontal: 10,
-                    paddingVertical: 10,
-                    borderRadius: 10,
-                    alignItems: 'center',
-                    // height: 150,
-                  }}>
-                  
-                </View> */}
                     <ImageBackground
                       source={require('../../Images/packagebg.png')}
                       resizeMode='contain'
@@ -528,11 +502,6 @@ const Home = ({navigation}: any) => {
                 borderRadius: 10,
                 padding: 10,
               }}>
-              {/* <Image
-            source={require('../../Images/headphone.png')}
-            style={{width: 80, height: 80}}
-            resizeMode="contain"
-          /> */}
               <AntDesign
                 name="customerservice"
                 color={Color.textColor}

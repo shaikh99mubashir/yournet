@@ -9,15 +9,15 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const TransactionDetails = ({navigation, route}: any) => {
   const data: any = route.params;
-  console.log('data===>', data);
 
   const activationDate: Date = new Date(data.activation_date);
-const expiryDate: Date = new Date(data.expiry_date);
+  const expiryDate: Date = new Date(data.expiry_date);
 
-const differenceInTime: number = expiryDate.getTime() - activationDate.getTime();
-const differenceInDays: number = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-
-console.log("Difference in days:", differenceInDays);
+  const differenceInTime: number =
+    expiryDate.getTime() - activationDate.getTime();
+  const differenceInDays: number = Math.ceil(
+    differenceInTime / (1000 * 3600 * 24),
+  );
 
   return (
     <ScrollView
@@ -26,14 +26,13 @@ console.log("Difference in days:", differenceInDays);
       <View
         style={{
           backgroundColor: Color.mainColor,
-          // height: '60%',
           paddingBottom: 60,
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
         }}>
-          <View style={{paddingHorizontal:15}}>
-        <Header navigation={navigation} backBtn noLogo backBtnColor='white' />
-          </View>
+        <View style={{paddingHorizontal: 15}}>
+          <Header navigation={navigation} backBtn noLogo backBtnColor="white" />
+        </View>
         <Text
           style={{
             textAlign: 'center',
@@ -83,8 +82,17 @@ console.log("Difference in days:", differenceInDays);
           paddingHorizontal: 15,
           paddingVertical: 15,
         }}>
-          <Text style={{color:'black', alignSelf:'center', fontSize:24, paddingVertical:10, fontWeight:'700'}}>Hi Speed Internet</Text>
-          {/* Customer ID */}
+        <Text
+          style={{
+            color: 'black',
+            alignSelf: 'center',
+            fontSize: 24,
+            paddingVertical: 10,
+            fontWeight: '700',
+          }}>
+          Hi Speed Internet
+        </Text>
+        {/* Customer ID */}
         <View
           style={{
             flexDirection: 'row',
@@ -120,7 +128,7 @@ console.log("Difference in days:", differenceInDays);
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
             <FontAwesome name="circle" size={10} color={Color.mainColor} />
             <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-            Customer Name :
+              Customer Name :
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
@@ -253,118 +261,36 @@ console.log("Difference in days:", differenceInDays);
             {data.oldamount}
           </Text>
         </View>
-        <View style={{flexDirection:"row", marginTop:6, width:'100%', overflow:'hidden'}}>
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        <Entypo
-            name="dot-single"
-            size={15}
-            color={'grey'}
-          />
-        
-        
-        
-        
-          </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginTop: 6,
+            width: '100%',
+            overflow: 'hidden',
+          }}>
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={15} color={'grey'} />
+        </View>
         {/* Total Amount */}
         <View
           style={{
@@ -378,17 +304,22 @@ console.log("Difference in days:", differenceInDays);
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
             {/* <FontAwesome name="circle" size={10} color={Color.mainColor} /> */}
-            <Text style={{color: Color.mainColor, fontSize: 22, fontWeight: '600'}}>
+            <Text
+              style={{color: Color.mainColor, fontSize: 22, fontWeight: '600'}}>
               Total Amount :
             </Text>
           </View>
-          <Text style={{color: Color.mainColor, fontSize: 22, fontWeight: '600'}}>
+          <Text
+            style={{color: Color.mainColor, fontSize: 22, fontWeight: '600'}}>
             Rs.{data.total_amount}/-
           </Text>
         </View>
       </View>
-        <View style={{alignItems:'center', marginVertical:10}}>
-          <Image source={require('../../Images/ISP.png')} style={{width:130, height:130}} />
+      <View style={{alignItems: 'center', marginVertical: 10}}>
+        <Image
+          source={require('../../Images/ISP.png')}
+          style={{width: 130, height: 130}}
+        />
       </View>
     </ScrollView>
   );

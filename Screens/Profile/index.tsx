@@ -20,14 +20,11 @@ const Profile = ({navigation}:any) => {
   const [nickName, setNickName] = useState<any>('');
   const [userId, setUserId] = useState<any>('');
   const [getUserData, setUserData] = useState<any>([]);
-  console.log('nickName', nickName);
 
   AsyncStorage.setItem('nickName', JSON.stringify(nickName))
     .then(() => console.log('nickName fields saved'))
     .catch(error => console.log('Error saving nickName fields: ', error));
 
-  console.log('getUserData', getUserData);
-  // console.log('userId',userId.customer_id);
 
   const gettingUserData = () => {
     AsyncStorage.getItem('loginFields')
@@ -54,11 +51,9 @@ const Profile = ({navigation}:any) => {
     axios
       .post(`${BaseUrl}getdata`, formData, config)
       .then((res: any) => {
-        // console.log('res',res.data);
         setUserData(res.data.customer);
       })
       .catch(error => {
-        console.log('error==>', error);
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
       });
   };

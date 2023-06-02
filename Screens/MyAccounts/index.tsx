@@ -61,7 +61,6 @@ const MyAccounts = () => {
         setUserData(res.data.customer);
       })
       .catch(error => {
-        console.log('error==>', error);
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
       });
   };
@@ -140,7 +139,6 @@ const MyAccounts = () => {
         config,
       )
       .then((res: any) => {
-        console.log('res data', res.data.message);
         setUpdatePassword(!updatePassword)
         ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);
       })
@@ -150,7 +148,7 @@ const MyAccounts = () => {
   };
 
   return (
-    <View style={{paddingHorizontal: 15}}>
+    <View style={{paddingHorizontal: 15, backgroundColor:'white', height:'100%'}}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header />
         <Text

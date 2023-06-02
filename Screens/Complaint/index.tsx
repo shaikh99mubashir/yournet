@@ -36,8 +36,6 @@ const Complaint = ({navigation}: any) => {
   }, []);
   // get User DATA
   const [getUserData, setUserData] = useState<any>([]);
-  console.log('getUserData',getUserData);
-  
   const [loading, setLoading] = useState(false);
   const getData = () => {
     setLoading(!loading);
@@ -53,12 +51,10 @@ const Complaint = ({navigation}: any) => {
         config,
       )
       .then((res: any) => {
-        console.log('res data', res.data);
         setUserData(res.data.customer);
         setLoading(!loading);
       })
       .catch(error => {
-        // console.log('error==>', error);
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
         setLoading(!loading);
       });
@@ -86,11 +82,9 @@ const Complaint = ({navigation}: any) => {
     axios
       .post(`${BaseUrl}getAllComplainName`, formData, config)
       .then((res: any) => {
-        // console.log('res data====>', res?.data?.complain_names);
         setComplainName(res?.data?.complain_names);
       })
       .catch(error => {
-        console.log('error==>', error);
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
       });
   };
@@ -102,20 +96,12 @@ const Complaint = ({navigation}: any) => {
   }, [getUserData?.company_id]);
 
   const [selectedServicedata, setSelectedServicedata]: any = useState({});
-  console.log('selectedServicedata',selectedServicedata);
   
   const [serviceDD, setServiceDD] = useState(false);
   const SelectedServices = (item: any) => {
     setSelectedServicedata(item);
     setServiceDD(!serviceDD);
   };
-  console.log('customer_id',getUserData?.customer_id);
-  console.log('customer_name',getUserData?.first_name);
-  console.log('package_name',getUserData?.package_name);
-  console.log('mobile_number',getUserData?.mobile_number);
-  console.log('address',getUserData?.address);
-  console.log('external_mobile',getUserData?.external_moble);
-  console.log('company_id',getUserData?.company_id);
   
   const [generateComplaint, setGenerateComplaint] = useState({
     customer_id:'',
@@ -130,7 +116,6 @@ const Complaint = ({navigation}: any) => {
     company_id:'',
     status:'Pending',
   })
-  console.log('generateComplaint',generateComplaint);
   
   const sendComplaintData = () => {
     let data = {...generateComplaint}
@@ -162,7 +147,6 @@ const Complaint = ({navigation}: any) => {
       config,
     )
     .then((res: any) => {
-      console.log('res data', res.data.message);
       navigation.replace('Help')
       ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);
     })
@@ -294,8 +278,6 @@ const Complaint = ({navigation}: any) => {
                 Array.from(
                   new Set(complainName.map((item: any) => item.complain_name)),
                 ).map((e, i) => {
-                  console.log('e', e);
-
                   return (
                     <TouchableOpacity
                       onPress={() =>

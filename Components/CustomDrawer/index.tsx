@@ -60,7 +60,9 @@ function CustomDrawerContent(props: any) {
   useEffect(() => {
     getData();
   }, [user_id, focus]);  
-
+  // props.navigation.addListener('state', () => {
+  //   getData()
+  // });
   const share = async () => {
 
     const options = {
@@ -74,7 +76,7 @@ function CustomDrawerContent(props: any) {
 
     try {
       const res = await Share.open(options);
-      console.log(res);
+      // console.log(res);
     } catch (err) {
       console.log(err);
     }
@@ -88,7 +90,6 @@ function CustomDrawerContent(props: any) {
   });
   const gettingUserNickName = async () => {
     let value = await AsyncStorage.getItem('nickName');
-    // console.log(value, 'valueasdasd');
     if (value !== null) {
       console.log(value, 'value');
       setNickName(JSON.parse(value));
@@ -213,7 +214,6 @@ function CustomDrawerContent(props: any) {
               <View style={{}}>
                 <TouchableOpacity
                   onPress={() => navigateToScreen('Help')}
-                  // onPress={ShowMessage}
                   style={{
                     backgroundColor: Color.white,
                     padding: 10,
@@ -231,7 +231,6 @@ function CustomDrawerContent(props: any) {
               <View style={{justifyContent: 'center'}}>
                 <TouchableOpacity
                   onPress={() => setOpenWWRModal(!openWWRModal)}
-                  // onPress={ShowMessage}
                   style={{
                     backgroundColor: Color.white,
                     padding: 10,
@@ -257,7 +256,6 @@ function CustomDrawerContent(props: any) {
               <View style={{}}>
                 <TouchableOpacity
                   onPress={() => navigateToScreen('FAQs')}
-                  // onPress={ShowMessage}
                   style={{
                     backgroundColor: Color.white,
                     padding: 10,

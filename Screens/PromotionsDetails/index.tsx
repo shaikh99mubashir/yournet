@@ -8,7 +8,6 @@ const PromotionsDetails = ({navigation, route}: any) => {
   const data = route.params;
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
     <View
       style={{
         backgroundColor: Color.white,
@@ -16,6 +15,7 @@ const PromotionsDetails = ({navigation, route}: any) => {
         paddingHorizontal: 10,
         marginBottom:20
       }}>
+        <ScrollView showsVerticalScrollIndicator={false}>
       <Header navigation={navigation} backBtn />
       <Text
         style={{
@@ -46,8 +46,8 @@ const PromotionsDetails = ({navigation, route}: any) => {
           <Text style={{fontSize: 15}}>{data?.description}</Text>
         </View>
       </View>
-    </View>
       </ScrollView>
+    </View>
   );
 };
 

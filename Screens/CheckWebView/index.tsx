@@ -12,10 +12,7 @@ import { Color } from '../../Constants';
 
 const CheckWebView = ({route, navigation}: any) => {
   const link = route.params;
-  console.log('link', link);
   const webViewRef = useRef<WebView | null>(null);
-
-
   const backAction = () => {
     webViewRef.current?.goBack();
     return true;

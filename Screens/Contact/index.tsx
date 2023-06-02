@@ -35,12 +35,10 @@ const Contact = ({navigation}:any) => {
       })
       .catch(error => console.log('Error retrieving login fields: ', error));
   };
-  // console.log('userData0',userData);
   
   useEffect(() => {
     gettingUserDatatoken();
   }, [focus]);
-  console.log('number',number);
   
   const getData = () => {
     const formData = new FormData();
@@ -53,11 +51,9 @@ const Contact = ({navigation}:any) => {
     axios
       .post(`${BaseUrl}getContactNumbersByCompanyId`, formData, config)
       .then((res: any) => {
-        // console.log('res data====>', res?.data?.companycontacts);
         setNumber(res?.data?.companycontacts);
       })
       .catch(error => {
-        console.log('error==>', error);
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
       });
     };
@@ -75,8 +71,6 @@ const Contact = ({navigation}:any) => {
   // };
 
   const handleMobileNumberPress = (inputObj: { number: string }) => {
-    console.log('number',number);
-    
     const item :any = number.find((item:any) => item.number === inputObj.number);
 
     if (item) {

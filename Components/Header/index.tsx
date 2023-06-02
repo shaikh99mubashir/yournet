@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
   logo: {
     // height: Dimensions.get('window').height / 12,
     // width: Dimensions.get('window').width / 2,
-    width: 150,
-    height: 40,
+    width: 180,
+    height: 60,
     alignSelf: 'center',
   },
 });

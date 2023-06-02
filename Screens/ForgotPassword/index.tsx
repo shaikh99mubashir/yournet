@@ -35,8 +35,7 @@ const ForgotPassword = ({navigation} :any) => {
           config,
         )
         .then((res: any) => {
-          console.log('res data', res.data.message);
-          // navigation.replace('Login')
+          // navigation.navigate('Login')
           ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);
         })
         .catch(error => {

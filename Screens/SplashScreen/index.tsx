@@ -24,7 +24,7 @@ const SplashScreen = ({navigation}:any) => {
   }, []);
   return (
     <View style={{backgroundColor:Color.mainColor,height:'100%', width:'100%', alignItems:'center', justifyContent:'center'}}>
-      <Image source={require('../../Images/ISP.png')} resizeMode='contain' style={{ height: Dimensions.get('window').height/5,
+      <Image source={require('../../Images/ISPIconwhite.png')} resizeMode='contain' style={{ height: Dimensions.get('window').height/5,
     width: Dimensions.get('window').width/1.1,}}/>
     </View>
   )

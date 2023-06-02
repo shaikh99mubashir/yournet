@@ -47,11 +47,9 @@ const TransactionHistory = ({navigation}: any) => {
         config, // pass the config object as the third parameter
       )
       .then((res: any) => {
-        console.log('res data', res.data.receipts);
         setReceipts(res?.data?.receipts);
       })
       .catch(error => {
-        console.log('error==>', error);
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
       });
   };
@@ -86,7 +84,6 @@ const TransactionHistory = ({navigation}: any) => {
             const year = date.getFullYear();
             const month = date.getMonth(); // Months are zero-based, so 5 represents June
             const day = date.getDate();
-            console.log('e==>', e);
 
             return (
               <TouchableOpacity

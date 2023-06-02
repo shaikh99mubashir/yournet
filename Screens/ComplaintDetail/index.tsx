@@ -9,11 +9,9 @@ import Feather from 'react-native-vector-icons/Feather';
 
 const ComplaintDetail = ({route, navigation}: any) => {
   const data = route.params;
-  console.log('daat========>', data);
 
   const [resolvedDateTime, setResolvedDateTime] = useState('')
   const [creationDateTime, setCreationDateTime] = useState('')
-console.log('resolvedDateTime',resolvedDateTime);
 const timeAndDate = () => {
 if(data?.created_it){
   const dateTimeString: string = data?.created_it;
@@ -46,7 +44,6 @@ if(data?.resolved_it){
   
   const resolvedDateTime: string = `${resolvedformattedDate} | ${resolvedformattedTime}`;
   setResolvedDateTime(resolvedDateTime)
-  console.log('resolvedDateTime:', resolvedDateTime);
 }
 }
 

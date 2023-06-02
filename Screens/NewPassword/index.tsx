@@ -12,12 +12,9 @@ const NewPassword = ({navigation}: any) => {
         password:'',
         NewPassword:'',
       })
-      console.log('newPasswordFields',newPasswordFields);
-      
-
   return (
     <View style={{
-        backgroundColor: Color.backgroundColor,
+        backgroundColor: Color.white,
         height: Dimensions.get('window').height,
         paddingHorizontal: 10
       }}>

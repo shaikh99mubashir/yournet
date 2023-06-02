@@ -86,7 +86,6 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
         setLoading(false);
       })
       .catch(error => {
-        console.log('error==>', error);
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
         setLoading(false);
       });
@@ -138,7 +137,6 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
 
   const [resolvedDateTime, setResolvedDateTime] = useState('')
   const [creationDateTime, setCreationDateTime] = useState('')
-console.log('resolvedDateTime',resolvedDateTime);
 
 
   const renderAllComplaint: any = ({item}: any) => {
@@ -156,7 +154,6 @@ console.log('resolvedDateTime',resolvedDateTime);
       hour12: false,
     });
 
-    console.log('creationDateTime',creationDateTime);
     let resolvedDate:any;
     let resolvedTime:any;
       if(item?.resolved_it){

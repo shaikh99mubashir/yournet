@@ -7,6 +7,7 @@ import {
   ScrollView,
   ToastAndroid,
   Dimensions,
+  ActivityIndicator
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../../Components/Header';
@@ -22,7 +23,8 @@ const MyAccounts = () => {
   const [editNickName, setEditNickName] = useState<boolean>(false);
   const [nickName, setNickName] = useState<any>('');
   const [getUserData, setUserData] = useState<any>([]);
-
+  const [loading, setLoading] = useState(false);
+  const [noInternet, setNoInternet] = useState(false)
   AsyncStorage.setItem('nickName', JSON.stringify(nickName))
   .then((res) => res)
   .catch(error => console.log('Error saving nickName: ', error));
@@ -45,6 +47,7 @@ const MyAccounts = () => {
   }, [focus]);
 
   const getCusData = () => {
+    setLoading(true);
     const config = {
       headers: {
         user_id: user_id,
@@ -59,15 +62,22 @@ const MyAccounts = () => {
       )
       .then((res: any) => {
         setUserData(res.data.customer);
+        setLoading(false);
       })
       .catch(error => {
+        if(error == 'AxiosError: Network Error'){    
+          ToastAndroid.show('You Are Offline', ToastAndroid.LONG);
+          setNoInternet(true)
+          return
+        }
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+        setLoading(false);
       });
   };
 
   useEffect(() => {
     getCusData();
-  }, [user_id]);
+  }, [user_id,focus]);
 
   const [email_address, setEmail_address] = useState('');
   const [updateEmail, setUpdateEmail] = useState(false);
@@ -149,7 +159,15 @@ const MyAccounts = () => {
 
   return (
     <View style={{paddingHorizontal: 15, backgroundColor:'white', height:'100%'}}>
+      {loading ? (
+        <View style={{flex: 1, justifyContent: 'center',backgroundColor:Color.white,alignItems:'center',
+        opacity: 0.9,}}>
+        <ActivityIndicator color="black" size={'large'} />
+        {noInternet ? <Text style={{textAlign:'center', marginTop:50, color:'black'}}>Currently You Are Offline</Text> : ''}
+      </View>
+      ) : (
       <ScrollView showsVerticalScrollIndicator={false}>
+        <>
         <Header />
         <Text
           style={{
@@ -521,7 +539,9 @@ const MyAccounts = () => {
             </Text>
           </View>
         </View>
+        </>
       </ScrollView>
+      )}
     </View>
   );
 };

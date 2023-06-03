@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ToastAndroid,
+  ActivityIndicator
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../../Components/Header';
@@ -15,9 +16,10 @@ import {BaseUrl} from '../../Constants/BaseUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
 const Promotions = ({navigation}: any) => {
-
+  const [loading, setLoading] = useState(false);
   const [user_id, setUser_id] = useState('');
   const focus = useIsFocused()
+  const [noInternet, setNoInternet] = useState(false)
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('user_id')
       .then(value => {
@@ -36,6 +38,7 @@ const Promotions = ({navigation}: any) => {
 
   const [promotionData, setPromotionData] = useState([]);
   const getPromoData = () => {
+    setLoading(true);
     const config = {
       headers: {
         user_id: user_id,
@@ -50,9 +53,16 @@ const Promotions = ({navigation}: any) => {
       )
       .then((res: any) => {
         setPromotionData(res.data.promotions);
+        setLoading(false);
       })
       .catch(error => {
+        if(error == 'AxiosError: Network Error'){       
+          ToastAndroid.show('You Are Offline', ToastAndroid.LONG);
+          setNoInternet(true)
+          return
+        }
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+        setLoading(false);
       });
   };
 
@@ -62,6 +72,14 @@ const Promotions = ({navigation}: any) => {
 
   return (
     <View style={{backgroundColor: Color.white, marginBottom: 200, paddingHorizontal:10, height:'100%'}}>
+      {loading ? (
+        <View style={{flex: 1, justifyContent: 'center',backgroundColor:Color.white,
+        opacity: 0.9,}}>
+        <ActivityIndicator color="black" size={'large'} />
+        {noInternet ? <Text style={{textAlign:'center', marginTop:50, color:'black'}}>Currently You Are Offline</Text> : ''}
+      </View>
+      ) : (
+        <>
       <Header />
       <Text
         style={{
@@ -116,6 +134,8 @@ const Promotions = ({navigation}: any) => {
           }}
         />
       </View>
+      </>
+      )}
     </View>
   );
 };

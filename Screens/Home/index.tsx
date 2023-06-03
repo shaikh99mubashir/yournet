@@ -14,6 +14,11 @@ import {
   // BackHandler,
   Alert,
   ActivityIndicator,
+  Modal,
+  Button,
+  BackHandler,
+  Platform,
+  TextInput,
 } from 'react-native';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -30,7 +35,6 @@ import CheckWebView from '../CheckWebView';
 import Loader from '../../Components/Loader';
 const {height, width} = Dimensions.get('window');
 const Home = ({navigation}: any) => {
-
   // To retrieve the loginFields
   const focus = useIsFocused();
   const [nickName, setNickName] = useState<any>('');
@@ -62,7 +66,7 @@ const Home = ({navigation}: any) => {
       })
       .catch(error => console.log('Error retrieving login fields: ', error));
   };
-  
+
   useEffect(() => {
     gettingUserDatatoken();
   }, [focus]);
@@ -72,6 +76,48 @@ const Home = ({navigation}: any) => {
   const [promotionData, setPromotionData] = useState([]);
   const [webPortalData, WebPortalData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [noInternet, setNoInternet] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  console.log('userPackage',userPackage);
+  
+  // email work
+  useEffect(() => {
+    getUserData?.email_address !== ''
+      ? setModalVisible(true)
+      : setModalVisible(false);
+  }, [getUserData?.email_address]);
+
+  const handelUpdateEmail = () => {
+    setModalVisible(false);
+  };
+  const saveEmailAdress = () => {
+    const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    const userEmail: any = email_address;
+    const result: boolean = expression.test(userEmail); // true
+    if (!result) {
+      ToastAndroid.show('Enter correct email', ToastAndroid.SHORT);
+      return;
+    }
+    const formData = new FormData();
+    formData.append('email_address', email_address);
+
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        user_id: user_id,
+      },
+    };
+
+    axios
+      .post(`${BaseUrl}editProfile`, formData, config)
+      .then((res: any) => {
+        ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);
+        setModalVisible(false);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+      });
+  };
 
   const getData = () => {
     setLoading(true);
@@ -93,26 +139,32 @@ const Home = ({navigation}: any) => {
         setPromotionData(res.data.promotions);
         setLoading(false);
         AsyncStorage.setItem('userData', JSON.stringify(getUserData))
-        .then(() => console.log('userData Saved'))
-        .catch(error => console.log('Error saving userData: ', error));
+          .then(() => console.log('userData Saved'))
+          .catch(error => console.log('Error saving userData: ', error));
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+        console.log('error,==>', error);
+        if (error == 'AxiosError: Network Error') {
+          ToastAndroid.show('You Are Offline', ToastAndroid.LONG);
+          setNoInternet(true);
+          return;
+        }
+
+        ToastAndroid.show('Internal Server Error', ToastAndroid.LONG);
         setLoading(false);
       });
-    };
-    
-    useEffect(() => {
+  };
+
+  useEffect(() => {
     getData();
   }, [user_id, focus]);
 
   const [selectedLink, setSelectedLink] = useState('');
   const handelWebView = (link: string) => {
     if (link) {
-      navigation.navigate('CheckWebView', { selectedLink: link });
-    }
-    else{
-      ToastAndroid.show('contact to admin',ToastAndroid.SHORT)
+      navigation.navigate('CheckWebView', {selectedLink: link});
+    } else {
+      ToastAndroid.show('contact to admin', ToastAndroid.SHORT);
     }
   };
 
@@ -138,10 +190,7 @@ const Home = ({navigation}: any) => {
 
   //  promotion Work Ended
 
-  const ShowMessage = () => {
-    ToastAndroid.show('This Feature will Soon Avaiable !', ToastAndroid.SHORT);
-  };
-
+  // nickname
   navigation.addListener('state', () => {
     gettingUserNickName();
   });
@@ -155,45 +204,40 @@ const Home = ({navigation}: any) => {
     gettingUserNickName();
   }, []);
 
+  // Back Handler
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  useEffect(() => {
+    const backAction = () => {
+      if (focus) {
+        setShowConfirmation(true);
+        return true; // Return true to prevent the default back button action
+      }
+    };
 
-  const date = new Date(getUserData?.activation_date);
-  const RenewalDate = date.toLocaleDateString('en-US', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
+    BackHandler.addEventListener('hardwareBackPress', backAction);
 
-
-  const injectedScript = `
-  <script>
-    (function() {
-      var body = document.body,
-        html = document.documentElement;
-      var height = Math.max(
-        body.scrollHeight,
-        html.scrollHeight,
-        body.offsetHeight,
-        html.offsetHeight,
-        body.clientHeight,
-        html.clientHeight
-      );
-      const data = JSON.stringify({ height, type: 'dimensions' });
-      window.ReactNativeWebView.postMessage(data);
-    })();
-  </script>
-`;
-
-  const [webViewHeight, setWebViewHeight] = useState(0);
-
-  const handleWebviewMessage = (event: any) => {
-    const postMessage = JSON.parse(event?.nativeEvent?.data);
-    if (postMessage.type === 'dimensions') {
-      const {height} = postMessage;
-      setWebViewHeight(height);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
+    };
+  }, [focus]);
+  const handleGoBack = () => {
+    setShowConfirmation(false);
+    // navigation.goBack(); // Navigate back using the navigation.goBack() method
+    if (Platform.OS === 'android') {
+      BackHandler.exitApp(); // Close the app on Android
+    } else {
+      // Handle app closing for other platforms (e.g., iOS)
+      // You can implement your own logic here or use any libraries or modules specific to the platform
     }
   };
-  
+  const handleCancel = () => {
+    setShowConfirmation(false);
+  };
+
+  const [apply, setApply] = useState(false);
+  const [cancel, setCancel] = useState(false);
+  const [email_address, setEmail_address] = useState('');
+
   return (
     <View
       style={{
@@ -202,15 +246,201 @@ const Home = ({navigation}: any) => {
         paddingHorizontal: 12,
       }}>
       {loading ? (
-        <View style={{flex: 1, justifyContent: 'center',backgroundColor:Color.white,
-        opacity: 0.9,}}>
-        <ActivityIndicator color="black" size={'large'} />
-      </View>
-      
-      // <Loader />
-        
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: Color.white,
+            opacity: 0.9,
+          }}>
+          <ActivityIndicator color="black" size={'large'} />
+          {noInternet ? (
+            <Text style={{textAlign: 'center', marginTop: 50, color: 'black'}}>
+              Currently You Are Offline
+            </Text>
+          ) : (
+            ''
+          )}
+        </View>
       ) : (
         <>
+          {/* Update Email */}
+          <Modal visible={modalVisible} animationType="fade" transparent={true}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  padding: 20,
+                  borderRadius: 10,
+                  width:'80%'
+                }}>
+                <Text style={{fontSize: 15, fontWeight: '500', color: 'black'}}>
+                  Update Your Email
+                </Text>
+                <TextInput
+                  placeholder="Enter Email Address"
+                  onChangeText={e => setEmail_address(e)}
+                  placeholderTextColor={Color.textColor}
+                  style={{
+                    color: Color.textColor,
+                    borderWidth: 1,
+                    marginTop: 15,
+                    paddingHorizontal: 5,
+                    borderRadius: 10,
+                    borderColor: '#eee',
+                    fontSize:14
+                  }}
+                />
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    gap: 10,
+                    marginTop: 20,
+                    marginBottom: 20,
+                  }}>
+                  <TouchableOpacity
+                    onPressIn={() => setCancel(true)}
+                    onPressOut={() => setCancel(false)}
+                    onPress={() => setModalVisible(false)}
+                    activeOpacity={0.8}
+                    style={{
+                      borderWidth: 1,
+                      paddingVertical: 5,
+                      borderRadius: 50,
+                      borderColor: Color.textColor,
+                      alignItems: 'center',
+                      width: 100,
+                      backgroundColor: cancel ? Color.mainColor : 'white',
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontFamily: 'Poppins-SemiBold',
+                        color: cancel ? 'white' : Color.mainColor,
+                      }}>
+                      Skip
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPressIn={() => setApply(true)}
+                    onPressOut={() => setApply(false)}
+                    onPress={() => saveEmailAdress()}
+                    activeOpacity={0.8}
+                    style={{
+                      borderWidth: 1,
+                      paddingVertical: 5,
+                      borderRadius: 50,
+                      borderColor: Color.textColor,
+                      alignItems: 'center',
+                      width: 100,
+                      backgroundColor: apply ? 'white' : Color.mainColor,
+                    }}>
+                    <Text
+                      style={{
+                        color: apply ? Color.mainColor : 'white',
+
+                        fontSize: 14,
+                        fontFamily: 'Poppins-SemiBold',
+                      }}>
+                      Update
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </Modal>
+
+          {/* ask for go back */}
+          {focus && showConfirmation && (
+            <Modal visible={showConfirmation} transparent>
+              <View
+                style={{
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    padding: 20,
+                    borderRadius: 10,
+                    width:'80%'
+                  }}>
+                  <Text
+                    style={{fontSize: 15, fontWeight: '500', color: 'black'}}>
+                    Are you sure you want to Exit?
+                  </Text>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      gap: 10,
+                      marginTop: 20,
+                      marginBottom: 20,
+                    }}>
+                    <TouchableOpacity
+                      onPressIn={() => setCancel(true)}
+                      onPressOut={() => setCancel(false)}
+                      onPress={handleCancel}
+                      activeOpacity={0.8}
+                      style={{
+                        borderWidth: 1,
+                        paddingVertical: 5,
+                        borderRadius: 50,
+                        borderColor: Color.textColor,
+                        alignItems: 'center',
+                        width: 100,
+                        backgroundColor: cancel ? Color.mainColor : 'white',
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontFamily: 'Poppins-SemiBold',
+                          color: cancel ? 'white' : Color.mainColor,
+                        }}>
+                        No
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPressIn={() => setApply(true)}
+                      onPressOut={() => setApply(false)}
+                      onPress={handleGoBack}
+                      activeOpacity={0.8}
+                      style={{
+                        borderWidth: 1,
+                        paddingVertical: 5,
+                        borderRadius: 50,
+                        borderColor: Color.textColor,
+                        alignItems: 'center',
+                        width: 100,
+                        backgroundColor: apply ? 'white' : Color.mainColor,
+                      }}>
+                      <Text
+                        style={{
+                          color: apply ? Color.mainColor : 'white',
+
+                          fontSize: 14,
+                          fontFamily: 'Poppins-SemiBold',
+                        }}>
+                        Yes
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+          )}
+
           <View style={{marginHorizontal: 10}}>
             <Header navigation={navigation} Drawer Notification />
             {/* User Name Inage And Id */}
@@ -253,18 +483,19 @@ const Home = ({navigation}: any) => {
                 Hi there!
               </Text>
               {/* Account Information */}
-              <View style={styles.container}>
-                <View style={styles.body}>
+              <View style={[styles.container,{borderWidth:0, paddingLeft:15, paddingTop:15}]}>
+                <View style={[styles.body, {borderWidth:0}]}>
                   <View style={{}}>
                     <Text
                       style={[
                         styles.package,
-                        {fontSize: 30, textAlign: 'center', fontWeight:'600'},
+                        {fontSize: 24, textAlign: 'center', fontWeight: '600'},
                       ]}>
                       Account{'\n'}Status{' '}
                     </Text>
                     <View style={{alignItems: 'center'}}>
-                      <Text
+{/* 
+                    <Text
                         style={[
                           styles.status,
                           {
@@ -278,8 +509,8 @@ const Home = ({navigation}: any) => {
                                 : getUserData?.status == 'Registered'
                                 ? 'darkgrey'
                                 : getUserData?.status == 'Terminate'
-                                ? 	'#999999'
-                                : '',
+                                ? '#999999'
+                                : 'white',
                             paddingHorizontal: 10,
                             paddingVertical: 3,
                           },
@@ -287,7 +518,21 @@ const Home = ({navigation}: any) => {
                         {getUserData?.status == 'Inactive'
                           ? 'Expire'
                           : getUserData?.status}
-                      </Text>
+                      </Text> */}
+                    <ImageBackground
+                      source={require('../../Images/status.png')}
+                      resizeMode="contain"
+                      style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: 50,
+                        width:160,
+                      }}>
+                        <Text style={{color:'white',fontSize:22}}>
+                        {getUserData?.status}
+                        </Text>
+                      </ImageBackground>
                     </View>
                     <View
                       style={{
@@ -295,13 +540,17 @@ const Home = ({navigation}: any) => {
                         gap: 10,
                         marginTop: 10,
                       }}>
-                      <View style={{marginTop:6}}>
-                      <FontAwesome name='circle' size={15} color={Color.mainColor}/>
+                      <View style={{marginTop: 6}}>
+                        <FontAwesome
+                          name="circle"
+                          size={10}
+                          color={Color.mainColor}
+                        />
                       </View>
                       <Text
                         style={[
                           styles.package,
-                          {fontWeight: 'bold', fontSize: 18},
+                          {fontWeight: 'bold', fontSize: 16},
                         ]}>
                         Last Renewal Date: {'\n'}
                         <Text style={{color: Color.textColor}}>
@@ -316,13 +565,17 @@ const Home = ({navigation}: any) => {
                         gap: 10,
                         marginVertical: 10,
                       }}>
-                      <View style={{marginTop:6}}>
-                      <FontAwesome name='circle' size={15} color={Color.mainColor}/>
+                      <View style={{marginTop: 6}}>
+                        <FontAwesome
+                          name="circle"
+                          size={10}
+                          color={Color.mainColor}
+                        />
                       </View>
                       <Text
                         style={[
                           styles.package,
-                          {fontWeight: 'bold', fontSize: 18},
+                          {fontWeight: 'bold', fontSize: 16},
                         ]}>
                         Expiry Date: {'\n'}
                         <Text style={{color: Color.textColor}}>
@@ -331,20 +584,22 @@ const Home = ({navigation}: any) => {
                       </Text>
                     </View>
                   </View>
-                  <View style={{}}>
+                  <View style={{borderWidth:0}}>
+                    <View style={{left:-25}}>
                     <ImageBackground
                       source={require('../../Images/packagebg.png')}
-                      resizeMode='contain'
+                      resizeMode="contain"
                       style={{
                         flex: 1,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        height:125
+                        height: 150,
+                        width:240,
                       }}>
                       <Text
                         style={{
                           color: Color.white,
-                          fontSize: 20,
+                          fontSize: 14,
                           fontWeight: 'bold',
                         }}>
                         Package
@@ -352,32 +607,34 @@ const Home = ({navigation}: any) => {
                       <Text
                         style={{
                           color: '#f9e208',
-                          fontSize: 20,
+                          fontSize: 16,
                           fontWeight: 'bold',
+                          paddingHorizontal:10
                         }}>
-                        {userPackage?.package_mbps == null
-                          ? '0'
-                          : userPackage.package_mbps}{' '}
-                        Mbps
+                        {userPackage?.package_name ? userPackage?.package_name : <Text>0 Mpps</Text>}
                       </Text>
                       <Text
                         style={{
                           color: Color.white,
-                          fontSize: 20,
+                          fontSize: 14,
                           fontWeight: 'bold',
                         }}>
                         unlimited
                       </Text>
+                      <Image source={require('../../Images/plus.png')} style={{width:20,height:20}}/>
                     </ImageBackground>
+                    </View>
                     <Image
                       source={require('../../Images/leaf.png')}
                       style={{
-                        width: 100,
-                        height: 100,
+                        width: 160,
+                        height: 130,
                         marginTop: 25,
-                        alignSelf: 'center',
+                        borderWidth:1,
+                        borderRadius:10,
+                        // alignSelf: 'center',
                       }}
-                      resizeMode="contain"
+                      resizeMode="cover"
                     />
                   </View>
                 </View>
@@ -405,7 +662,7 @@ const Home = ({navigation}: any) => {
                         activeOpacity={0.8}
                         style={{paddingRight: 15}}>
                         <Image
-                          source={{uri: item.image}}
+                          source={item.image ?{uri: item.image} : require('../../Images/slider3.jpg')}
                           style={{width: 150, height: 130, borderRadius: 10}}
                           resizeMode="contain"
                         />
@@ -415,12 +672,6 @@ const Home = ({navigation}: any) => {
                 />
               </View>
             </View>
-            {/* {selectedLink && (
-          <WebView
-            source={{uri: selectedLink}}
-            style={{width: '100%', height: 300, flex:1}}
-          />
-        )} */}
 
             {/* Slider */}
             <View>
@@ -554,30 +805,6 @@ const Home = ({navigation}: any) => {
           </ScrollView>
         </>
       )}
-      {selectedLink && (
-        <TouchableOpacity
-          style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            // height: '100%',
-          }}>
-          <WebView
-            // ref={webViewRef}
-            source={{uri: 'http://maxfun.com.pk/'}}
-            allowsFullscreenVideo={true}
-            startInLoadingState={true}
-            overScrollMode="content"
-            cacheEnabled={true}
-            injectedJavaScript={injectedScript}
-            style={{height: webViewHeight, width: '100%'}}
-            onMessage={handleWebviewMessage}
-            scrollEnabled={true}
-          />
-        </TouchableOpacity>
-      )}
     </View>
   );
 };
@@ -588,7 +815,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Color.white,
     elevation: 10,
-    padding: 10,
+    // padding: 10,
     borderRadius: 10,
   },
   title: {
@@ -606,7 +833,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   username: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
   },

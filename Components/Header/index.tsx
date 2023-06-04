@@ -47,7 +47,7 @@ const Header = (Props: any) => {
             activeOpacity={0.8}
             onPress={() => navigation.openDrawer()}>
             <Text>
-              <Icon name="reorder-three" size={30} color="black" />
+              <Icon name="reorder-three" size={25} color="black" />
             </Text>
           </TouchableOpacity>
         ) : (
@@ -62,7 +62,7 @@ const Header = (Props: any) => {
             <Text
               style={{
                 fontFamily: 'Poppins-Regular',
-                fontSize: 20,
+                fontSize: 16,
                 color: Color.mainColor,
                 marginVertical: 15,
                 fontWeight: 'bold',
@@ -91,7 +91,7 @@ const Header = (Props: any) => {
               }}
               activeOpacity={0.8}
               onPress={() => navigation.navigate('Notification')}>
-              <FontAwesome name="bell" size={25} color="black" />
+              <FontAwesome name="bell" size={20} color="black" />
             </TouchableOpacity>
           </View>
         ) : backBtn ? (
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   logo: {
     // height: Dimensions.get('window').height / 12,
     // width: Dimensions.get('window').width / 2,
-    width: 180,
+    width: 140,
     height: 60,
     alignSelf: 'center',
   },

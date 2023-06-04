@@ -177,7 +177,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
         onPress={() => navigation.navigate('ComplaintDetail', item)}
         key={item.ID}
         activeOpacity={1}
-        style={[styles.mainBox, {marginTop: 10, marginBottom: 5}]}>
+        style={[styles.mainBox, {marginTop:10, marginBottom: 5}]}>
         <View style={[styles.box, {}]}>
           <View style={[styles.innerBox, {alignItems: 'center'}]}>
             {/* day or month */}
@@ -190,18 +190,17 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
               }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 10,
                   top: 10,
                   color: 'black',
                   alignSelf: 'center',
                   paddingBottom: 2,
                 }}>
-                {/* {month} */}
                 Ticket No.
               </Text>
               <Text
                 style={{
-                  fontSize: 23,
+                  fontSize: 15,
                   top: 5,
                   paddingBottom: 3,
                   color: 'black',
@@ -214,7 +213,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
             {/* year */}
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 10,
                 padding: 3,
                 color: 'black',
                 width: 60,
@@ -234,41 +233,41 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
                 // backgroundColor: '#22b14c',
                 backgroundColor:
                   item.Status == 'Pending' ? '#f29339' : '#22b14c',
-                width: 80,
+                width: 60,
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginTop: 6,
-                paddingVertical: 2,
                 borderRadius: 50,
               }}>
-              <Text style={{textAlign: 'center', color: 'white'}}>
+              <Text style={{textAlign: 'center', color: 'white',fontSize:12}}>
                 {item.Status}
+                {/* Resolved */}
               </Text>
             </View>
           </View>
         </View>
         <View style={styles.box1}>
-          <View style={{gap: 10, width:'90%'}}>
+          <View style={{gap: 0, width:'90%', borderWidth:0,}}>
             <View>
-              <Text style={{fontSize: 20, color: 'black', fontWeight: '500'}}>
+              <Text style={{fontSize: 14, color: 'black', fontWeight: '500'}}>
                 {item.complain_name}
               </Text>
-              <Text style={{fontSize: 14, color: 'black'}}>
+              <Text style={{fontSize: 12, color: 'black'}}>
                 {item?.description.length > 25
                   ? `${item?.description.slice(0, 25)} ...`
                   : item?.description}
               </Text>
             </View>
-            <View>
-              <Text style={{fontSize: 16, color: 'black', fontWeight: '500'}}>
+            <View style={{top:4}}>
+              <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
               {CreatedDate}
               </Text>
-              <Text style={{fontSize: 16, color: 'black', fontWeight: '500'}}>
+              <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
                 {resolvedDate ? resolvedDate :''}
               </Text>
               <Text
                 style={{
-                  fontSize: 16,
+                  fontSize: 12,
                   fontWeight: '500',
                   color: 'black',
                 }}>
@@ -277,230 +276,297 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
             </View>
           </View>
           <View>
-            <AntDesign name="right" size={15} color={Color.textColor} />
+            <AntDesign name="right" size={12} color={Color.textColor} />
           </View>
         </View>
       </TouchableOpacity>
     );
   };
   const renderPendingComplaints: any = ({item}: any) => {
+    const dateTimeString: string = item?.created_it;
+    const dateTime: Date = new Date(dateTimeString);
+    const CreatedDate: string = dateTime.toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+    const CreatedTime: string = dateTime.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: "numeric",
+      hour12: false,
+    });
+
+    let resolvedDate:any;
+    let resolvedTime:any;
+      if(item?.resolved_it){
+        const resolved_it: string = item?.resolved_it;
+        const date: Date = new Date(resolved_it);
+         resolvedDate = date.toLocaleDateString('en-US', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        });
+         resolvedTime = date.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: "numeric",
+          hour12: false,
+        });
+      }
+    
     return (
       <TouchableOpacity
-      onPress={() => navigation.navigate('ComplaintDetail', item)}
-      key={item.ID}
-      activeOpacity={1}
-      style={[styles.mainBox, {marginTop: 10, marginBottom: 5}]}>
-      <View style={[styles.box, {}]}>
-        <View style={[styles.innerBox, {alignItems: 'center'}]}>
-          {/* day or month */}
-          <View
-            style={{
-              backgroundColor: '#eee',
-              width: 60,
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-            }}>
-            <Text
+        onPress={() => navigation.navigate('ComplaintDetail', item)}
+        key={item.ID}
+        activeOpacity={1}
+        style={[styles.mainBox, {marginTop:10, marginBottom: 5}]}>
+        <View style={[styles.box, {}]}>
+          <View style={[styles.innerBox, {alignItems: 'center'}]}>
+            {/* day or month */}
+            <View
               style={{
-                fontSize: 12,
-                top: 10,
-                color: 'black',
-                alignSelf: 'center',
-                paddingBottom: 2,
+                backgroundColor: '#eee',
+                width: 60,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
               }}>
-              {/* {month} */}
-              Ticket No.
-            </Text>
+              <Text
+                style={{
+                  fontSize: 10,
+                  top: 10,
+                  color: 'black',
+                  alignSelf: 'center',
+                  paddingBottom: 2,
+                }}>
+                Ticket No.
+              </Text>
+              <Text
+                style={{
+                  fontSize: 15,
+                  top: 5,
+                  paddingBottom: 3,
+                  color: 'black',
+                  fontWeight: '700',
+                  alignSelf: 'center',
+                }}>
+                {item.ID}
+              </Text>
+            </View>
+            {/* year */}
             <Text
               style={{
-                fontSize: 23,
-                top: 5,
-                paddingBottom: 3,
+                fontSize: 10,
+                padding: 3,
                 color: 'black',
+                width: 60,
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20,
                 fontWeight: '700',
-                alignSelf: 'center',
+                marginTop: 0,
+                textAlign: 'center',
+                // backgroundColor: '#e8e9eb',
+                backgroundColor: '#e2e5de',
               }}>
-              {item.ID}
+              {CreatedTime}
             </Text>
-          </View>
-          {/* year */}
-          <Text
-            style={{
-              fontSize: 12,
-              padding: 3,
-              color: 'black',
-              width: 60,
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
-              fontWeight: '700',
-              marginTop: 0,
-              textAlign: 'center',
-              // backgroundColor: '#e8e9eb',
-              backgroundColor: '#e2e5de',
-            }}>
-            {/* {year}21 */}20:00:00
-          </Text>
 
-          <View
-            style={{
-              // backgroundColor: '#22b14c',
-              backgroundColor:
-                item.Status == 'Pending' ? '#f29339' : '#22b14c',
-              width: 80,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: 6,
-              paddingVertical: 2,
-              borderRadius: 50,
-            }}>
-            <Text style={{textAlign: 'center', color: 'white'}}>
-              {item.Status}
-            </Text>
-          </View>
-        </View>
-      </View>
-      <View style={styles.box1}>
-        <View style={{gap: 10}}>
-          <View>
-            <Text style={{fontSize: 20, color: 'black', fontWeight: '500'}}>
-              {item.complain_name}
-            </Text>
-            <Text style={{fontSize: 14, color: 'black'}}>
-              {item?.description.length > 25
-                ? `${item?.description.slice(0, 25)} ...`
-                : item?.description}
-            </Text>
-          </View>
-          <View>
-            <Text style={{fontSize: 16, color: 'black', fontWeight: '500'}}>
-              26 may 2023 | 52:23
-            </Text>
-            <Text
+            <View
               style={{
-                fontSize: 16,
-                fontWeight: '500',
-                color: 'black',
+                // backgroundColor: '#22b14c',
+                backgroundColor:
+                  item.Status == 'Pending' ? '#f29339' : '#22b14c',
+                width: 60,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: 6,
+                borderRadius: 50,
               }}>
-              {item.created_by_name}
-            </Text>
+              <Text style={{textAlign: 'center', color: 'white',fontSize:12}}>
+                {item.Status}
+                {/* Resolved */}
+              </Text>
+            </View>
           </View>
         </View>
-        <View>
-          {/* <Text style={{color:Color.mainColor, fontSize:14, fontWeight:'700'}}>View Details</Text> */}
-          <AntDesign name="right" size={15} color={Color.textColor} />
+        <View style={styles.box1}>
+          <View style={{gap: 0, width:'90%', borderWidth:0,}}>
+            <View>
+              <Text style={{fontSize: 14, color: 'black', fontWeight: '500'}}>
+                {item.complain_name}
+              </Text>
+              <Text style={{fontSize: 12, color: 'black'}}>
+                {item?.description.length > 25
+                  ? `${item?.description.slice(0, 25)} ...`
+                  : item?.description}
+              </Text>
+            </View>
+            <View style={{top:4}}>
+              <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
+              {CreatedDate}
+              </Text>
+              <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
+                {resolvedDate ? resolvedDate :''}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: '500',
+                  color: 'black',
+                }}>
+                {item.created_by_name ? item.created_by_name :'Me'}
+              </Text>
+            </View>
+          </View>
+          <View>
+            <AntDesign name="right" size={12} color={Color.textColor} />
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
     );
   };
+
   const renderCompletedComplaints: any = ({item}: any) => {
+      const dateTimeString: string = item?.created_it;
+    const dateTime: Date = new Date(dateTimeString);
+    const CreatedDate: string = dateTime.toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+    const CreatedTime: string = dateTime.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: "numeric",
+      hour12: false,
+    });
+
+    let resolvedDate:any;
+    let resolvedTime:any;
+      if(item?.resolved_it){
+        const resolved_it: string = item?.resolved_it;
+        const date: Date = new Date(resolved_it);
+         resolvedDate = date.toLocaleDateString('en-US', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        });
+         resolvedTime = date.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: "numeric",
+          hour12: false,
+        });
+      }
+    
     return (
       <TouchableOpacity
-      onPress={() => navigation.navigate('ComplaintDetail', item)}
-      key={item.ID}
-      activeOpacity={1}
-      style={[styles.mainBox, {marginTop: 10, marginBottom: 5}]}>
-      <View style={[styles.box, {}]}>
-        <View style={[styles.innerBox, {alignItems: 'center'}]}>
-          {/* day or month */}
-          <View
-            style={{
-              backgroundColor: '#eee',
-              width: 60,
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-            }}>
-            <Text
+        onPress={() => navigation.navigate('ComplaintDetail', item)}
+        key={item.ID}
+        activeOpacity={1}
+        style={[styles.mainBox, {marginTop:10, marginBottom: 5}]}>
+        <View style={[styles.box, {}]}>
+          <View style={[styles.innerBox, {alignItems: 'center'}]}>
+            {/* day or month */}
+            <View
               style={{
-                fontSize: 12,
-                top: 10,
-                color: 'black',
-                alignSelf: 'center',
-                paddingBottom: 2,
+                backgroundColor: '#eee',
+                width: 60,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
               }}>
-              {/* {month} */}
-              Ticket No.
-            </Text>
+              <Text
+                style={{
+                  fontSize: 10,
+                  top: 10,
+                  color: 'black',
+                  alignSelf: 'center',
+                  paddingBottom: 2,
+                }}>
+                Ticket No.
+              </Text>
+              <Text
+                style={{
+                  fontSize: 15,
+                  top: 5,
+                  paddingBottom: 3,
+                  color: 'black',
+                  fontWeight: '700',
+                  alignSelf: 'center',
+                }}>
+                {item.ID}
+              </Text>
+            </View>
+            {/* year */}
             <Text
               style={{
-                fontSize: 23,
-                top: 5,
-                paddingBottom: 3,
+                fontSize: 10,
+                padding: 3,
                 color: 'black',
+                width: 60,
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20,
                 fontWeight: '700',
-                alignSelf: 'center',
+                marginTop: 0,
+                textAlign: 'center',
+                // backgroundColor: '#e8e9eb',
+                backgroundColor: '#e2e5de',
               }}>
-              {item.ID}
+              {CreatedTime}
             </Text>
-          </View>
-          {/* year */}
-          <Text
-            style={{
-              fontSize: 12,
-              padding: 3,
-              color: 'black',
-              width: 60,
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
-              fontWeight: '700',
-              marginTop: 0,
-              textAlign: 'center',
-              // backgroundColor: '#e8e9eb',
-              backgroundColor: '#e2e5de',
-            }}>
-            {/* {year}21 */}20:00:00
-          </Text>
 
-          <View
-            style={{
-              // backgroundColor: '#22b14c',
-              backgroundColor:
-                item.Status == 'Pending' ? '#f29339' : '#22b14c',
-              width: 80,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: 6,
-              paddingVertical: 2,
-              borderRadius: 50,
-            }}>
-            <Text style={{textAlign: 'center', color: 'white'}}>
-              {item.Status}
-            </Text>
-          </View>
-        </View>
-      </View>
-      <View style={styles.box1}>
-        <View style={{gap: 10}}>
-          <View>
-            <Text style={{fontSize: 20, color: 'black', fontWeight: '500'}}>
-              {item.complain_name}
-            </Text>
-            <Text style={{fontSize: 14, color: 'black'}}>
-              {item?.description.length > 25
-                ? `${item?.description.slice(0, 25)} ...`
-                : item?.description}
-            </Text>
-          </View>
-          <View>
-            <Text style={{fontSize: 16, color: 'black', fontWeight: '500'}}>
-              26 may 2023 | 52:23
-            </Text>
-            <Text
+            <View
               style={{
-                fontSize: 16,
-                fontWeight: '500',
-                color: 'black',
+                // backgroundColor: '#22b14c',
+                backgroundColor:
+                  item.Status == 'Pending' ? '#f29339' : '#22b14c',
+                width: 60,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: 6,
+                borderRadius: 50,
               }}>
-              {item.created_by_name}
-            </Text>
+              <Text style={{textAlign: 'center', color: 'white',fontSize:12}}>
+                {item.Status}
+                {/* Resolved */}
+              </Text>
+            </View>
           </View>
         </View>
-        <View>
-          {/* <Text style={{color:Color.mainColor, fontSize:14, fontWeight:'700'}}>View Details</Text> */}
-          <AntDesign name="right" size={15} color={Color.textColor} />
+        <View style={styles.box1}>
+          <View style={{gap: 0, width:'90%', borderWidth:0,}}>
+            <View>
+              <Text style={{fontSize: 14, color: 'black', fontWeight: '500'}}>
+                {item.complain_name}
+              </Text>
+              <Text style={{fontSize: 12, color: 'black'}}>
+                {item?.description.length > 25
+                  ? `${item?.description.slice(0, 25)} ...`
+                  : item?.description}
+              </Text>
+            </View>
+            <View style={{top:4}}>
+              <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
+              {CreatedDate}
+              </Text>
+              <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
+                {resolvedDate ? resolvedDate :''}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: '500',
+                  color: 'black',
+                }}>
+                {item.created_by_name ? item.created_by_name :'Me'}
+              </Text>
+            </View>
+          </View>
+          <View>
+            <AntDesign name="right" size={12} color={Color.textColor} />
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
     );
   };
 
@@ -516,7 +582,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <Text style={{fontWeight: 'bold', fontSize: 16}}>no data found</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 14}}>o data found</Text>
         )}
       </View>
     );
@@ -533,7 +599,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <Text style={{fontWeight: 'bold', fontSize: 16}}>no data found</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
         )}
       </View>
     );
@@ -549,7 +615,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <Text style={{fontWeight: 'bold', fontSize: 16}}>no data found</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
         )}
       </View>
     );
@@ -573,7 +639,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
           <Text
             style={{
               textAlign: 'center',
-              fontSize: 22,
+              fontSize: 18,
               marginVertical: 10,
               color: Color.mainColor,
               fontWeight: 'bold',
@@ -606,58 +672,63 @@ const styles = StyleSheet.create({
   box: {
     display: 'flex',
     backgroundColor: '#f5f5f5',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    alignItems:'center',
+    justifyContent:'center',
     elevation: 5,
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,
+    shadowRadius:10,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
     flexDirection: 'row',
     width: '30%',
   },
   boxOne: {
-    gap: 10,
+    gap: 0,
   },
   box1: {
     backgroundColor: 'white',
     width: '69%',
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
     display: 'flex',
-    padding: 10,
+    // padding: 10,
+    paddingHorizontal:10,
+    paddingVertical:10,
     elevation: 5,
-    gap: 7,
+    // gap: 7,
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
   },
   innerBox: {
-    justifyContent: 'center',
-    textAlign: 'center',
-    width: 60,
-    height: 100,
-    borderRadius: 20,
-    display: 'flex',
-    flexDirection: 'column',
+    // justifyContent: 'center',
+    // textAlign: 'center',
+    // width: 60,
+    // height: 100,
+    // borderRadius: 20,
+    // display: 'flex',
+    // flexDirection: 'column',
   },
-  fields: {
-    marginTop: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 12,
-    padding: 10,
-  },
-  button: {
-    alignSelf: 'flex-end',
-    textAlign: 'center',
-    alignItems: 'center',
-    width: '40%',
-    borderRadius: 100,
-    marginTop: 20,
-    paddingVertical: 10,
-    backgroundColor: 'red',
-  },
+  // fields: {
+  //   marginTop: 20,
+  // },
+  // input: {
+  //   borderWidth: 1,
+  //   borderColor: 'gray',
+  //   borderRadius: 12,
+  //   padding: 10,
+  // },
+  // button: {
+  //   alignSelf: 'flex-end',
+  //   textAlign: 'center',
+  //   alignItems: 'center',
+  //   // width: '40%',
+  //   borderRadius: 100,
+  //   marginTop: 20,
+  //   paddingVertical: 10,
+  //   backgroundColor: 'red',
+  // },
 });
 
 export default TrackYourComplaint;

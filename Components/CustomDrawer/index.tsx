@@ -86,6 +86,7 @@ function CustomDrawerContent(props: any) {
   }
   const [nickName, setNickName] = useState<any>('');
   props.navigation.addListener('state', () => {
+    getData();
     gettingUserNickName();
   });
   const gettingUserNickName = async () => {
@@ -144,15 +145,16 @@ function CustomDrawerContent(props: any) {
               style={{
                 backgroundColor: Color.white,
                 paddingVertical: 0,
-                paddingHorizontal: 15,
+                width:40,
+                height:40,
                 borderRadius: 50,
                 marginVertical: 10,
                 alignItems:'center',
                 justifyContent:'center'
               }}>
-              <Text style={{fontSize: 35, color: Color.textColor, padding:0, margin:0}}>{nickName ? nickName?.charAt(0) :getUserData?.first_name?.charAt(0)}</Text>
+              <Text style={{fontSize: 20, color: Color.textColor, padding:0, margin:0}}>{nickName ? nickName?.charAt(0) :getUserData?.first_name?.charAt(0)}</Text>
             </View>
-            <Text style={{fontSize: 20, color: Color.textColor}}>
+            <Text style={{fontSize: 18, color: Color.textColor}}>
             {nickName ? nickName : getUserData?.first_name}
             </Text>
             {/* <Text style={{fontSize: 20, color: Color.textColor}}>{getUserData?.customer_id}</Text> */}
@@ -225,7 +227,7 @@ function CustomDrawerContent(props: any) {
                     height: 55,
                   }}>
                   <AntDesign name="customerservice" color="black" size={25} />
-                  <Text style={{color: Color.textColor}}> Customer {'\n'} Support</Text>
+                  <Text style={{color: Color.textColor, fontSize:14}}> Customer {'\n'} Support</Text>
                 </TouchableOpacity>
               </View>
               <View style={{justifyContent: 'center'}}>
@@ -241,7 +243,7 @@ function CustomDrawerContent(props: any) {
                     height: 55,
                   }}>
                   <Image source={require('../../Images/fees.png')} style={{width:25, height:25}} resizeMode='contain'/>
-                  <Text style={{color:Color.textColor}}> Who We Are</Text>
+                  <Text style={{color:Color.textColor,fontSize:14}}> Who We Are</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -372,10 +374,10 @@ function CustomDrawerContent(props: any) {
                 }}>
                 <View style={{backgroundColor:'white', padding:15, borderRadius:10, marginHorizontal:20}}>
                   <TouchableOpacity onPress={()=> setOpenWWRModal(false)}>
-                  <Text style={{textAlign:'right', fontSize:16, fontWeight:'700'}}>X</Text>
+                  <Text style={{textAlign:'right', fontSize:16, fontWeight:'700', color:'black'}}>X</Text>
                   </TouchableOpacity>
-                  <Text style={{textAlign:'center',fontSize:22, fontWeight:'700', color:Color.mainColor}}>Who We Are?</Text>
-                  <Text style={{textAlign:'justify',fontSize:16,color:Color.textColor,}}>Filler text is text that shares some characteristics of a real written text, but is random or otherwise generated. It may be used to display a sample of fonts, generate text for testing, or to spoof an e-mail spam filter.</Text>
+                  <Text style={{textAlign:'center',fontSize:18, fontWeight:'700', color:Color.mainColor}}>Who We Are?</Text>
+                  <Text style={{textAlign:'justify',fontSize:14,color:Color.textColor,}}>Filler text is text that shares some characteristics of a real written text, but is random or otherwise generated. It may be used to display a sample of fonts, generate text for testing, or to spoof an e-mail spam filter.</Text>
                   </View>
               </View>
             </Modal>
@@ -400,7 +402,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     color: 'black',
-    fontSize: 15,
+    fontSize: 14,
   },
 });
 export default CustomDrawerContent;

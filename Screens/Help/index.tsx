@@ -26,7 +26,7 @@ const Help = ({navigation}: any) => {
       <Text
           style={{
             textAlign: 'center',
-            fontSize: 22,
+            fontSize: 18,
             marginVertical: 10,
             color: Color.mainColor,
             fontWeight: 'bold',
@@ -38,15 +38,15 @@ const Help = ({navigation}: any) => {
           alignItems: 'center',
           marginTop: 20,
         }}>
-        <AntDesign name="customerservice" size={110} color={Color.mainColor} />
+        <AntDesign name="customerservice" size={60} color={Color.mainColor} />
       </View>
 
-      <View style={{alignItems: 'center', marginTop: 30}}>
-        <Text style={{color: Color.textColor, fontSize: 22, fontWeight: '500'}}>
+      <View style={{alignItems: 'center', marginTop: 40}}>
+        <Text style={{color: Color.textColor, fontSize: 20, fontWeight: '600'}}>
           Tell us how we can help
         </Text>
         <Text
-          style={{color: Color.textColor, fontWeight: '500', marginTop: 10}}>
+          style={{color: Color.textColor, fontWeight: '300', marginTop: 10,fontSize: 14,}}>
           Please select from one of the option below
         </Text>
       </View>
@@ -71,8 +71,8 @@ const Help = ({navigation}: any) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Ionicons name="add-circle" size={23} color={Color.mainColor} />
-          <Text style={{color: 'black', fontSize: 18, fontWeight: '500'}}>
+          <Ionicons name="add-circle" size={20} color={Color.mainColor} />
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '500'}}>
             Register New Complaint
           </Text>
         </View>
@@ -100,8 +100,8 @@ const Help = ({navigation}: any) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <MaterialCommunityIcons name="timeline-clock" size={23} color={Color.mainColor} />
-          <Text style={{color: 'black', fontSize: 18, fontWeight: '500'}}>
+          <MaterialCommunityIcons name="timeline-clock" size={20} color={Color.mainColor} />
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '500'}}>
           Track Your Complaint
           </Text>
         </View>
@@ -129,8 +129,8 @@ const Help = ({navigation}: any) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <FontAwesome name="phone" size={23} color={Color.mainColor} />
-          <Text style={{color: 'black', fontSize: 18, fontWeight: '500'}}>
+          <FontAwesome name="phone" size={20} color={Color.mainColor} />
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '500'}}>
           Contact Us
           </Text>
         </View>

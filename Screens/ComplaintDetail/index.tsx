@@ -57,12 +57,11 @@ useEffect(()=>{
       <View
         style={{
           backgroundColor: Color.mainColor,
-          // height: '60%',
           paddingBottom: 60,
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
         }}>
-        <View style={{paddingHorizontal: 15}}>
+        <View style={{paddingHorizontal: 13}}>
           <Header
             navigation={navigation}
             backBtn
@@ -73,17 +72,17 @@ useEffect(()=>{
         <Text
           style={{
             textAlign: 'center',
-            fontSize: 22,
+            fontSize: 18,
             marginVertical: 10,
             color: Color.white,
             fontWeight: 'bold',
           }}>
           Complaint Details
         </Text>
-        <View style={{alignItems: 'center'}}>
-          <MaterialIcons name="pending-actions" size={55} color={'white'} />
+        <View style={{alignItems: 'center', marginTop:10}}>
+          <MaterialIcons name="pending-actions" size={40} color={'white'} />
           {/* <Feather name='check-circle' size={55} color={'white'}/> */}
-          <Text style={{color: 'white', marginTop: 10}}>
+          <Text style={{color: 'white', marginTop: 10,fontSize:12}}>
             Ticket No: {data.ID}{' '}
           </Text>
           <View
@@ -91,9 +90,9 @@ useEffect(()=>{
               flexDirection: 'row',
               alignItems: 'center',
               gap: 10,
-              marginTop: 20,
+              marginTop: 10,
             }}>
-            <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold'}}>
+            <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
               {data.Status}
             </Text>
           </View>
@@ -107,8 +106,8 @@ useEffect(()=>{
           marginHorizontal: 20,
           marginTop: -45,
           borderRadius: 10,
-          paddingHorizontal: 15,
-          paddingVertical: 15,
+          paddingHorizontal: 13,
+          paddingVertical: 13,
         }}>
         {/* Customer ID */}
         <View
@@ -122,12 +121,12 @@ useEffect(()=>{
             paddingBottom: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <FontAwesome name="circle" size={10} color={Color.mainColor} />
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            <FontAwesome name="circle" size={7} color={Color.mainColor} />
+            <Text style={{color: 'grey', fontSize: 14, fontWeight: '600'}}>
               Customer ID :
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
             {data.customer_id}
           </Text>
         </View>
@@ -144,12 +143,12 @@ useEffect(()=>{
             paddingVertical: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <FontAwesome name="circle" size={10} color={Color.mainColor} />
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            <FontAwesome name="circle" size={7} color={Color.mainColor} />
+            <Text style={{color: 'grey', fontSize: 14, fontWeight: '600'}}>
               Customer Name :
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
             {data.customer_name}
           </Text>
         </View>
@@ -165,13 +164,15 @@ useEffect(()=>{
             paddingVertical: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <FontAwesome name="circle" size={10} color={Color.mainColor} />
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            <FontAwesome name="circle" size={7} color={Color.mainColor} />
+            <Text style={{color: 'grey', fontSize: 14, fontWeight: '600'}}>
               Address :
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-            {data.address}
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
+            {data?.address.length > 20
+                  ? `${data?.address.slice(0, 25)} ...`
+                  : data?.address}
           </Text>
         </View>
         {/* Creation Date */}
@@ -186,12 +187,12 @@ useEffect(()=>{
             paddingVertical: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <FontAwesome name="circle" size={10} color={Color.mainColor} />
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            <FontAwesome name="circle" size={7} color={Color.mainColor} />
+            <Text style={{color: 'gray', fontSize: 14, fontWeight: '600'}}>
               Creation Date
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
             {creationDateTime ?creationDateTime :''}
           </Text>
         </View>
@@ -207,12 +208,12 @@ useEffect(()=>{
             paddingVertical: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <FontAwesome name="circle" size={10} color={Color.mainColor} />
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            <FontAwesome name="circle" size={7} color={Color.mainColor} />
+            <Text style={{color: 'gray', fontSize: 14, fontWeight: '600'}}>
               Created By :
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
             {data.created_by_name ? data.created_by_name : 'Me'}
           </Text>
         </View>
@@ -223,27 +224,34 @@ useEffect(()=>{
             width: '100%',
             overflow: 'hidden',
           }}>
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
+          <Entypo name="dot-single" size={13} color={'grey'} />
         </View>
         {/* Resolved By */}
         <View
@@ -255,10 +263,10 @@ useEffect(()=>{
             paddingVertical: 10,
           }}>
           <Text
-            style={{color: Color.mainColor, fontSize: 22, fontWeight: '600'}}>
+            style={{color: Color.mainColor, fontSize: 18, fontWeight: '600'}}>
             {data.complain_name}
           </Text>
-          <Text style={{color: 'black', fontSize: 16}}>{data.description ?data.description:''}</Text>
+          <Text style={{color: 'black', fontSize: 14}}>{data.description ?data.description:''}</Text>
           <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
             {data.resolved_by_name? data.resolved_by_name :'' }
           </Text>

@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Image,
   ToastAndroid,
-  ActivityIndicator
+  ActivityIndicator,
+  ScrollView
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../../Components/Header';
@@ -79,19 +80,19 @@ const Promotions = ({navigation}: any) => {
         {noInternet ? <Text style={{textAlign:'center', marginTop:50, color:'black'}}>Currently You Are Offline</Text> : ''}
       </View>
       ) : (
-        <>
+        <ScrollView>
       <Header />
       <Text
-        style={{
+        style={{ 
           textAlign: 'center',
-          fontSize: 22,
-          marginVertical: 10,
-          color: Color.textColor,
-          fontWeight: 'bold',
+            fontSize: 18,
+            marginVertical: 10,
+            color: Color.mainColor,
+            fontWeight: 'bold',
         }}>
         Promotions
       </Text>
-      <View style={{marginHorizontal: 10, marginTop: 10}}>
+      <View style={{marginHorizontal: 10, marginTop: 10, marginBottom:50}}>
         <FlatList
           data={promotionData ?? []}
           nestedScrollEnabled
@@ -122,7 +123,7 @@ const Promotions = ({navigation}: any) => {
                   />
                   <View
                     style={{alignSelf: 'flex-start', paddingHorizontal: 10}}>
-                    <Text style={{fontSize: 15, fontWeight: 'bold'}}>
+                    <Text style={{fontSize: 14, fontWeight: 'bold'}}>
                       {item?.title.length > 50
                         ? `${item?.title.slice(0, 50)}...`
                         : item?.title}
@@ -134,7 +135,7 @@ const Promotions = ({navigation}: any) => {
           }}
         />
       </View>
-      </>
+      </ScrollView>
       )}
     </View>
   );

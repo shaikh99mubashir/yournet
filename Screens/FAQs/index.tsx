@@ -63,8 +63,9 @@ const FAQs = ({navigation}: any) => {
           nestedScrollEnabled
           renderItem={({item, index}: any) => {
             return (
-              <>
-                <View
+              <View style={{elevation:10}}>
+                <TouchableOpacity
+                onPress={() => handleQuestionPress(index)}
                 key={index}
                   style={{
                     borderWidth: 1,
@@ -72,8 +73,8 @@ const FAQs = ({navigation}: any) => {
                     paddingVertical: 15,
                     flexDirection: 'row',
                     width: '100%',
-                    borderRadius: 5,
-                    borderColor: 'gray',
+                    borderRadius: 10,
+                    borderColor: '#eee',
                     borderBottomWidth: item.open ? 0 : 1,
                     borderBottomLeftRadius: item.open ? 1 : 5,
                     borderBottomRightRadius: item.open ? 1 : 5,
@@ -100,7 +101,7 @@ const FAQs = ({navigation}: any) => {
                       />
                     )}
                   </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
                 {item.open ? (
                   <View
                     style={{
@@ -110,8 +111,8 @@ const FAQs = ({navigation}: any) => {
                       paddingBottom: 10,
                       flexDirection: 'row',
                       width: '100%',
-                      borderRadius: 5,
-                      borderColor: 'gray',
+                      borderRadius: 10,
+                      borderColor: '#eee',
                       borderTopWidth: 0,
                       borderTopLeftRadius: 0,
                       borderTopRightRadius: 0,
@@ -125,7 +126,7 @@ const FAQs = ({navigation}: any) => {
                 ) : (
                   ''
                 )}
-              </>
+              </View>
             );
           }}
         />

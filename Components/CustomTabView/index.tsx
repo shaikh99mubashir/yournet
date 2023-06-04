@@ -48,6 +48,7 @@ import {
                 paddingVertical: 5,
                 borderColor: Color.textColor,
                 // borderWidth:1,
+                
                 borderBottomColor:
                   currentTab &&
                   currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
@@ -65,7 +66,8 @@ import {
                       )
                         ? 'black'
                         : Color.textColor,
-                        borderBottomWidth:3,
+                        borderBottomWidth:2,
+                        fontSize:15,
                         borderBottomColor:
                         currentTab &&
                         currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
@@ -101,7 +103,8 @@ import {
                       )
                         ? 'black'
                         : Color.textColor,
-                        borderBottomWidth:3,
+                        borderBottomWidth:2,
+                        fontSize:15,
                         borderBottomColor:
                   currentTab &&
                   currentTab.some((e: any, i: any) => e.index == 1 && e.selected)
@@ -133,7 +136,8 @@ import {
                       )
                         ? 'black'
                         : Color.textColor,
-                        borderBottomWidth:3,
+                        borderBottomWidth:2,
+                        fontSize:15,
                         borderBottomColor:
                   currentTab &&
                   currentTab.some((e: any, i: any) => e.index == 2 && e.selected)

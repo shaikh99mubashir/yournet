@@ -78,11 +78,11 @@ const Home = ({navigation}: any) => {
   const [loading, setLoading] = useState(false);
   const [noInternet, setNoInternet] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  console.log('userPackage',userPackage);
-  
+  console.log('userPackage', userPackage);
+
   // email work
   useEffect(() => {
-    getUserData?.email_address !== ''
+    getUserData?.email_address == ''
       ? setModalVisible(true)
       : setModalVisible(false);
   }, [getUserData?.email_address]);
@@ -237,7 +237,7 @@ const Home = ({navigation}: any) => {
   const [apply, setApply] = useState(false);
   const [cancel, setCancel] = useState(false);
   const [email_address, setEmail_address] = useState('');
-
+  
   return (
     <View
       style={{
@@ -278,7 +278,7 @@ const Home = ({navigation}: any) => {
                   backgroundColor: 'white',
                   padding: 20,
                   borderRadius: 10,
-                  width:'80%'
+                  width: '80%',
                 }}>
                 <Text style={{fontSize: 15, fontWeight: '500', color: 'black'}}>
                   Update Your Email
@@ -294,7 +294,7 @@ const Home = ({navigation}: any) => {
                     paddingHorizontal: 5,
                     borderRadius: 10,
                     borderColor: '#eee',
-                    fontSize:14
+                    fontSize: 14,
                   }}
                 />
                 <View
@@ -373,7 +373,7 @@ const Home = ({navigation}: any) => {
                     backgroundColor: 'white',
                     padding: 20,
                     borderRadius: 10,
-                    width:'80%'
+                    width: '80%',
                   }}>
                   <Text
                     style={{fontSize: 15, fontWeight: '500', color: 'black'}}>
@@ -447,13 +447,13 @@ const Home = ({navigation}: any) => {
             <View style={{flexDirection: 'row', gap: 10, marginTop: 20}}>
               <Image
                 source={require('../../Images/avatar.png')}
-                style={{width: 45, height: 45, borderRadius: 50}}
+                style={{width: 35, height: 35, borderRadius: 50}}
                 resizeMode="contain"
               />
-              <View>
+              <View style={{marginBottom:10}}>
                 <Text
                   style={{
-                    fontSize: 15,
+                    fontSize: 14,
                     fontFamily: 'Poppins-SemiBold',
                     color: Color.textColor,
                   }}>
@@ -461,9 +461,10 @@ const Home = ({navigation}: any) => {
                 </Text>
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: 12,
                     fontFamily: 'Poppins-Regular',
                     color: Color.textColor,
+                    top:-3
                   }}>
                   Customer ID : {getUserData?.customer_id}
                 </Text>
@@ -474,7 +475,7 @@ const Home = ({navigation}: any) => {
             <View style={{marginHorizontal: 10}}>
               <Text
                 style={{
-                  fontSize: 25,
+                  fontSize: 20,
                   fontFamily: 'Poppins-SemiBold',
                   marginLeft: 5,
                   marginTop: 5,
@@ -483,18 +484,22 @@ const Home = ({navigation}: any) => {
                 Hi there!
               </Text>
               {/* Account Information */}
-              <View style={[styles.container,{borderWidth:0, paddingLeft:15, paddingTop:15}]}>
-                <View style={[styles.body, {borderWidth:0}]}>
+              <View
+                style={[
+                  styles.container,
+                  {borderWidth: 0, paddingLeft: 15, paddingTop: 15},
+                ]}>
+                <View style={[styles.body, {borderWidth: 0}]}>
                   <View style={{}}>
                     <Text
                       style={[
                         styles.package,
-                        {fontSize: 24, textAlign: 'center', fontWeight: '600'},
+                        {fontSize: 20, textAlign: 'center', fontWeight: '600',fontFamily: 'Poppins-SemiBold'},
                       ]}>
                       Account{'\n'}Status{' '}
                     </Text>
                     <View style={{alignItems: 'center'}}>
-{/* 
+                      {/* 
                     <Text
                         style={[
                           styles.status,
@@ -519,18 +524,18 @@ const Home = ({navigation}: any) => {
                           ? 'Expire'
                           : getUserData?.status}
                       </Text> */}
-                    <ImageBackground
-                      source={require('../../Images/status.png')}
-                      resizeMode="contain"
-                      style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: 50,
-                        width:160,
-                      }}>
-                        <Text style={{color:'white',fontSize:22}}>
-                        {getUserData?.status}
+                      <ImageBackground
+                        source={require('../../Images/status.png')}
+                        resizeMode="contain"
+                        style={{
+                          flex: 1,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          height: 50,
+                          width: 160,
+                        }}>
+                        <Text style={{color: 'white', fontSize: 20}}>
+                          {getUserData?.status}
                         </Text>
                       </ImageBackground>
                     </View>
@@ -543,7 +548,7 @@ const Home = ({navigation}: any) => {
                       <View style={{marginTop: 6}}>
                         <FontAwesome
                           name="circle"
-                          size={10}
+                          size={8}
                           color={Color.mainColor}
                         />
                       </View>
@@ -553,7 +558,7 @@ const Home = ({navigation}: any) => {
                           {fontWeight: 'bold', fontSize: 16},
                         ]}>
                         Last Renewal Date: {'\n'}
-                        <Text style={{color: Color.textColor}}>
+                        <Text style={{color: Color.textColor, fontSize: 14}}>
                           {getUserData?.activation_date}
                         </Text>
                       </Text>
@@ -568,7 +573,7 @@ const Home = ({navigation}: any) => {
                       <View style={{marginTop: 6}}>
                         <FontAwesome
                           name="circle"
-                          size={10}
+                          size={8}
                           color={Color.mainColor}
                         />
                       </View>
@@ -578,51 +583,54 @@ const Home = ({navigation}: any) => {
                           {fontWeight: 'bold', fontSize: 16},
                         ]}>
                         Expiry Date: {'\n'}
-                        <Text style={{color: Color.textColor}}>
+                        <Text style={{color: Color.textColor, fontSize: 14}}>
                           {getUserData?.expiry_date}
                         </Text>
                       </Text>
                     </View>
                   </View>
-                  <View style={{borderWidth:0}}>
-                    <View style={{left:-25}}>
-                    <ImageBackground
-                      source={require('../../Images/packagebg.png')}
-                      resizeMode="contain"
-                      style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: 150,
-                        width:240,
-                      }}>
-                      <Text
+                  <View style={{borderWidth: 0}}>
+                    <View style={{left: 0}}>
+                      <ImageBackground
+                        source={require('../../Images/packagebg.png')}
+                        resizeMode="contain"
                         style={{
-                          color: Color.white,
-                          fontSize: 14,
-                          fontWeight: 'bold',
+                          flex: 1,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          height: 150,
+                          width: 150,
                         }}>
-                        Package
-                      </Text>
-                      <Text
-                        style={{
-                          color: '#f9e208',
-                          fontSize: 16,
-                          fontWeight: 'bold',
-                          paddingHorizontal:10
-                        }}>
-                        {userPackage?.package_name ? userPackage?.package_name : <Text>0 Mpps</Text>}
-                      </Text>
-                      <Text
-                        style={{
-                          color: Color.white,
-                          fontSize: 14,
-                          fontWeight: 'bold',
-                        }}>
-                        unlimited
-                      </Text>
-                      <Image source={require('../../Images/plus.png')} style={{width:20,height:20}}/>
-                    </ImageBackground>
+                        <Text
+                          style={{
+                            color: Color.white,
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                            fontFamily: 'BebasNeue-Regular',
+                          }}>
+                          Package
+                        </Text>
+                        <Text
+                          style={{
+                            color: '#f9e208',
+                            fontSize: 18,
+                            fontWeight: 'bold',
+                            paddingHorizontal: 10,
+                            fontFamily: 'BebasNeue-Regular',
+                          }}>
+                          100 Mbps
+                          {/* {userPackage?.package_name ? userPackage?.package_name : <Text>0 Mpps</Text>} */}
+                        </Text>
+                        <Text
+                          style={{
+                            color: Color.white,
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                            fontFamily: 'BebasNeue-Regular',
+                          }}>
+                          Unlimited
+                        </Text>
+                      </ImageBackground>
                     </View>
                     <Image
                       source={require('../../Images/leaf.png')}
@@ -630,8 +638,8 @@ const Home = ({navigation}: any) => {
                         width: 160,
                         height: 130,
                         marginTop: 25,
-                        borderWidth:1,
-                        borderRadius:10,
+                        borderWidth: 1,
+                        borderRadius: 10,
                         // alignSelf: 'center',
                       }}
                       resizeMode="cover"
@@ -643,12 +651,12 @@ const Home = ({navigation}: any) => {
               <View style={{marginVertical: 20}}>
                 <Text
                   style={{
-                    fontSize: 25,
+                    fontSize: 20,
                     fontFamily: 'Poppins-SemiBold',
                     color: Color.mainColor,
                     textAlign: 'center',
                   }}>
-                  Web Portals
+                  Entertainment
                 </Text>
                 <FlatList
                   data={webPortalData ?? []}
@@ -662,7 +670,11 @@ const Home = ({navigation}: any) => {
                         activeOpacity={0.8}
                         style={{paddingRight: 15}}>
                         <Image
-                          source={item.image ?{uri: item.image} : require('../../Images/slider3.jpg')}
+                          source={
+                            item.image
+                              ? {uri: item.image}
+                              : require('../../Images/slider3.jpg')
+                          }
                           style={{width: 150, height: 130, borderRadius: 10}}
                           resizeMode="contain"
                         />
@@ -728,8 +740,8 @@ const Home = ({navigation}: any) => {
                       <View
                         key={item.ID}
                         style={{
-                          width: currentIndex == index ? 20 : 8,
-                          height: currentIndex == index ? 10 : 8,
+                          width: currentIndex == index ? 8 : 6,
+                          height: currentIndex == index ? 6 : 6,
                           borderRadius: currentIndex == index ? 5 : 4,
                           backgroundColor:
                             currentIndex == index ? Color.mainColor : 'gray',
@@ -741,66 +753,63 @@ const Home = ({navigation}: any) => {
             </View>
 
             {/* Help And Support */}
-            <View
-              style={{
-                flexDirection: 'row',
-                gap: 10,
-                alignItems: 'center',
-                backgroundColor: Color.white,
-                elevation: 5,
-                marginVertical: 20,
-                marginHorizontal: 10,
-                borderRadius: 10,
-                padding: 10,
-              }}>
+            <View style={{flexDirection:'row', width:'100%', backgroundColor:'white', elevation:5,shadowRadius:5 ,marginVertical:10, borderWidth:1,borderColor:'#eee',borderRadius:10,paddingVertical:10}}>
+              <View style={{width:'25%', alignItems:'center', marginTop:6}}>
               <AntDesign
-                name="customerservice"
-                color={Color.textColor}
-                size={80}
-              />
-              <View style={{}}>
-                <Text
-                  style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
-                  Help & Customer Support
-                </Text>
-                <Text style={{fontSize: 14, color: Color.textColor}}>
-                  Register a complaint or get quick {'\n'} help on quries
-                  related to
-                  <Text style={{color: Color.mainColor, fontWeight: 'bold'}}>
-                    {' '}
-                    Yournet
-                  </Text>
-                </Text>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Help')}
-                  activeOpacity={0.8}
-                  style={{
-                    borderWidth: 1,
-                    width: 120,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    paddingVertical: 8,
-                    borderRadius: 50,
-                    borderColor: Color.mainColor,
-                    marginVertical: 10,
-                    flexDirection: 'row',
-                    gap: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: Color.textColor,
-                      fontWeight: 'bold',
-                      fontSize: 16,
-                    }}>
-                    Get Help
-                  </Text>
-                  <AntDesign
-                    name="arrowright"
-                    color={Color.mainColor}
-                    size={20}
-                  />
-                </TouchableOpacity>
+                  name="customerservice"
+                  color={Color.mainColor}
+                  size={45}
+                />
               </View>
+              <View style={{width:'75%'}}>
+              <Text
+                    style={{fontSize: 14, fontWeight: 'bold', color: 'black'}}>
+                    Help & Customer Support
+                  </Text>
+                  <Text style={{fontSize: 12, color: Color.textColor}}>
+                    Register a complaint or get quick help on quries
+                    related to
+                    <Text
+                      style={{
+                        color: Color.mainColor,
+                        fontWeight: 'bold',
+                        fontSize: 12,
+                      }}>
+                      {' '}
+                      Yournet
+                    </Text>
+                  </Text>
+                  <TouchableOpacity
+                onPress={() => navigation.navigate('Help')}
+                activeOpacity={0.8}
+                style={{
+                  borderWidth: 1,
+                  width: 105,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingVertical: 2,
+                  borderRadius: 50,
+                  borderColor: Color.mainColor,
+                  marginVertical: 10,
+                  flexDirection: 'row',
+                  gap: 10,
+                }}>
+                <Text
+                  style={{
+                    color: Color.textColor,
+                    fontWeight: 'bold',
+                    fontSize: 12,
+                  }}>
+                  Get Help
+                </Text>
+                <AntDesign
+                  name="arrowright"
+                  color={Color.mainColor}
+                  size={15}
+                />
+              </TouchableOpacity>
+              </View>
+
             </View>
           </ScrollView>
         </>
@@ -814,7 +823,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Color.white,
-    elevation: 10,
+    elevation: 2,
     // padding: 10,
     borderRadius: 10,
   },
@@ -833,28 +842,28 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   username: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 5,
   },
   status: {
-    fontSize: 16,
+    fontSize: 14,
     color: 'green',
     marginBottom: 5,
     fontWeight: 'bold',
   },
   package: {
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 5,
     color: Color.mainColor,
     // fontWeight: 'bold',
   },
   renewal: {
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 5,
   },
   expiry: {
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 5,
   },
 });

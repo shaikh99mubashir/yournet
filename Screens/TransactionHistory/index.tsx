@@ -71,7 +71,7 @@ const TransactionHistory = ({navigation}: any) => {
         <Text
           style={{
             textAlign: 'center',
-            fontSize: 22,
+            fontSize: 18,
             marginVertical: 10,
             color: Color.mainColor,
             fontWeight: 'bold',
@@ -114,7 +114,7 @@ const TransactionHistory = ({navigation}: any) => {
                       </Text>
                       <Text
                         style={{
-                          fontSize: 23,
+                          fontSize: 14,
                           top: 5,
                           paddingBottom: 3,
                           color: 'black',
@@ -127,7 +127,7 @@ const TransactionHistory = ({navigation}: any) => {
                     {/* year */}
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: 11,
                         padding: 3,
                         color: 'black',
                         width: 60,
@@ -153,7 +153,7 @@ const TransactionHistory = ({navigation}: any) => {
                         paddingVertical: 2,
                         borderRadius: 50,
                       }}>
-                      <Text style={{textAlign: 'center', color: 'white'}}>
+                      <Text style={{textAlign: 'center', color: 'white',fontSize:12}}>
                         Paid
                       </Text>
                     </View>
@@ -162,16 +162,16 @@ const TransactionHistory = ({navigation}: any) => {
                 <View style={styles.box1}>
                   <View style={{gap:10}}>
                     <View>
-                      <Text style={{fontSize: 15, color: 'gray'}}>
+                      <Text style={{fontSize: 12, color: 'gray'}}>
                         Transaction ID
                       </Text>
-                      <Text style={{fontSize: 14, color: 'black'}}>100000</Text>
+                      <Text style={{fontSize: 12, color: 'black'}}>100000</Text>
                     </View>
                     <View>
-                      <Text style={{fontSize: 16, color: 'gray'}}>Amount</Text>
+                      <Text style={{fontSize: 14, color: 'gray'}}>Amount</Text>
                       <Text
                         style={{
-                          fontSize: 20,
+                          fontSize: 16,
                           fontWeight: '700',
                           color: 'black',
                         }}>
@@ -181,7 +181,7 @@ const TransactionHistory = ({navigation}: any) => {
                   </View>
                   <View>
                     {/* <Text style={{color:Color.mainColor, fontSize:14, fontWeight:'700'}}>View Details</Text> */}
-                    <AntDesign name="right" size={15} color={Color.textColor} />
+                    <AntDesign name="right" size={12} color={Color.textColor} />
                   </View>
                 </View>
               </TouchableOpacity>
@@ -204,11 +204,13 @@ const styles = StyleSheet.create({
   box: {
     display: 'flex',
     backgroundColor: '#f5f5f5',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    // paddingHorizontal: 20,
+    // paddingVertical: 10,
+    justifyContent:'center',
+    alignItems:'center',
     elevation: 5,
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
     flexDirection: 'row',
     width: '30%',
   },
@@ -218,8 +220,8 @@ const styles = StyleSheet.create({
   box1: {
     backgroundColor: 'white',
     width: '69%',
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
     display: 'flex',
     padding: 10,
     elevation: 5,

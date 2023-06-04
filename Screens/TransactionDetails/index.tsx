@@ -30,13 +30,13 @@ const TransactionDetails = ({navigation, route}: any) => {
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
         }}>
-        <View style={{paddingHorizontal: 15}}>
+        <View style={{paddingHorizontal: 12}}>
           <Header navigation={navigation} backBtn noLogo backBtnColor="white" />
         </View>
         <Text
           style={{
             textAlign: 'center',
-            fontSize: 22,
+            fontSize: 18,
             marginVertical: 10,
             color: Color.white,
             fontWeight: 'bold',
@@ -46,11 +46,11 @@ const TransactionDetails = ({navigation, route}: any) => {
         <View style={{alignItems: 'center'}}>
           <MaterialCommunityIcons
             name="check-decagram"
-            size={55}
+            size={45}
             color={'white'}
           />
           {/* <Entypo name='circle-with-cross' size={55} color={'white'}/> */}
-          <Text style={{color: 'white', marginTop: 10}}>51116156165</Text>
+          <Text style={{color: 'white', marginTop: 10}}>51114126145</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -58,14 +58,14 @@ const TransactionDetails = ({navigation, route}: any) => {
               gap: 10,
               marginTop: 20,
             }}>
-            <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold'}}>
+            <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
               Paid
             </Text>
-            <Text style={{color: 'white', fontWeight: '700'}}>by</Text>
+            <Text style={{color: 'white', fontWeight: '700', fontSize: 12,}}>by</Text>
 
             <Image
               source={require('../../Images/payment-method.png')}
-              style={{width: 40, height: 35}}
+              style={{width: 30, height: 25}}
               resizeMode="contain"
             />
           </View>
@@ -79,14 +79,14 @@ const TransactionDetails = ({navigation, route}: any) => {
           marginHorizontal: 20,
           marginTop: -45,
           borderRadius: 10,
-          paddingHorizontal: 15,
-          paddingVertical: 15,
+          paddingHorizontal: 12,
+          paddingVertical: 12,
         }}>
         <Text
           style={{
             color: 'black',
             alignSelf: 'center',
-            fontSize: 24,
+            fontSize: 18,
             paddingVertical: 10,
             fontWeight: '700',
           }}>
@@ -104,12 +104,12 @@ const TransactionDetails = ({navigation, route}: any) => {
             paddingVertical: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <FontAwesome name="circle" size={10} color={Color.mainColor} />
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            <FontAwesome name="circle" size={8} color={Color.mainColor} />
+            <Text style={{color: 'grey', fontSize: 14, fontWeight: '600'}}>
               Customer ID :
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
             {data.customer_id}
           </Text>
         </View>
@@ -126,12 +126,12 @@ const TransactionDetails = ({navigation, route}: any) => {
             paddingVertical: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <FontAwesome name="circle" size={10} color={Color.mainColor} />
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            <FontAwesome name="circle" size={8} color={Color.mainColor} />
+            <Text style={{color: 'grey', fontSize: 14, fontWeight: '600'}}>
               Customer Name :
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
             {data.customer_name}
           </Text>
         </View>
@@ -147,13 +147,15 @@ const TransactionDetails = ({navigation, route}: any) => {
             paddingVertical: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <FontAwesome name="circle" size={10} color={Color.mainColor} />
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            <FontAwesome name="circle" size={8} color={Color.mainColor} />
+            <Text style={{color: 'grey', fontSize: 14, fontWeight: '600'}}>
               Address :
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-            {data.customer_address}
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
+            {data?.customer_address.length > 20
+                  ? `${data?.customer_address.slice(0, 25)} ...`
+                  : data?.customer_address}
           </Text>
         </View>
         {/* forperiod */}
@@ -168,12 +170,12 @@ const TransactionDetails = ({navigation, route}: any) => {
             paddingVertical: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <FontAwesome name="circle" size={10} color={Color.mainColor} />
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            <FontAwesome name="circle" size={8} color={Color.mainColor} />
+            <Text style={{color: 'grey', fontSize: 14, fontWeight: '600'}}>
               For Period :
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
             {differenceInDays ? differenceInDays : 'NaN'}
           </Text>
         </View>
@@ -189,12 +191,12 @@ const TransactionDetails = ({navigation, route}: any) => {
             paddingVertical: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <FontAwesome name="circle" size={10} color={Color.mainColor} />
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            <FontAwesome name="circle" size={8} color={Color.mainColor} />
+            <Text style={{color: 'grey', fontSize: 14, fontWeight: '600'}}>
               Due Date :
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
             12989
           </Text>
         </View>
@@ -210,12 +212,12 @@ const TransactionDetails = ({navigation, route}: any) => {
             paddingVertical: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <FontAwesome name="circle" size={10} color={Color.mainColor} />
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            <FontAwesome name="circle" size={8} color={Color.mainColor} />
+            <Text style={{color: 'grey', fontSize: 14, fontWeight: '600'}}>
               Package Name :
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
             {data.package_name}
           </Text>
         </View>
@@ -231,12 +233,12 @@ const TransactionDetails = ({navigation, route}: any) => {
             paddingVertical: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <FontAwesome name="circle" size={10} color={Color.mainColor} />
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            <FontAwesome name="circle" size={8} color={Color.mainColor} />
+            <Text style={{color: 'grey', fontSize: 14, fontWeight: '600'}}>
               Package Price :
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
             {data.package_price}
           </Text>
         </View>
@@ -252,12 +254,12 @@ const TransactionDetails = ({navigation, route}: any) => {
             paddingVertical: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            <FontAwesome name="circle" size={10} color={Color.mainColor} />
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            <FontAwesome name="circle" size={8} color={Color.mainColor} />
+            <Text style={{color: 'grey', fontSize: 14, fontWeight: '600'}}>
               Balance :
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
             {data.oldamount}
           </Text>
         </View>
@@ -268,28 +270,48 @@ const TransactionDetails = ({navigation, route}: any) => {
             width: '100%',
             overflow: 'hidden',
           }}>
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
 
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
-          <Entypo name="dot-single" size={15} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
+          <Entypo name="dot-single" size={12} color={'grey'} />
         </View>
         {/* Total Amount */}
         <View
@@ -298,19 +320,16 @@ const TransactionDetails = ({navigation, route}: any) => {
             alignItems: 'center',
             gap: 10,
             justifyContent: 'space-between',
-            // borderBottomWidth: 1,
-            // borderColor: '#eee',
             paddingVertical: 10,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-            {/* <FontAwesome name="circle" size={10} color={Color.mainColor} /> */}
             <Text
-              style={{color: Color.mainColor, fontSize: 22, fontWeight: '600'}}>
+              style={{color: Color.mainColor, fontSize: 18, fontWeight: '600'}}>
               Total Amount :
             </Text>
           </View>
           <Text
-            style={{color: Color.mainColor, fontSize: 22, fontWeight: '600'}}>
+            style={{color: Color.mainColor, fontSize: 18, fontWeight: '600'}}>
             Rs.{data.total_amount}/-
           </Text>
         </View>
@@ -318,7 +337,8 @@ const TransactionDetails = ({navigation, route}: any) => {
       <View style={{alignItems: 'center', marginVertical: 10}}>
         <Image
           source={require('../../Images/ISP.png')}
-          style={{width: 130, height: 130}}
+          style={{width: 80, height: 80}}
+          resizeMode='contain'
         />
       </View>
     </ScrollView>

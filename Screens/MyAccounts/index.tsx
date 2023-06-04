@@ -171,15 +171,15 @@ const MyAccounts = () => {
         <Header />
         <Text
           style={{
-            fontSize: 26,
-            fontWeight: 'bold',
-            marginTop: 15,
-            color: Color.textColor,
             textAlign: 'center',
+            fontSize: 18,
+            marginVertical: 10,
+            color: Color.mainColor,
+            fontWeight: 'bold',
           }}>
           My Account
         </Text>
-        <Text style={{fontSize: 16, marginTop: 15, color: Color.textColor}}>
+        <Text style={{fontSize: 14, marginTop: 15, color: Color.textColor}}>
           Personal Details
         </Text>
         {/* Nick Name */}
@@ -192,7 +192,7 @@ const MyAccounts = () => {
             marginVertical: 15,
           }}>
           <Text
-            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
             Nick Name
           </Text>
           <View
@@ -214,7 +214,7 @@ const MyAccounts = () => {
                 style={{
                   color: Color.textColor,
                   fontWeight: 'bold',
-                  fontSize: 24,
+                  fontSize: 16,
                   width: '80%',
                 }}>
                 {nickName ? nickName : getUserData?.first_name}
@@ -223,7 +223,7 @@ const MyAccounts = () => {
             <TouchableOpacity onPress={() => setEditNickName(!editNickName)}>
               <FontAwesome
                 name={editNickName ? 'save' : 'edit'}
-                size={25}
+                size={18}
                 color={Color.textColor}
               />
             </TouchableOpacity>
@@ -239,7 +239,7 @@ const MyAccounts = () => {
             marginBottom: 15,
           }}>
           <Text
-            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
             Login | Customer ID
           </Text>
           <View
@@ -253,7 +253,7 @@ const MyAccounts = () => {
               style={{
                 color: Color.textColor,
                 fontWeight: 'bold',
-                fontSize: 24,
+                fontSize: 16,
               }}>
               {getUserData?.first_name}
             </Text>
@@ -269,7 +269,7 @@ const MyAccounts = () => {
             marginBottom: 15,
           }}>
           <Text
-            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
             Mobile Number
           </Text>
           <View
@@ -283,7 +283,7 @@ const MyAccounts = () => {
               style={{
                 color: Color.textColor,
                 fontWeight: 'bold',
-                fontSize: 20,
+                fontSize: 16,
               }}>
               {getUserData?.mobile_number}
             </Text>
@@ -299,7 +299,7 @@ const MyAccounts = () => {
             marginBottom: 15,
           }}>
           <Text
-            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
             E-mail
           </Text>
           <View
@@ -321,7 +321,7 @@ const MyAccounts = () => {
                 style={{
                   color: Color.textColor,
                   fontWeight: 'bold',
-                  fontSize: 22,
+                  fontSize: 16,
                   width: '90%',
                 }}>
                 {getUserData?.email_address
@@ -332,7 +332,7 @@ const MyAccounts = () => {
             <TouchableOpacity onPress={() => setUpdateEmail(!updateEmail)}>
               <FontAwesome
                 name={!updateEmail ? 'edit' : 'close'}
-                size={25}
+                size={18}
                 color={Color.textColor}
               />
             </TouchableOpacity>
@@ -349,7 +349,7 @@ const MyAccounts = () => {
                 paddingVertical: 6,
                 borderRadius: 30,
               }}>
-              <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
+              <Text style={{color: 'white', fontSize: 14, fontWeight: 'bold'}}>
                 Save
               </Text>
             </TouchableOpacity>
@@ -368,7 +368,7 @@ const MyAccounts = () => {
             marginBottom: 15,
           }}>
           <Text
-            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
             Password
           </Text>
           <TouchableOpacity
@@ -378,11 +378,11 @@ const MyAccounts = () => {
               backgroundColor: Color.mainColor,
               width: '50%',
               alignItems: 'center',
-              marginVertical: 10,
-              paddingVertical: 6,
+              marginVertical: 8,
+              paddingVertical: 3,
               borderRadius: 30,
             }}>
-            <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
+            <Text style={{color: 'white', fontSize: 14, fontWeight: 'bold'}}>
               Update Password
             </Text>
           </TouchableOpacity>
@@ -404,7 +404,7 @@ const MyAccounts = () => {
               secureTextEntry={passwordEye ? true : false}
               style={{
                 width: '90%',
-                padding: 12,
+                paddingHorizontal: 15,
                 color: 'black',
               }}
               onChangeText={e =>
@@ -416,9 +416,9 @@ const MyAccounts = () => {
               onPress={() => setPasswordEye(!passwordEye)}>
               <Text>
                 {passwordEye ? (
-                  <Icon name="eye" size={25} color="black" />
+                  <Icon name="eye" size={18} color="black" />
                 ) : (
-                  <Icon name="eye-off" size={25} color="black" />
+                  <Icon name="eye-off" size={18} color="black" />
                 )}
               </Text>
             </TouchableOpacity>
@@ -439,8 +439,9 @@ const MyAccounts = () => {
               secureTextEntry={passwordEye ? true : false}
               style={{
                 width: '90%',
-                padding: 12,
+                paddingHorizontal: 15,
                 color: 'black',
+                fontSize:14
               }}
               onChangeText={e =>
                 setPasswordFields({...passwordFields, new_password: e})
@@ -451,9 +452,9 @@ const MyAccounts = () => {
               onPress={() => setPasswordEye(!passwordEye)}>
               <Text>
                 {passwordEye ? (
-                  <Icon name="eye" size={25} color="black" />
+                  <Icon name="eye" size={18} color="black" />
                 ) : (
-                  <Icon name="eye-off" size={25} color="black" />
+                  <Icon name="eye-off" size={18} color="black" />
                 )}
               </Text>
             </TouchableOpacity>
@@ -471,7 +472,7 @@ const MyAccounts = () => {
               justifyContent:'center',
               alignSelf:'center'
             }}>
-            <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
+            <Text style={{color: 'white', fontSize: 14, fontWeight: 'bold'}}>
               Update 
             </Text>
           </TouchableOpacity>
@@ -489,7 +490,7 @@ const MyAccounts = () => {
             marginBottom: 15,
           }}>
           <Text
-            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
             Account Opening Date
           </Text>
           <View
@@ -503,7 +504,7 @@ const MyAccounts = () => {
               style={{
                 color: Color.textColor,
                 fontWeight: 'bold',
-                fontSize: 20,
+                fontSize: 16,
               }}>
               {getUserData?.created_at}
             </Text>
@@ -519,7 +520,7 @@ const MyAccounts = () => {
             marginBottom: 15,
           }}>
           <Text
-            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
             Service Provider
           </Text>
           <View
@@ -533,7 +534,7 @@ const MyAccounts = () => {
               style={{
                 color: Color.textColor,
                 fontWeight: 'bold',
-                fontSize: 20,
+                fontSize: 16,
               }}>
               Yournet
             </Text>

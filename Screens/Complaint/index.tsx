@@ -16,6 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {BaseUrl} from '../../Constants/BaseUrl';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const Complaint = ({navigation}: any) => {
   const [complainName, setComplainName] = useState([]);
   const [user_id, setUser_id] = useState('');
@@ -156,37 +157,37 @@ const Complaint = ({navigation}: any) => {
   }
 
   return (
-    <ScrollView style={{height:'100%',}} nestedScrollEnabled={true}>
-      <View
+    <View
         style={{
           backgroundColor: Color.white,
           paddingHorizontal: 15,
           paddingVertical: 20,
+          height:'100%'
         }}>
+          <ScrollView style={{height:'100%',}} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
         <Header navigation={navigation} noLogo backBtn />
         <Text
           style={{
             textAlign: 'center',
-            fontSize: 22,
+            fontSize: 18,
             marginVertical: 10,
             color: Color.mainColor,
             fontWeight: 'bold',
           }}>
           Register Complaint
         </Text>
-        <View style={{alignItems:'center'}}>
-        <Image source={require('../../Images/complaint.jpg')} style={{width:190, height:190}}/>
+        <View style={{alignItems:'center',marginTop:20,marginBottom:30}}>
+        <Image source={require('../../Images/complaint.jpg')} style={{width:120, height:120}}/>
         </View>
         <View>
-          <View style={{borderRadius: 12, overflow: 'hidden',marginHorizontal: 0, marginVertical: 5}}>
+          <View style={{borderRadius: 0, overflow: 'hidden',marginHorizontal: 0, marginVertical: 0,marginTop:0}}>
           <Text
             style={{
               fontFamily: 'Poppins-Regular',
               color: Color.textColor,
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: 'bold',
               marginVertical:5,
-              marginHorizontal:5
             }}>
             Select Complaint
           </Text>
@@ -194,17 +195,21 @@ const Complaint = ({navigation}: any) => {
               activeOpacity={0.8}
               onPress={() => setServiceDD(!serviceDD)}
               style={{
+                // borderColor: Color.textColor,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                paddingVertical: 10,
+                // paddingVertical: 10,
                 paddingHorizontal: 15,
+                height:40,
+                borderLeftWidth:5,
+                    borderLeftColor:Color.mainColor,
                 borderWidth: 1,
-                borderTopLeftRadius: 12,
-                borderTopRightRadius: 12,
+                borderRadius:5,
+                borderTopLeftRadius: 5,
+                borderTopRightRadius: 5,
                 borderBottomWidth: serviceDD ? 0 : 1,
-                borderBottomLeftRadius: serviceDD ? 1 : 12,
-                borderBottomRightRadius: serviceDD ? 1 : 12,
-                borderColor: Color.textColor,
+                borderBottomLeftRadius: serviceDD ? 1 : 5,
+                borderBottomRightRadius: serviceDD ? 1 : 5,
                 alignItems: 'center',
               }}>
               {selectedServicedata &&
@@ -214,12 +219,12 @@ const Complaint = ({navigation}: any) => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     width: '100%',
+                    
                   }}>
                   <Text
                     style={{
-                      color: Color.textColor,
-                      fontFamily: 'Poppins-SemiBold',
-                      fontSize: 16,
+                      color: 'black',
+                      fontSize: 14,
                     }}>
                     {selectedServicedata.complain_name &&
                     selectedServicedata.complain_name > 10
@@ -245,9 +250,8 @@ const Complaint = ({navigation}: any) => {
                   }}>
                   <Text
                     style={{
-                      color: Color.textColor,
-                      fontFamily: 'Poppins-SemiBold',
-                      fontSize: 16,
+                      color: 'black',
+                      fontSize: 14,
                     }}>
                     Select Complain
                   </Text>
@@ -266,14 +270,13 @@ const Complaint = ({navigation}: any) => {
           </View>
           <View
             style={{
-              borderBottomEndRadius: 12,
-              borderBottomStartRadius: 12,
+              borderBottomEndRadius: 5,
+              borderBottomStartRadius: 5,
               borderWidth: !serviceDD ? 0 : 1,
               borderTopWidth: !serviceDD ? 0 : 1,
               borderColor: Color.textColor,
-              top: -14,
             }}>
-            <ScrollView style={{maxHeight: 100}} nestedScrollEnabled={true}>
+            <ScrollView style={{maxHeight: 100}} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
               {serviceDD == true &&
                 Array.from(
                   new Set(complainName.map((item: any) => item.complain_name)),
@@ -294,14 +297,21 @@ const Complaint = ({navigation}: any) => {
                         marginVertical: 5,
                         gap: 10,
                       }}>
+                        <View style={{flexDirection:'row',alignItems:'center',gap:10}}>
+
+                        <FontAwesome
+                          name="circle"
+                          size={6}
+                          color={Color.mainColor}
+                          />
                       <Text
                         style={{
                           color: Color.textColor,
-                          fontFamily: 'Poppins-SemiBold',
-                          fontSize: 16,
+                          fontSize: 14,
                         }}>
                         {e}
                       </Text>
+                          </View>
                     </TouchableOpacity>
                   );
                 })}
@@ -315,9 +325,9 @@ const Complaint = ({navigation}: any) => {
             style={{
               fontFamily: 'Poppins-Regular',
               color: Color.textColor,
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: 'bold',
-              marginHorizontal:3
+              marginTop:10
             }}>
             Description
           </Text>
@@ -327,7 +337,7 @@ const Complaint = ({navigation}: any) => {
             styles.textAreaContainer,
             {
               borderWidth: 1,
-              borderRadius: 12,
+              borderRadius: 5,
               marginHorizontal: 2,
             },
           ]}>
@@ -340,7 +350,7 @@ const Complaint = ({navigation}: any) => {
               styles.textArea,
               {
                 // width: Dimensions.get('window').width / 1.21,
-                padding: 12,
+                padding: 5,
               },
             ]}
             underlineColorAndroid="transparent"
@@ -349,20 +359,24 @@ const Complaint = ({navigation}: any) => {
           />
         </View>
 
-        {/* Send Button */}
+        {/* Submit Button */}
+        {generateComplaint.description &&
         <View
           style={{
             // width: Dimensions.get('window').width / 1.1,
             borderWidth: 1,
             borderColor: Color.mainColor,
-            borderRadius: 5,
-            marginVertical: 20,
+            width: Dimensions.get('window').width / 1.5,
+                borderRadius: 30,
+                marginVertical: 15,
+                alignSelf:'center'
           }}>
           <TouchableOpacity
           onPress={sendComplaintData}
             style={{
               alignItems: 'center',
-              padding: 10,
+                  paddingVertical: 5,
+                  borderRadius: 30,
               backgroundColor: Color.mainColor,
             }}>
             <Text
@@ -375,8 +389,9 @@ const Complaint = ({navigation}: any) => {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+        }
     </ScrollView>
+      </View>
   );
 };
 
@@ -389,7 +404,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   textArea: {
-    height: 150,
+    height: 100,
     justifyContent: 'flex-start',
     textAlignVertical: 'top',
   },

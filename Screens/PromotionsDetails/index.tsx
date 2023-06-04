@@ -20,9 +20,9 @@ const PromotionsDetails = ({navigation, route}: any) => {
       <Text
         style={{
           textAlign: 'center',
-          fontSize: 22,
+          fontSize: 18,
           marginVertical: 10,
-          color: Color.textColor,
+          color: Color.mainColor,
           fontWeight: 'bold',
         }}>
         Promotions Details
@@ -42,8 +42,8 @@ const PromotionsDetails = ({navigation, route}: any) => {
           style={{width: '95%', height: 200, borderRadius: 10, marginBottom: 5}}
         />
         <View style={{alignItems: 'flex-start', paddingHorizontal: 12}}>
-          <Text style={{fontSize: 15, fontWeight: 'bold'}}>{data?.title}</Text>
-          <Text style={{fontSize: 15}}>{data?.description}</Text>
+          <Text style={{fontSize: 14, fontWeight: 'bold', color:'black'}}>{data?.title}</Text>
+          <Text style={{fontSize: 12,textAlign:'justify',color:Color.textColor}}>{data?.description}</Text>
         </View>
       </View>
       </ScrollView>

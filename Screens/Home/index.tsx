@@ -71,14 +71,13 @@ const Home = ({navigation}: any) => {
     gettingUserDatatoken();
   }, [focus]);
   // get User DATA
-  const [getUserData, setUserData] = useState<any>([]);
+  const [getUserData, setUserData] = useState<any>(null);
   const [userPackage, setUserPackage] = useState<any>([]);
-  const [promotionData, setPromotionData] = useState([]);
-  const [webPortalData, WebPortalData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [noInternet, setNoInternet] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  console.log('userPackage', userPackage);
+  const [promotionData, setPromotionData] = useState<any>([]);
+  const [webPortalData, WebPortalData] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [noInternet, setNoInternet] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   // email work
   useEffect(() => {
@@ -133,14 +132,13 @@ const Home = ({navigation}: any) => {
         config, // pass the config object as the third parameter
       )
       .then((res: any) => {
+        if (res.data && res.data.customer) {
         setUserData(res.data.customer);
         WebPortalData(res.data.portals);
         setUserPackage(res.data.package);
         setPromotionData(res.data.promotions);
         setLoading(false);
-        AsyncStorage.setItem('userData', JSON.stringify(getUserData))
-          .then(() => console.log('userData Saved'))
-          .catch(error => console.log('Error saving userData: ', error));
+        }
       })
       .catch(error => {
         console.log('error,==>', error);
@@ -152,6 +150,7 @@ const Home = ({navigation}: any) => {
 
         ToastAndroid.show('Internal Server Error', ToastAndroid.LONG);
         setLoading(false);
+        setUserData(null);
       });
   };
 
@@ -159,7 +158,6 @@ const Home = ({navigation}: any) => {
     getData();
   }, [user_id, focus]);
 
-  const [selectedLink, setSelectedLink] = useState('');
   const handelWebView = (link: string) => {
     if (link) {
       navigation.navigate('CheckWebView', {selectedLink: link});

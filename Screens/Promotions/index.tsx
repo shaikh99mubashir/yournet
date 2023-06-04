@@ -69,7 +69,7 @@ const Promotions = ({navigation}: any) => {
 
   useEffect(() => {
     getPromoData();
-  }, [user_id]);
+  }, [user_id, focus]);
 
   return (
     <View style={{backgroundColor: Color.white, marginBottom: 200, paddingHorizontal:10, height:'100%'}}>

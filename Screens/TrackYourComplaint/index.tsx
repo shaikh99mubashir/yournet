@@ -23,6 +23,7 @@ import axios from 'axios';
 import {BaseUrl} from '../../Constants/BaseUrl';
 import Loader from '../../Components/Loader';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useIsFocused } from '@react-navigation/native';
 //   import DateTimePickerModal from 'react-native-modal-datetime-picker';
 interface CountdownProps {
   pendingStatus: boolean;
@@ -35,7 +36,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
   const [loading, setLoading] = useState(false);
 
   const [userId, setUserId] = useState<any>('');
-
+  const focus = useIsFocused()
   const gettingUserData = async () => {
     try {
       const value = await AsyncStorage.getItem('loginFields');
@@ -50,7 +51,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
   };
   useEffect(() => {
     gettingUserData();
-  }, []);
+  }, [focus]);
 
   const getComplaintData = () => {
     setLoading(true);
@@ -95,7 +96,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
     if (userId?.customer_id) {
       getComplaintData();
     }
-  }, [userId]);
+  }, [userId, focus]);
 
   const [currentTab, setCurrentTab]: any = useState([
     {
@@ -582,7 +583,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <Text style={{fontWeight: 'bold', fontSize: 14}}>o data found</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
         )}
       </View>
     );

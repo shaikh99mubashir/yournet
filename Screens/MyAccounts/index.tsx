@@ -84,7 +84,7 @@ const MyAccounts = () => {
   const [updatePassword, setUpdatePassword] = useState(false);
   const [passwordEye, setPasswordEye] = useState(true);
   const saveEmailAdress = () => {
-    console.log('running save email');
+    ('running save email');
 
     const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     const userEmail: any = email_address;

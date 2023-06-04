@@ -28,7 +28,7 @@ const Verification = ({navigation}: any) => {
     }
   return (
     <View style={{
-        backgroundColor: Color.backgroundColor,
+        backgroundColor: Color.white,
         height: Dimensions.get('window').height,
         paddingHorizontal: 10
       }}>

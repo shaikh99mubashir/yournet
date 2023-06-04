@@ -5,6 +5,7 @@ import {
   ToastAndroid,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../../Components/Header';
@@ -13,9 +14,11 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BaseUrl} from '../../Constants/BaseUrl';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useIsFocused } from '@react-navigation/native';
 
 const TransactionHistory = ({navigation}: any) => {
   const [user_id, setUser_id] = useState('');
+  const focus = useIsFocused()
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('user_id')
       .then(value => {
@@ -30,10 +33,14 @@ const TransactionHistory = ({navigation}: any) => {
 
   useEffect(() => {
     gettingUserDatatoken();
-  }, []);
+  }, [focus]);
 
   const [receipts, setReceipts] = useState([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  // console.log('receipts',receipts);
+  
   const getTransData = () => {
+    setLoading(true);
     const config = {
       headers: {
         User_ID: user_id,
@@ -47,16 +54,20 @@ const TransactionHistory = ({navigation}: any) => {
         config, // pass the config object as the third parameter
       )
       .then((res: any) => {
-        setReceipts(res?.data?.receipts);
+        if(res?.data && res?.data?.receipts){
+          setReceipts(res?.data?.receipts);
+          setLoading(false);
+        }
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+        setLoading(false);
       });
   };
 
   useEffect(() => {
     getTransData();
-  }, [user_id]);
+  }, [user_id,focus]);
 
   return (
     <View
@@ -66,6 +77,19 @@ const TransactionHistory = ({navigation}: any) => {
         backgroundColor: Color.white,
         height: '100%',
       }}>
+        {loading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: Color.white,
+            opacity: 0.9,
+          }}>
+          <ActivityIndicator color="black" size={'large'} />
+          
+        </View>
+      ) : (
+        <>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header backBtn navigation={navigation} noLogo />
         <Text
@@ -189,6 +213,8 @@ const TransactionHistory = ({navigation}: any) => {
           })}
         <View style={{marginBottom: 20}}></View>
       </ScrollView>
+      </>
+      )}
     </View>
   );
 };

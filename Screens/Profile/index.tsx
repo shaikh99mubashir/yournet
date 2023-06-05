@@ -14,12 +14,19 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {BaseUrl} from '../../Constants/BaseUrl';
-
+import {useDispatch, useSelector} from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
 const Profile = ({navigation}:any) => {
   const [editNickName, setEditNickName] = useState<boolean>(false);
   const [nickName, setNickName] = useState<any>('');
   const [userId, setUserId] = useState<any>('');
   const [getUserData, setUserData] = useState<any>([]);
+  const companyName: any = useSelector(companyName => companyName);
+  const focus = useIsFocused()
+  const cartData: any = useSelector(cartData => cartData);
+  useEffect(()=>{
+    setUserData(cartData?.user?.cart?.customer);
+  },[cartData,focus])
 
   AsyncStorage.setItem('nickName', JSON.stringify(nickName))
     .then(() => console.log('nickName fields saved'))
@@ -37,9 +44,9 @@ const Profile = ({navigation}:any) => {
       })
       .catch(error => console.log('Error retrieving login fields: ', error));
   };
-  useEffect(() => {
-    gettingUserData();
-  }, []);
+  // useEffect(() => {
+  //   gettingUserData();
+  // }, []);
   const getData = () => {
     const formData = new FormData();
     formData.append('customer_id', userId?.customer_id);
@@ -58,9 +65,9 @@ const Profile = ({navigation}:any) => {
       });
   };
 
-  useEffect(() => {
-    getData();
-  }, [userId?.customer_id]);
+  // useEffect(() => {
+  //   getData();
+  // }, [userId?.customer_id]);
   return (
     <View       style={{paddingHorizontal: 15}}>
     <ScrollView
@@ -68,7 +75,7 @@ const Profile = ({navigation}:any) => {
       <Header navigation={navigation}  backBtn noLogo/>
       <Text
         style={{
-          fontSize: 26,
+          fontSize: 18,
           fontWeight: 'bold',
           marginTop: 15,
           color: Color.mainColor,
@@ -76,55 +83,10 @@ const Profile = ({navigation}:any) => {
         }}>
         Profile
       </Text>
-      <Text style={{fontSize: 16, marginTop: 15, color: Color.textColor}}>
+      <Text style={{fontSize: 14, marginTop: 15, color: Color.textColor}}>
         Personal Details
       </Text>
-      {/* Nick Name */}
-      {/* <View
-        style={{
-          backgroundColor: Color.white,
-          elevation: 2,
-          padding: 10,
-          borderRadius: 10,
-          marginVertical: 15,
-        }}>
-        <Text
-          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
-          Nick Name
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 10,
-          }}>
-          {editNickName ? (
-            <TextInput
-              placeholder="Edit Your Nick Name"
-              onChangeText={e => setNickName(e)}
-              placeholderTextColor={Color.textColor}
-              style={{color: Color.textColor}}
-            />
-          ) : (
-            <Text
-              style={{
-                color: Color.textColor,
-                fontWeight: 'bold',
-                fontSize: 24,
-              }}>
-              {nickName ? nickName : getUserData?.first_name}
-            </Text>
-          )}
-          <TouchableOpacity onPress={() => setEditNickName(!editNickName)}>
-            <FontAwesome
-              name={editNickName ? 'save' : 'edit'}
-              size={25}
-              color={Color.textColor}
-            />
-          </TouchableOpacity>
-        </View>
-      </View> */}
+      
       {/* userName */}
       <View
         style={{
@@ -136,7 +98,7 @@ const Profile = ({navigation}:any) => {
           marginTop:10
         }}>
         <Text
-          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
           Login | Customer ID
         </Text>
         <View
@@ -150,7 +112,7 @@ const Profile = ({navigation}:any) => {
             style={{
               color: Color.textColor,
               fontWeight: 'bold',
-              fontSize: 24,
+              fontSize: 16,
             }}>
             {getUserData?.first_name}
           </Text>
@@ -166,7 +128,7 @@ const Profile = ({navigation}:any) => {
           marginBottom: 15,
         }}>
         <Text
-          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
           Mobile Number
         </Text>
         <View
@@ -180,7 +142,7 @@ const Profile = ({navigation}:any) => {
             style={{
               color: Color.textColor,
               fontWeight: 'bold',
-              fontSize: 20,
+              fontSize: 16,
             }}>
             {getUserData?.mobile_number}
           </Text>
@@ -196,7 +158,7 @@ const Profile = ({navigation}:any) => {
           marginBottom: 15,
         }}>
         <Text
-          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
           E-mail
         </Text>
         <View
@@ -210,7 +172,7 @@ const Profile = ({navigation}:any) => {
             style={{
               color: Color.textColor,
               fontWeight: 'bold',
-              fontSize: 20,
+              fontSize: 16,
             }}>
             {getUserData?.email_address}
           </Text>
@@ -226,7 +188,7 @@ const Profile = ({navigation}:any) => {
           marginBottom: 15,
         }}>
         <Text
-          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
           Account Opening Date
         </Text>
         <View
@@ -240,7 +202,7 @@ const Profile = ({navigation}:any) => {
             style={{
               color: Color.textColor,
               fontWeight: 'bold',
-              fontSize: 20,
+              fontSize: 16,
             }}>
             {getUserData?.created_at}
           </Text>
@@ -256,7 +218,7 @@ const Profile = ({navigation}:any) => {
           marginBottom: 15,
         }}>
         <Text
-          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 16}}>
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
           Service Provider
         </Text>
         <View
@@ -270,9 +232,9 @@ const Profile = ({navigation}:any) => {
             style={{
               color: Color.textColor,
               fontWeight: 'bold',
-              fontSize: 20,
+              fontSize: 16,
             }}>
-            Yournet
+            {companyName?.user?.companyData?.com_name}
           </Text>
         </View>
       </View>

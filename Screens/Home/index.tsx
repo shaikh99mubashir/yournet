@@ -34,7 +34,7 @@ import {useIsFocused} from '@react-navigation/native';
 import CheckWebView from '../CheckWebView';
 import Loader from '../../Components/Loader';
 import {useDispatch, useSelector} from 'react-redux';
-import {addToCart,companyName} from '../../Redux/Reducer/Reducers';
+import {addToCart, companyName} from '../../Redux/Reducer/Reducers';
 
 const {height, width} = Dimensions.get('window');
 const Home = ({navigation}: any) => {
@@ -68,7 +68,6 @@ const Home = ({navigation}: any) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const cartData: any = useSelector(cartData => cartData);
-  // console.log('cartData?.user?.cart?.customer', cartData?.user?.cart?.customer);
 
   useEffect(() => {
     setUserData(cartData?.user?.cart?.customer);
@@ -77,9 +76,7 @@ const Home = ({navigation}: any) => {
     setPromotionData(cartData?.user?.cart?.promotions);
   }, [cartData, focus]);
 
-
   const dispatch = useDispatch();
-
 
   const getData = () => {
     setLoading(true);
@@ -88,7 +85,10 @@ const Home = ({navigation}: any) => {
         User_ID: user_id,
       },
     };
-
+    if(cartData && cartData.user && cartData.user.cart){
+      setLoading(false);
+      return
+    }
     axios
       .post(`${BaseUrl}getAllData`, null, config)
       .then((res: any) => {
@@ -115,8 +115,7 @@ const Home = ({navigation}: any) => {
   }, [user_id, focus]);
 
   // Get company name
- const [customer_id,setCustomer_id] = useState([])
- const getCompanyName = () => {
+  const getCompanyName = () => {
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
     const config = {
@@ -127,20 +126,20 @@ const Home = ({navigation}: any) => {
     axios
       .post(`${BaseUrl}getCompanyData`, formData, config)
       .then(({data}: any) => {
-        dispatch(companyName(data.company))  
+        dispatch(companyName(data.company));
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error in Track Complaint', ToastAndroid.BOTTOM);
+        ToastAndroid.show(
+          'Internal Server Error in Track Complaint',
+          ToastAndroid.BOTTOM,
+        );
       });
-  }
-  
-  useEffect(()=>{
-    getCompanyName()
-  },[getUserData?.customer_id])
-  
+  };
+
   useEffect(() => {
-    setCustomer_id(cartData?.user?.cart?.customer?.customer_id);
-  }, [cartData, focus]);
+    getCompanyName();
+  }, [getUserData?.customer_id]);
+
 
   // email work
   const saveEmailAdress = () => {
@@ -195,6 +194,7 @@ const Home = ({navigation}: any) => {
       setCurrentIndex(nextIndex);
     }
   };
+
   // Use effect to move to next image every 5 seconds
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -204,6 +204,12 @@ const Home = ({navigation}: any) => {
     // Cleanup function to clear interval on unmount
     return () => clearInterval(intervalId);
   }, [currentIndex]);
+
+  const getItemLayout = (_: any, index: number) => ({
+    length: width / 1.05, // Replace with the actual width of each item
+    offset: (width / 1.05) * index,
+    index,
+  });
 
   //  promotion Work Ended
 
@@ -726,6 +732,7 @@ const Home = ({navigation}: any) => {
                   nestedScrollEnabled={true}
                   keyExtractor={(item, index) => String(index)}
                   pagingEnabled
+                  getItemLayout={getItemLayout} // Add getItemLayout prop
                   onScroll={e => {
                     const x = e.nativeEvent.contentOffset.x;
                     setCurrentIndex((x / (width - 50)).toFixed(0));
@@ -852,7 +859,6 @@ const Home = ({navigation}: any) => {
         </>
       )}
     </View>
-    
   );
 };
 

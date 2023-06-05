@@ -95,8 +95,8 @@ const Promotions = ({navigation}: any) => {
     <View
       style={{
         backgroundColor: Color.white,
-        marginBottom: 200,
-        paddingHorizontal: 10,
+        // marginBottom: 200,
+        paddingHorizontal: 15,
         height: '100%',
       }}>
       {loading ? (
@@ -132,7 +132,7 @@ const Promotions = ({navigation}: any) => {
             }}>
             Promotions
           </Text>
-          <View style={{marginHorizontal: 10, marginTop: 10, marginBottom: 50}}>
+          <View style={{marginHorizontal: 0, marginTop: 10, marginBottom: 40,}}>
             <FlatList
               data={promotionData ?? []}
               nestedScrollEnabled={true}
@@ -186,7 +186,7 @@ const Promotions = ({navigation}: any) => {
             />
           </View>
           </>
-         </ScrollView>
+        </ScrollView>
       )}
     </View>
   );

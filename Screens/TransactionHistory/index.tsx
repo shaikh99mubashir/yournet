@@ -325,7 +325,7 @@ const TransactionHistory = ({navigation}: any) => {
         </View>
       ) : (
         <>
-          {/* <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}> */}
+          <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
             <Header backBtn navigation={navigation} noLogo />
             <Text
               style={{
@@ -352,7 +352,7 @@ const TransactionHistory = ({navigation}: any) => {
             </View>
 
             {/* <View style={{marginBottom: 200}}></View>  */}
-          {/* </ScrollView> */}
+          </ScrollView>
         </>
       )}
     </View>

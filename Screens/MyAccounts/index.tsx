@@ -334,9 +334,10 @@ const MyAccounts = () => {
                   fontSize: 16,
                   width: '90%',
                 }}>
-                {getUserData?.email_address
+                {/* {email_address ? email_address : getUserData?.email_address
                   ? getUserData?.email_address
-                  : 'Update Ypour Email'}
+                  : 'Update Ypour Email'} */}
+                  {email_address ? email_address : (getUserData?.email_address ? getUserData?.email_address : 'Update Your Email')}
               </Text>
             )}
             <TouchableOpacity onPress={() => setUpdateEmail(!updateEmail)}>

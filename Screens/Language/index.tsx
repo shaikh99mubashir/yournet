@@ -15,7 +15,7 @@ const Language = ({navigation}: any) => {
       <Text
         style={{
           textAlign: 'center',
-          fontSize: 22,
+          fontSize: 18,
           marginVertical: 10,
           color: Color.mainColor,
           fontWeight: 'bold',
@@ -34,10 +34,10 @@ const Language = ({navigation}: any) => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-        <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+        <Text style={{color: 'black', fontSize: 15, fontWeight: 'bold'}}>
           English
         </Text>
-        <FontAwesome name='dot-circle-o' size={24} color={Color.mainColor}/>
+        <FontAwesome name='dot-circle-o' size={16} color={Color.mainColor}/>
       </TouchableOpacity>
     </View>
   );

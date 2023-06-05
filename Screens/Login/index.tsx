@@ -269,14 +269,15 @@ const Login = ({navigation}: any) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Animated.Image
+                {/* <Animated.Image
                   source={require('../../Images/ISP.png')}
                   style={{
                     transform: [{rotate: interpolatedRotateAnimation}],
                     width: 200,
                     height: 200,
                   }}
-                />
+                /> */}
+                <ActivityIndicator color={Color.mainColor} size={'large'} />
               </View>
             </Modal>
 
@@ -294,7 +295,7 @@ const Login = ({navigation}: any) => {
                 disabled={loading}
                 style={{
                   alignItems: 'center',
-                  padding: 12,
+                  padding: 10,
                   backgroundColor: 'black',
                   borderRadius: 30,
                 }}>

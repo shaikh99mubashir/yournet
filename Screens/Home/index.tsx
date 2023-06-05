@@ -663,7 +663,7 @@ const Home = ({navigation}: any) => {
                         </Text>
                       </ImageBackground>
                     </View>
-                    <Image
+                    {/* <Image
                       source={require('../../Images/leaf.png')}
                       style={{
                         width: 160,
@@ -674,7 +674,7 @@ const Home = ({navigation}: any) => {
                         // alignSelf: 'center',
                       }}
                       resizeMode="cover"
-                    />
+                    /> */}
                   </View>
                 </View>
               </View>

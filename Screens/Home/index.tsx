@@ -38,21 +38,21 @@ const Home = ({navigation}: any) => {
   // To retrieve the loginFields
   const focus = useIsFocused();
   const [nickName, setNickName] = useState<any>('');
-  const [userId, setUserId] = useState<any>('');
-
-  const gettingUserData = () => {
-    AsyncStorage.getItem('loginFields')
-      .then(value => {
-        if (value !== null) {
-          setUserId(JSON.parse(value));
-        } else {
-        }
-      })
-      .catch(error => console.log('Error retrieving login fields: ', error));
-  };
-  useEffect(() => {
-    gettingUserData();
-  }, []);
+  
+  // const [userId, setUserId] = useState<any>('');
+  // const gettingUserData = () => {
+  //   AsyncStorage.getItem('loginFields')
+  //     .then(value => {
+  //       if (value !== null) {
+  //         setUserId(JSON.parse(value));
+  //       } else {
+  //       }
+  //     })
+  //     .catch(error => console.log('Error retrieving login fields: ', error));
+  // };
+  // useEffect(() => {
+  //   gettingUserData();
+  // }, []);
 
   const [user_id, setUser_id] = useState('');
   const gettingUserDatatoken = () => {
@@ -61,7 +61,7 @@ const Home = ({navigation}: any) => {
         if (value !== null) {
           setUser_id(JSON.parse(value));
         } else {
-          console.log('No login fields found');
+          console.log('No user_id found');
         }
       })
       .catch(error => console.log('Error retrieving login fields: ', error));
@@ -78,6 +78,7 @@ const Home = ({navigation}: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [noInternet, setNoInternet] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  
 
   // email work
   useEffect(() => {
@@ -128,8 +129,8 @@ const Home = ({navigation}: any) => {
     axios
       .post(
         `${BaseUrl}getAllData`,
-        null, // pass null as the data parameter since you're making a POST request without any payload
-        config, // pass the config object as the third parameter
+        null,
+        config,
       )
       .then((res: any) => {
         if (res.data && res.data.customer) {
@@ -616,8 +617,7 @@ const Home = ({navigation}: any) => {
                             paddingHorizontal: 10,
                             fontFamily: 'BebasNeue-Regular',
                           }}>
-                          100 Mbps
-                          {/* {userPackage?.package_name ? userPackage?.package_name : <Text>0 Mpps</Text>} */}
+                          {userPackage?.package_name ? userPackage?.package_name : <Text>0 Mpps</Text>}
                         </Text>
                         <Text
                           style={{

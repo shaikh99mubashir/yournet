@@ -22,6 +22,8 @@ const Contact = ({navigation}:any) => {
   ];
 
   const [number, setNumber] = useState([])
+  console.log('number',number);
+  
   const [userData, setUserData ] :any = useState()
   const focus = useIsFocused()
   const gettingUserDatatoken = () => {
@@ -175,8 +177,6 @@ const Contact = ({navigation}:any) => {
             </Text>
           </TouchableOpacity>
         ))}
-
-  
         </ScrollView>
     </View>
   );

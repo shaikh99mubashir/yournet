@@ -374,7 +374,7 @@ function CustomDrawerContent(props: any) {
                 }}>
                 <View style={{backgroundColor:'white', padding:15, borderRadius:10, marginHorizontal:20}}>
                   <TouchableOpacity onPress={()=> setOpenWWRModal(false)}>
-                  <Text style={{textAlign:'right', fontSize:16, fontWeight:'700', color:'black'}}>X</Text>
+                  <Text style={{textAlign:'right', fontSize:16, fontWeight:'700', color:Color.mainColor}}>X</Text>
                   </TouchableOpacity>
                   <Text style={{textAlign:'center',fontSize:18, fontWeight:'700', color:Color.mainColor}}>Who We Are?</Text>
                   <Text style={{textAlign:'justify',fontSize:14,color:Color.textColor,}}>Filler text is text that shares some characteristics of a real written text, but is random or otherwise generated. It may be used to display a sample of fonts, generate text for testing, or to spoof an e-mail spam filter.</Text>

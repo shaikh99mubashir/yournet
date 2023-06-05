@@ -6,19 +6,21 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BaseUrl} from '../../Constants/BaseUrl';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
+import CustomTabView from '../../Components/CustomTabView';
 
 const TransactionHistory = ({navigation}: any) => {
   const [user_id, setUser_id] = useState('');
-  const focus = useIsFocused()
+  const focus = useIsFocused();
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('user_id')
       .then(value => {
@@ -36,9 +38,11 @@ const TransactionHistory = ({navigation}: any) => {
   }, [focus]);
 
   const [receipts, setReceipts] = useState([]);
+  const [paidRecipts, setPaidRecipts] = useState([])
+  const [unPaidRecipts, setUnPaidRecipts] = useState([])
   const [loading, setLoading] = useState<boolean>(false);
   // console.log('receipts',receipts);
-  
+
   const getTransData = () => {
     setLoading(true);
     const config = {
@@ -54,8 +58,16 @@ const TransactionHistory = ({navigation}: any) => {
         config, // pass the config object as the third parameter
       )
       .then((res: any) => {
-        if(res?.data && res?.data?.receipts){
+        if (res?.data && res?.data?.receipts) {
           setReceipts(res?.data?.receipts);
+          const paid = res?.data?.receipts.filter(
+            (check: any) => check.payment_method == '1',
+          );
+          const unpaid = res?.data?.receipts.filter(
+            (check: any) => check.payment_method == null,
+          );
+          setPaidRecipts(paid)
+          setUnPaidRecipts(unpaid)
           setLoading(false);
         }
       })
@@ -67,7 +79,210 @@ const TransactionHistory = ({navigation}: any) => {
 
   useEffect(() => {
     getTransData();
-  }, [user_id,focus]);
+  }, [user_id, focus]);
+
+  const [currentTab, setCurrentTab]: any = useState([
+    {
+      index: 0,
+      name: 'completed',
+      selected: true,
+    },
+    {
+      index: 1,
+      name: 'cancelled',
+      selected: false,
+    },
+    {
+      index: 2,
+      name: 'cancelled',
+      selected: false,
+    },
+  ]);
+
+  const activateTab = (index: any) => {
+    setCurrentTab(
+      currentTab &&
+        currentTab.length > 0 &&
+        currentTab.map((e: any, i: any) => {
+          if (e.index == index) {
+            return {
+              ...e,
+              selected: true,
+            };
+          } else {
+            return {
+              ...e,
+              selected: false,
+            };
+          }
+        }),
+    );
+  };
+
+  const renderAllTransation = ({item, index}: any) => {
+    const date = new Date(item?.receipt_date);
+    const year = date.getFullYear();
+    const month = date.getMonth(); // Months are zero-based, so 5 represents June
+    const day = date.getDate();
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate('TransactionDetails', item)}
+        activeOpacity={1}
+        key={index}
+        style={[styles.mainBox, {marginTop: 10, marginBottom: 5}]}>
+        <View style={[styles.box, {}]}>
+          <View style={[styles.innerBox, {alignItems: 'center'}]}>
+            {/* day or month */}
+            <View
+              style={{
+                backgroundColor: '#eee',
+                width: 60,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+              }}>
+              <Text
+                style={{
+                  fontSize: 12,
+                  top: 10,
+                  color: 'black',
+                  alignSelf: 'center',
+                  paddingBottom: 2,
+                }}>
+                {month}
+                {/* jan */}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  top: 5,
+                  paddingBottom: 3,
+                  color: 'black',
+                  fontWeight: '700',
+                  alignSelf: 'center',
+                }}>
+                {day}
+              </Text>
+            </View>
+            {/* year */}
+            <Text
+              style={{
+                fontSize: 11,
+                padding: 3,
+                color: 'black',
+                width: 60,
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20,
+                fontWeight: '700',
+                marginTop: 0,
+                textAlign: 'center',
+                // backgroundColor: '#e8e9eb',
+                backgroundColor: '#e2e5de',
+              }}>
+              {year}
+            </Text>
+
+            <View
+              style={{
+                backgroundColor: '#22b14c',
+                // backgroundColor: '#e60000',
+                width: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: 6,
+                paddingVertical: 2,
+                borderRadius: 50,
+              }}>
+              <Text style={{textAlign: 'center', color: 'white', fontSize: 12}}>
+                {item.payment_method == '1' ? 'Paid' : 'UnPaid'}
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.box1}>
+          <View style={{gap: 10}}>
+            <View>
+              <Text style={{fontSize: 12, color: 'gray'}}>Transaction ID</Text>
+              <Text style={{fontSize: 12, color: 'black'}}>100000</Text>
+            </View>
+            <View>
+              <Text style={{fontSize: 14, color: 'gray'}}>Amount</Text>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: '700',
+                  color: 'black',
+                }}>
+                Rs.{item.package_price}/-
+              </Text>
+            </View>
+          </View>
+          <View>
+            {/* <Text style={{color:Color.mainColor, fontSize:14, fontWeight:'700'}}>View Details</Text> */}
+            <AntDesign name="right" size={12} color={Color.textColor} />
+          </View>
+        </View>
+      </TouchableOpacity>
+        
+    );
+  };
+  
+
+
+  const firstRoute = useCallback(() => {
+    return (
+      // <View style={{marginVertical: 20, marginBottom: 80, flex:0,flexGrow: 1}}>
+      <View style={{}}>
+        {receipts.length > 0 ? (
+          <FlatList
+            data={receipts.length > 0 ? receipts : []}
+            renderItem={renderAllTransation}
+            scrollEnabled={true}
+            nestedScrollEnabled={true}
+            contentContainerStyle={{ flexGrow: 1 }}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(items: any, index: number): any => index}
+          />
+        ) : (
+          <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
+        )}
+      </View>
+    );
+  }, [receipts]);
+
+  const secondRoute = useCallback(() => {
+    return (
+      <View>
+        {paidRecipts.length > 0 ? (
+          <FlatList
+            data={paidRecipts.length > 0 ? paidRecipts : []}
+            renderItem={renderAllTransation}
+            scrollEnabled={true}
+            nestedScrollEnabled={true}
+            keyExtractor={(items: any, index: number): any => index}
+          />
+        ) : (
+          <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
+        )}
+      </View>
+    );
+  }, [paidRecipts]);
+  const thirdRoute = useCallback(() => {
+    return (
+      <View>
+        {unPaidRecipts.length > 0 ? (
+          <FlatList
+            data={unPaidRecipts.length > 0 ? unPaidRecipts : []}
+            renderItem={renderAllTransation}
+            scrollEnabled={true}
+            nestedScrollEnabled={true}
+            keyExtractor={(items: any, index: number): any => index}
+          />
+        ) : (
+          <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
+        )}
+      </View>
+    );
+  }, [unPaidRecipts]);
 
   return (
     <View
@@ -77,7 +292,7 @@ const TransactionHistory = ({navigation}: any) => {
         backgroundColor: Color.white,
         height: '100%',
       }}>
-        {loading ? (
+      {loading ? (
         <View
           style={{
             flex: 1,
@@ -85,135 +300,39 @@ const TransactionHistory = ({navigation}: any) => {
             backgroundColor: Color.white,
             opacity: 0.9,
           }}>
-          <ActivityIndicator color="black" size={'large'} />
-          
+          <ActivityIndicator color={Color.mainColor} size={'large'} />
         </View>
       ) : (
         <>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Header backBtn navigation={navigation} noLogo />
-        <Text
-          style={{
-            textAlign: 'center',
-            fontSize: 18,
-            marginVertical: 10,
-            color: Color.mainColor,
-            fontWeight: 'bold',
-          }}>
-          Transaction History
-        </Text>
-        {receipts &&
-          receipts.map((e: any, i: number) => {
-            const date = new Date(e?.receipt_date);
-            const year = date.getFullYear();
-            const month = date.getMonth(); // Months are zero-based, so 5 represents June
-            const day = date.getDate();
+          <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
+            <Header backBtn navigation={navigation} noLogo />
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 18,
+                marginVertical: 10,
+                color: Color.mainColor,
+                fontWeight: 'bold',
+              }}>
+              Invoice
+            </Text>
 
-            return (
-              <TouchableOpacity
-                onPress={() => navigation.navigate('TransactionDetails', e)}
-                activeOpacity={1}
-                key={i}
-                style={[styles.mainBox, {marginTop: 10, marginBottom: 5}]}>
-                <View style={[styles.box, {}]}>
-                  <View style={[styles.innerBox, {alignItems: 'center'}]}>
-                    {/* day or month */}
-                    <View
-                      style={{
-                        backgroundColor: '#eee',
-                        width: 60,
-                        borderTopLeftRadius: 20,
-                        borderTopRightRadius: 20,
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          top: 10,
-                          color: 'black',
-                          alignSelf: 'center',
-                          paddingBottom: 2,
-                        }}>
-                        {month}
-                        {/* jan */}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          top: 5,
-                          paddingBottom: 3,
-                          color: 'black',
-                          fontWeight: '700',
-                          alignSelf: 'center',
-                        }}>
-                        {day}
-                      </Text>
-                    </View>
-                    {/* year */}
-                    <Text
-                      style={{
-                        fontSize: 11,
-                        padding: 3,
-                        color: 'black',
-                        width: 60,
-                        borderBottomLeftRadius: 20,
-                        borderBottomRightRadius: 20,
-                        fontWeight: '700',
-                        marginTop: 0,
-                        textAlign: 'center',
-                        // backgroundColor: '#e8e9eb',
-                        backgroundColor: '#e2e5de',
-                      }}>
-                      {year}
-                    </Text>
+            <View style={{marginTop: 10}}>
+              <CustomTabView
+                currentTab={currentTab}
+                firstRoute={firstRoute}
+                secondRoute={secondRoute}
+                thirdRoute={thirdRoute}
+                activateTab={activateTab}
+                firstRouteTitle="All"
+                secondRouteTitle="Paid"
+                thirdRouteTitle="UnPaid"
+              />
+            </View>
 
-                    <View
-                      style={{
-                        backgroundColor: '#22b14c',
-                        // backgroundColor: '#e60000',
-                        width: 50,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginTop: 6,
-                        paddingVertical: 2,
-                        borderRadius: 50,
-                      }}>
-                      <Text style={{textAlign: 'center', color: 'white',fontSize:12}}>
-                        Paid
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.box1}>
-                  <View style={{gap:10}}>
-                    <View>
-                      <Text style={{fontSize: 12, color: 'gray'}}>
-                        Transaction ID
-                      </Text>
-                      <Text style={{fontSize: 12, color: 'black'}}>100000</Text>
-                    </View>
-                    <View>
-                      <Text style={{fontSize: 14, color: 'gray'}}>Amount</Text>
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          fontWeight: '700',
-                          color: 'black',
-                        }}>
-                        Rs.{e.package_price}/-
-                      </Text>
-                    </View>
-                  </View>
-                  <View>
-                    {/* <Text style={{color:Color.mainColor, fontSize:14, fontWeight:'700'}}>View Details</Text> */}
-                    <AntDesign name="right" size={12} color={Color.textColor} />
-                  </View>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        <View style={{marginBottom: 20}}></View>
-      </ScrollView>
-      </>
+            {/* <View style={{marginBottom: 200}}></View>  */}
+          </ScrollView>
+        </>
       )}
     </View>
   );
@@ -232,8 +351,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     // paddingHorizontal: 20,
     // paddingVertical: 10,
-    justifyContent:'center',
-    alignItems:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     elevation: 5,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
@@ -241,7 +360,7 @@ const styles = StyleSheet.create({
     width: '30%',
   },
   boxOne: {
-   gap:10,
+    gap: 10,
   },
   box1: {
     backgroundColor: 'white',
@@ -254,7 +373,7 @@ const styles = StyleSheet.create({
     gap: 7,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    alignItems:'center'
+    alignItems: 'center',
   },
   innerBox: {
     justifyContent: 'center',

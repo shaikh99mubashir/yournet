@@ -161,7 +161,6 @@ const Complaint = ({navigation}: any) => {
         style={{
           backgroundColor: Color.white,
           paddingHorizontal: 15,
-          paddingVertical: 20,
           height:'100%'
         }}>
           <ScrollView style={{height:'100%',}} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
@@ -200,9 +199,12 @@ const Complaint = ({navigation}: any) => {
                 justifyContent: 'space-between',
                 // paddingVertical: 10,
                 paddingHorizontal: 15,
-                height:40,
+                height:50,
                 borderLeftWidth:5,
                     borderLeftColor:Color.mainColor,
+                    borderRightColor:'darkgrey',
+                    borderTopColor:'darkgrey',
+                    borderBottomColor:'darkgrey',
                 borderWidth: 1,
                 borderRadius:5,
                 borderTopLeftRadius: 5,
@@ -360,12 +362,12 @@ const Complaint = ({navigation}: any) => {
         </View>
 
         {/* Submit Button */}
-        {generateComplaint.description &&
+        
         <View
           style={{
             // width: Dimensions.get('window').width / 1.1,
             borderWidth: 1,
-            borderColor: Color.mainColor,
+            borderColor: generateComplaint.description ? Color.mainColor : 'darkgrey',
             width: Dimensions.get('window').width / 1.5,
                 borderRadius: 30,
                 marginVertical: 15,
@@ -377,7 +379,8 @@ const Complaint = ({navigation}: any) => {
               alignItems: 'center',
                   paddingVertical: 5,
                   borderRadius: 30,
-              backgroundColor: Color.mainColor,
+
+              backgroundColor: generateComplaint.description ? Color.mainColor : 'darkgrey',
             }}>
             <Text
               style={{
@@ -385,11 +388,11 @@ const Complaint = ({navigation}: any) => {
                 fontSize: 18,
                 fontFamily: 'Poppins-Regular',
               }}>
-              Send
+              Generate Complaint
             </Text>
           </TouchableOpacity>
         </View>
-        }
+       
     </ScrollView>
       </View>
   );
@@ -401,6 +404,7 @@ const styles = StyleSheet.create({
   textAreaContainer: {
     // borderColor: COLORS.grey20,
     borderWidth: 1,
+    borderColor:'darkgrey',
     padding: 5,
   },
   textArea: {

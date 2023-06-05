@@ -24,6 +24,8 @@ import {BaseUrl} from '../../Constants/BaseUrl';
 import Loader from '../../Components/Loader';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useIsFocused } from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+
 //   import DateTimePickerModal from 'react-native-modal-datetime-picker';
 interface CountdownProps {
   pendingStatus: boolean;
@@ -37,23 +39,43 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
 
   const [userId, setUserId] = useState<any>('');
   const focus = useIsFocused()
-  const gettingUserData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('loginFields');
-      if (value !== null) {
-        setUserId(JSON.parse(value));
-      } else {
-        console.log('No login fields found');
-      }
-    } catch (error) {
-      console.log('Error retrieving login fields: ', error);
-    }
-  };
-  useEffect(() => {
-    gettingUserData();
-  }, [focus]);
+  // const gettingUserData = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('loginFields');
+  //     if (value !== null) {
+  //       setUserId(JSON.parse(value));
+  //     } else {
+  //       console.log('No login fields found');
+  //     }
+  //   } catch (error) {
+  //     console.log('Error retrieving login fields: ', error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   gettingUserData();
+  // }, [focus]);
 
-  const getComplaintData = () => {
+  const trackcomplaintdata: any = useSelector(complaintData => complaintData);
+
+  const registerComplaintData = () => {
+    setComplaintData(trackcomplaintdata?.user?.trackComplaint);  
+
+    const pendingComplaints = complaintData?.filter(
+      (complaint: any) => complaint.Status === 'Pending',
+    );
+    const completedComplaints = complaintData?.filter(
+      (complaint: any) => complaint.Status === 'Completed',
+    );
+
+    setPendingComplaints(pendingComplaints);
+    setCompletedComplaints(completedComplaints);
+    }
+
+    useEffect(()=>{
+      registerComplaintData()
+    },[focus,trackcomplaintdata])
+
+    const getComplaintData = () => {
     setLoading(true);
     if (!userId?.customer_id) {
       navigation.replace('Login');
@@ -81,7 +103,6 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
           (complaint: any) => complaint.Status === 'Completed',
         );
 
-        // Set the filtered complaints in separate states
         setPendingComplaints(pendingComplaints);
         setCompletedComplaints(completedComplaints);
         setLoading(false);
@@ -92,11 +113,11 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
       });
   };
 
-  useEffect(() => {
-    if (userId?.customer_id) {
-      getComplaintData();
-    }
-  }, [userId, focus]);
+  // useEffect(() => {
+  //   if (userId?.customer_id) {
+  //     getComplaintData();
+  //   }
+  // }, [userId, focus]);
 
   const [currentTab, setCurrentTab]: any = useState([
     {
@@ -283,304 +304,19 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
       </TouchableOpacity>
     );
   };
-  const renderPendingComplaints: any = ({item}: any) => {
-    const dateTimeString: string = item?.created_it;
-    const dateTime: Date = new Date(dateTimeString);
-    const CreatedDate: string = dateTime.toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    });
-    const CreatedTime: string = dateTime.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: "numeric",
-      hour12: false,
-    });
 
-    let resolvedDate:any;
-    let resolvedTime:any;
-      if(item?.resolved_it){
-        const resolved_it: string = item?.resolved_it;
-        const date: Date = new Date(resolved_it);
-         resolvedDate = date.toLocaleDateString('en-US', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-        });
-         resolvedTime = date.toLocaleTimeString('en-US', {
-          hour: 'numeric',
-          minute: 'numeric',
-          second: "numeric",
-          hour12: false,
-        });
-      }
-    
-    return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate('ComplaintDetail', item)}
-        key={item.ID}
-        activeOpacity={1}
-        style={[styles.mainBox, {marginTop:10, marginBottom: 5}]}>
-        <View style={[styles.box, {}]}>
-          <View style={[styles.innerBox, {alignItems: 'center'}]}>
-            {/* day or month */}
-            <View
-              style={{
-                backgroundColor: '#eee',
-                width: 60,
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-              }}>
-              <Text
-                style={{
-                  fontSize: 10,
-                  top: 10,
-                  color: 'black',
-                  alignSelf: 'center',
-                  paddingBottom: 2,
-                }}>
-                Ticket No.
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  top: 5,
-                  paddingBottom: 3,
-                  color: 'black',
-                  fontWeight: '700',
-                  alignSelf: 'center',
-                }}>
-                {item.ID}
-              </Text>
-            </View>
-            {/* year */}
-            <Text
-              style={{
-                fontSize: 10,
-                padding: 3,
-                color: 'black',
-                width: 60,
-                borderBottomLeftRadius: 20,
-                borderBottomRightRadius: 20,
-                fontWeight: '700',
-                marginTop: 0,
-                textAlign: 'center',
-                // backgroundColor: '#e8e9eb',
-                backgroundColor: '#e2e5de',
-              }}>
-              {CreatedTime}
-            </Text>
-
-            <View
-              style={{
-                // backgroundColor: '#22b14c',
-                backgroundColor:
-                  item.Status == 'Pending' ? '#f29339' : '#22b14c',
-                width: 60,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 6,
-                borderRadius: 50,
-              }}>
-              <Text style={{textAlign: 'center', color: 'white',fontSize:12}}>
-                {item.Status}
-                {/* Resolved */}
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.box1}>
-          <View style={{gap: 0, width:'90%', borderWidth:0,}}>
-            <View>
-              <Text style={{fontSize: 14, color: 'black', fontWeight: '500'}}>
-                {item.complain_name}
-              </Text>
-              <Text style={{fontSize: 12, color: 'black'}}>
-                {item?.description.length > 25
-                  ? `${item?.description.slice(0, 25)} ...`
-                  : item?.description}
-              </Text>
-            </View>
-            <View style={{top:4}}>
-              <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
-              {CreatedDate}
-              </Text>
-              <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
-                {resolvedDate ? resolvedDate :''}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: '500',
-                  color: 'black',
-                }}>
-                {item.created_by_name ? item.created_by_name :'Me'}
-              </Text>
-            </View>
-          </View>
-          <View>
-            <AntDesign name="right" size={12} color={Color.textColor} />
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
-  const renderCompletedComplaints: any = ({item}: any) => {
-      const dateTimeString: string = item?.created_it;
-    const dateTime: Date = new Date(dateTimeString);
-    const CreatedDate: string = dateTime.toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    });
-    const CreatedTime: string = dateTime.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: "numeric",
-      hour12: false,
-    });
-
-    let resolvedDate:any;
-    let resolvedTime:any;
-      if(item?.resolved_it){
-        const resolved_it: string = item?.resolved_it;
-        const date: Date = new Date(resolved_it);
-         resolvedDate = date.toLocaleDateString('en-US', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-        });
-         resolvedTime = date.toLocaleTimeString('en-US', {
-          hour: 'numeric',
-          minute: 'numeric',
-          second: "numeric",
-          hour12: false,
-        });
-      }
-    
-    return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate('ComplaintDetail', item)}
-        key={item.ID}
-        activeOpacity={1}
-        style={[styles.mainBox, {marginTop:10, marginBottom: 5}]}>
-        <View style={[styles.box, {}]}>
-          <View style={[styles.innerBox, {alignItems: 'center'}]}>
-            {/* day or month */}
-            <View
-              style={{
-                backgroundColor: '#eee',
-                width: 60,
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-              }}>
-              <Text
-                style={{
-                  fontSize: 10,
-                  top: 10,
-                  color: 'black',
-                  alignSelf: 'center',
-                  paddingBottom: 2,
-                }}>
-                Ticket No.
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  top: 5,
-                  paddingBottom: 3,
-                  color: 'black',
-                  fontWeight: '700',
-                  alignSelf: 'center',
-                }}>
-                {item.ID}
-              </Text>
-            </View>
-            {/* year */}
-            <Text
-              style={{
-                fontSize: 10,
-                padding: 3,
-                color: 'black',
-                width: 60,
-                borderBottomLeftRadius: 20,
-                borderBottomRightRadius: 20,
-                fontWeight: '700',
-                marginTop: 0,
-                textAlign: 'center',
-                // backgroundColor: '#e8e9eb',
-                backgroundColor: '#e2e5de',
-              }}>
-              {CreatedTime}
-            </Text>
-
-            <View
-              style={{
-                // backgroundColor: '#22b14c',
-                backgroundColor:
-                  item.Status == 'Pending' ? '#f29339' : '#22b14c',
-                width: 60,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 6,
-                borderRadius: 50,
-              }}>
-              <Text style={{textAlign: 'center', color: 'white',fontSize:12}}>
-                {item.Status}
-                {/* Resolved */}
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.box1}>
-          <View style={{gap: 0, width:'90%', borderWidth:0,}}>
-            <View>
-              <Text style={{fontSize: 14, color: 'black', fontWeight: '500'}}>
-                {item.complain_name}
-              </Text>
-              <Text style={{fontSize: 12, color: 'black'}}>
-                {item?.description.length > 25
-                  ? `${item?.description.slice(0, 25)} ...`
-                  : item?.description}
-              </Text>
-            </View>
-            <View style={{top:4}}>
-              <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
-              {CreatedDate}
-              </Text>
-              <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
-                {resolvedDate ? resolvedDate :''}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: '500',
-                  color: 'black',
-                }}>
-                {item.created_by_name ? item.created_by_name :'Me'}
-              </Text>
-            </View>
-          </View>
-          <View>
-            <AntDesign name="right" size={12} color={Color.textColor} />
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
 
   const firstRoute = useCallback(() => {
     return (
-      <View style={{marginVertical: 20, marginBottom: 10}}>
-        {complaintData.length > 0 ? (
+      <View style={{marginVertical: 0, marginBottom: 10}}>
+        {complaintData?.length > 0 ? (
           <FlatList
-            data={complaintData.length > 0 ? complaintData : []}
+            data={complaintData?.length > 0 ? complaintData : []}
             renderItem={renderAllComplaint}
             scrollEnabled={true}
             nestedScrollEnabled={true}
-            keyExtractor={(items: any, index: number): any => index}
+            // keyExtractor={(items: any, index: number): any => index}
+            keyExtractor={(item, index) => String(index)}
           />
         ) : (
           <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
@@ -591,13 +327,14 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
 
   const secondRoute = useCallback(() => {
     return (
-      <View style={{marginVertical: 20, marginBottom: 10}}>
-        {pendingComplaints.length > 0 ? (
+      <View style={{marginVertical: 0, marginBottom: 10}}>
+        {pendingComplaints?.length > 0 ? (
           <FlatList
             data={pendingComplaints}
-            renderItem={renderPendingComplaints}
+            renderItem={renderAllComplaint}
             nestedScrollEnabled={true}
-            keyExtractor={(items: any, index: number): any => index}
+            // keyExtractor={(items: any, index: number): any => index}
+            keyExtractor={(item, index) => String(index)}
           />
         ) : (
           <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
@@ -608,12 +345,14 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
   const thirdRoute = useCallback(() => {
     return (
       <View style={{marginVertical: 20, marginBottom: 10}}>
-        {completedComplaints.length > 0 ? (
+        {completedComplaints?.length > 0 ? (
           <FlatList
             data={completedComplaints}
-            renderItem={renderCompletedComplaints}
+            renderItem={renderAllComplaint}
             nestedScrollEnabled={true}
-            keyExtractor={(items: any, index: number): any => index}
+            // keyExtractor={(items: any, index: number): any => index}
+            keyExtractor={(item, index) => String(index)}
+            
           />
         ) : (
           <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
@@ -626,9 +365,10 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
     <ScrollView
       nestedScrollEnabled={true}
       style={{
-        backgroundColor: Color.white,
+          backgroundColor: Color.white,
         height: Dimensions.get('window').height,
       }}>
+      <>
       {loading ? (
         <Loader />
       ) : (
@@ -660,6 +400,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
           />
         </View>
       )}
+    </>
     </ScrollView>
   );
 };

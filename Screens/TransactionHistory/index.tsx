@@ -17,6 +17,7 @@ import {BaseUrl} from '../../Constants/BaseUrl';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useIsFocused} from '@react-navigation/native';
 import CustomTabView from '../../Components/CustomTabView';
+import {useDispatch, useSelector} from 'react-redux';
 
 const TransactionHistory = ({navigation}: any) => {
   const [user_id, setUser_id] = useState('');
@@ -41,7 +42,24 @@ const TransactionHistory = ({navigation}: any) => {
   const [paidRecipts, setPaidRecipts] = useState([])
   const [unPaidRecipts, setUnPaidRecipts] = useState([])
   const [loading, setLoading] = useState<boolean>(false);
-  // console.log('receipts',receipts);
+  
+  const cartData: any = useSelector(cartData => cartData);
+  const receiptsData = () => {
+    setReceipts(cartData?.user?.cart?.receipts);
+    const paid = receipts?.filter(
+      (check: any) => check.payment_method == '1',
+    );
+    const unpaid = receipts?.filter(
+      (check: any) => check.payment_method == null,
+    );
+    setPaidRecipts(paid)
+    setUnPaidRecipts(unpaid)
+  }
+  useEffect(()=>{
+    receiptsData()
+  },[cartData,focus])
+
+
 
   const getTransData = () => {
     setLoading(true);
@@ -59,7 +77,7 @@ const TransactionHistory = ({navigation}: any) => {
       )
       .then((res: any) => {
         if (res?.data && res?.data?.receipts) {
-          setReceipts(res?.data?.receipts);
+          setReceipts(res?.data?.setReceipts);
           const paid = res?.data?.receipts.filter(
             (check: any) => check.payment_method == '1',
           );
@@ -77,9 +95,9 @@ const TransactionHistory = ({navigation}: any) => {
       });
   };
 
-  useEffect(() => {
-    getTransData();
-  }, [user_id, focus]);
+  // useEffect(() => {
+  //   getTransData();
+  // }, [user_id, focus]);
 
   const [currentTab, setCurrentTab]: any = useState([
     {
@@ -232,7 +250,7 @@ const TransactionHistory = ({navigation}: any) => {
     return (
       // <View style={{marginVertical: 20, marginBottom: 80, flex:0,flexGrow: 1}}>
       <View style={{}}>
-        {receipts.length > 0 ? (
+        {receipts?.length > 0 ? (
           <FlatList
             data={receipts.length > 0 ? receipts : []}
             renderItem={renderAllTransation}
@@ -240,7 +258,8 @@ const TransactionHistory = ({navigation}: any) => {
             nestedScrollEnabled={true}
             contentContainerStyle={{ flexGrow: 1 }}
             showsVerticalScrollIndicator={false}
-            keyExtractor={(items: any, index: number): any => index}
+            // keyExtractor={(items: any, index: number): any => index}
+            keyExtractor={(item, index) => String(index)}
           />
         ) : (
           <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
@@ -252,13 +271,14 @@ const TransactionHistory = ({navigation}: any) => {
   const secondRoute = useCallback(() => {
     return (
       <View>
-        {paidRecipts.length > 0 ? (
+        {paidRecipts?.length > 0 ? (
           <FlatList
-            data={paidRecipts.length > 0 ? paidRecipts : []}
+            data={paidRecipts?.length > 0 ? paidRecipts : []}
             renderItem={renderAllTransation}
             scrollEnabled={true}
             nestedScrollEnabled={true}
-            keyExtractor={(items: any, index: number): any => index}
+            // keyExtractor={(items: any, index: number): any => index}
+            keyExtractor={(item, index) => String(index)}
           />
         ) : (
           <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
@@ -269,13 +289,14 @@ const TransactionHistory = ({navigation}: any) => {
   const thirdRoute = useCallback(() => {
     return (
       <View>
-        {unPaidRecipts.length > 0 ? (
+        {unPaidRecipts?.length > 0 ? (
           <FlatList
             data={unPaidRecipts.length > 0 ? unPaidRecipts : []}
             renderItem={renderAllTransation}
             scrollEnabled={true}
             nestedScrollEnabled={true}
-            keyExtractor={(items: any, index: number): any => index}
+            // keyExtractor={(items: any, index: number): any => index}
+            keyExtractor={(item, index) => String(index)}
           />
         ) : (
           <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
@@ -304,7 +325,7 @@ const TransactionHistory = ({navigation}: any) => {
         </View>
       ) : (
         <>
-          <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
+          {/* <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}> */}
             <Header backBtn navigation={navigation} noLogo />
             <Text
               style={{
@@ -331,7 +352,7 @@ const TransactionHistory = ({navigation}: any) => {
             </View>
 
             {/* <View style={{marginBottom: 200}}></View>  */}
-          </ScrollView>
+          {/* </ScrollView> */}
         </>
       )}
     </View>

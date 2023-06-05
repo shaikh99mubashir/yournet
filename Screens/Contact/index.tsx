@@ -8,6 +8,7 @@ import axios from 'axios';
 import { BaseUrl } from '../../Constants/BaseUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Contact = ({navigation}:any) => {
   const mobileNumber = [
@@ -22,8 +23,15 @@ const Contact = ({navigation}:any) => {
   ];
 
   const [number, setNumber] = useState([])
-  console.log('number',number);
+  // console.log('number',number);
   
+  const cartData: any = useSelector(cartData => cartData);
+  // console.log('cartData',cartData.user.contact);
+  useEffect(()=>{
+    setNumber(cartData?.user?.contact);
+  },[])
+
+
   const [userData, setUserData ] :any = useState()
   const focus = useIsFocused()
   const gettingUserDatatoken = () => {
@@ -38,9 +46,9 @@ const Contact = ({navigation}:any) => {
       .catch(error => console.log('Error retrieving login fields: ', error));
   };
   
-  useEffect(() => {
-    gettingUserDatatoken();
-  }, [focus]);
+  // useEffect(() => {
+  //   gettingUserDatatoken();
+  // }, [focus]);
   
   const getData = () => {
     const formData = new FormData();
@@ -53,15 +61,14 @@ const Contact = ({navigation}:any) => {
     axios
       .post(`${BaseUrl}getContactNumbersByCompanyId`, formData, config)
       .then((res: any) => {
-        setNumber(res?.data?.companycontacts);
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
       });
     };
-    useEffect(()=>{
-      getData()
-    },[focus,userData?.company_id])
+    // useEffect(()=>{
+    //   getData()
+    // },[focus,userData?.company_id])
   // const handleMobileNumberPress = (mobileNumber: number) => {
   //   const phoneUrl = `tel:${mobileNumber}`;
   //   Linking.openURL(phoneUrl);

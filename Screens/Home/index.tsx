@@ -33,26 +33,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
 import CheckWebView from '../CheckWebView';
 import Loader from '../../Components/Loader';
+import {useDispatch, useSelector} from 'react-redux';
+import {addToCart,companyName} from '../../Redux/Reducer/Reducers';
+
 const {height, width} = Dimensions.get('window');
 const Home = ({navigation}: any) => {
   // To retrieve the loginFields
   const focus = useIsFocused();
   const [nickName, setNickName] = useState<any>('');
-  
-  // const [userId, setUserId] = useState<any>('');
-  // const gettingUserData = () => {
-  //   AsyncStorage.getItem('loginFields')
-  //     .then(value => {
-  //       if (value !== null) {
-  //         setUserId(JSON.parse(value));
-  //       } else {
-  //       }
-  //     })
-  //     .catch(error => console.log('Error retrieving login fields: ', error));
-  // };
-  // useEffect(() => {
-  //   gettingUserData();
-  // }, []);
 
   const [user_id, setUser_id] = useState('');
   const gettingUserDatatoken = () => {
@@ -78,18 +66,83 @@ const Home = ({navigation}: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [noInternet, setNoInternet] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  const cartData: any = useSelector(cartData => cartData);
+  // console.log('cartData?.user?.cart?.customer', cartData?.user?.cart?.customer);
+
+  useEffect(() => {
+    setUserData(cartData?.user?.cart?.customer);
+    WebPortalData(cartData?.user?.cart?.portals);
+    setUserPackage(cartData?.user?.cart?.package);
+    setPromotionData(cartData?.user?.cart?.promotions);
+  }, [cartData, focus]);
+
+
+  const dispatch = useDispatch();
+
+
+  const getData = () => {
+    setLoading(true);
+    const config = {
+      headers: {
+        User_ID: user_id,
+      },
+    };
+
+    axios
+      .post(`${BaseUrl}getAllData`, null, config)
+      .then((res: any) => {
+        if (res.data && res.data.customer) {
+          dispatch(addToCart(res.data));
+          setLoading(false);
+        }
+      })
+      .catch(error => {
+        console.log('error,==>', error);
+        if (error == 'AxiosError: Network Error') {
+          ToastAndroid.show('You Are Offline', ToastAndroid.LONG);
+          setNoInternet(true);
+          return;
+        }
+        ToastAndroid.show('Internal Server Error', ToastAndroid.LONG);
+        setLoading(false);
+        setUserData(null);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, [user_id, focus]);
+
+  // Get company name
+ const [customer_id,setCustomer_id] = useState([])
+ const getCompanyName = () => {
+    const formData = new FormData();
+    formData.append('customer_id', getUserData?.customer_id);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}getCompanyData`, formData, config)
+      .then(({data}: any) => {
+        dispatch(companyName(data.company))  
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error in Track Complaint', ToastAndroid.BOTTOM);
+      });
+  }
   
+  useEffect(()=>{
+    getCompanyName()
+  },[getUserData?.customer_id])
+  
+  useEffect(() => {
+    setCustomer_id(cartData?.user?.cart?.customer?.customer_id);
+  }, [cartData, focus]);
 
   // email work
-  useEffect(() => {
-    getUserData?.email_address == ''
-      ? setModalVisible(true)
-      : setModalVisible(false);
-  }, [getUserData?.email_address]);
-
-  const handelUpdateEmail = () => {
-    setModalVisible(false);
-  };
   const saveEmailAdress = () => {
     const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     const userEmail: any = email_address;
@@ -118,46 +171,11 @@ const Home = ({navigation}: any) => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
       });
   };
-
-  const getData = () => {
-    setLoading(true);
-    const config = {
-      headers: {
-        User_ID: user_id,
-      },
-    };
-    axios
-      .post(
-        `${BaseUrl}getAllData`,
-        null,
-        config,
-      )
-      .then((res: any) => {
-        if (res.data && res.data.customer) {
-        setUserData(res.data.customer);
-        WebPortalData(res.data.portals);
-        setUserPackage(res.data.package);
-        setPromotionData(res.data.promotions);
-        setLoading(false);
-        }
-      })
-      .catch(error => {
-        console.log('error,==>', error);
-        if (error == 'AxiosError: Network Error') {
-          ToastAndroid.show('You Are Offline', ToastAndroid.LONG);
-          setNoInternet(true);
-          return;
-        }
-
-        ToastAndroid.show('Internal Server Error', ToastAndroid.LONG);
-        setLoading(false);
-        setUserData(null);
-      });
-  };
-
   useEffect(() => {
-    getData();
-  }, [user_id, focus]);
+    getUserData?.email_address == ''
+      ? setModalVisible(true)
+      : setModalVisible(false);
+  }, [getUserData?.email_address]);
 
   const handelWebView = (link: string) => {
     if (link) {
@@ -236,7 +254,7 @@ const Home = ({navigation}: any) => {
   const [apply, setApply] = useState(false);
   const [cancel, setCancel] = useState(false);
   const [email_address, setEmail_address] = useState('');
-  
+
   return (
     <View
       style={{
@@ -449,7 +467,7 @@ const Home = ({navigation}: any) => {
                 style={{width: 35, height: 35, borderRadius: 50}}
                 resizeMode="contain"
               />
-              <View style={{marginBottom:10}}>
+              <View style={{marginBottom: 10}}>
                 <Text
                   style={{
                     fontSize: 14,
@@ -463,7 +481,7 @@ const Home = ({navigation}: any) => {
                     fontSize: 12,
                     fontFamily: 'Poppins-Regular',
                     color: Color.textColor,
-                    top:-3
+                    top: -3,
                   }}>
                   Customer ID : {getUserData?.customer_id}
                 </Text>
@@ -493,7 +511,12 @@ const Home = ({navigation}: any) => {
                     <Text
                       style={[
                         styles.package,
-                        {fontSize: 20, textAlign: 'center', fontWeight: '600',fontFamily: 'Poppins-SemiBold'},
+                        {
+                          fontSize: 20,
+                          textAlign: 'center',
+                          fontWeight: '600',
+                          fontFamily: 'Poppins-SemiBold',
+                        },
                       ]}>
                       Account{'\n'}Status{' '}
                     </Text>
@@ -617,7 +640,11 @@ const Home = ({navigation}: any) => {
                             paddingHorizontal: 10,
                             fontFamily: 'BebasNeue-Regular',
                           }}>
-                          {userPackage?.package_name ? userPackage?.package_name : <Text>0 Mpps</Text>}
+                          {userPackage?.package_name ? (
+                            userPackage?.package_name
+                          ) : (
+                            <Text>0 Mpps</Text>
+                          )}
                         </Text>
                         <Text
                           style={{
@@ -661,6 +688,7 @@ const Home = ({navigation}: any) => {
                   showsHorizontalScrollIndicator={false}
                   nestedScrollEnabled
                   horizontal
+                  keyExtractor={(item, index) => String(index)}
                   renderItem={({item, index}: any) => {
                     return (
                       <TouchableOpacity
@@ -696,6 +724,7 @@ const Home = ({navigation}: any) => {
                   data={promotionData ?? []}
                   showsHorizontalScrollIndicator={false}
                   nestedScrollEnabled={true}
+                  keyExtractor={(item, index) => String(index)}
                   pagingEnabled
                   onScroll={e => {
                     const x = e.nativeEvent.contentOffset.x;
@@ -751,68 +780,79 @@ const Home = ({navigation}: any) => {
             </View>
 
             {/* Help And Support */}
-            <View style={{flexDirection:'row', width:'100%', backgroundColor:'white', elevation:5,shadowRadius:5 ,marginVertical:10, borderWidth:1,borderColor:'#eee',borderRadius:10,paddingVertical:10}}>
-              <View style={{width:'25%', alignItems:'center', marginTop:6}}>
-              <AntDesign
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                backgroundColor: 'white',
+                elevation: 5,
+                shadowRadius: 5,
+                marginVertical: 10,
+                borderWidth: 1,
+                borderColor: '#eee',
+                borderRadius: 10,
+                paddingVertical: 10,
+              }}>
+              <View style={{width: '25%', alignItems: 'center', marginTop: 6}}>
+                <AntDesign
                   name="customerservice"
                   color={Color.mainColor}
                   size={45}
                 />
               </View>
-              <View style={{width:'75%'}}>
-              <Text
-                    style={{fontSize: 14, fontWeight: 'bold', color: 'black'}}>
-                    Help & Customer Support
-                  </Text>
-                  <Text style={{fontSize: 12, color: Color.textColor}}>
-                    Register a complaint or get quick help on quries
-                    related to
-                    <Text
-                      style={{
-                        color: Color.mainColor,
-                        fontWeight: 'bold',
-                        fontSize: 12,
-                      }}>
-                      {' '}
-                      Yournet
-                    </Text>
-                  </Text>
-                  <TouchableOpacity
-                onPress={() => navigation.navigate('Help')}
-                activeOpacity={0.8}
-                style={{
-                  borderWidth: 1,
-                  width: 105,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingVertical: 2,
-                  borderRadius: 50,
-                  borderColor: Color.mainColor,
-                  marginVertical: 10,
-                  flexDirection: 'row',
-                  gap: 10,
-                }}>
+              <View style={{width: '75%'}}>
                 <Text
-                  style={{
-                    color: Color.textColor,
-                    fontWeight: 'bold',
-                    fontSize: 12,
-                  }}>
-                  Get Help
+                  style={{fontSize: 14, fontWeight: 'bold', color: 'black'}}>
+                  Help & Customer Support
                 </Text>
-                <AntDesign
-                  name="arrowright"
-                  color={Color.mainColor}
-                  size={15}
-                />
-              </TouchableOpacity>
+                <Text style={{fontSize: 12, color: Color.textColor}}>
+                  Register a complaint or get quick help on quries related to
+                  <Text
+                    style={{
+                      color: Color.mainColor,
+                      fontWeight: 'bold',
+                      fontSize: 12,
+                    }}>
+                    {' '}
+                    Yournet
+                  </Text>
+                </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Help')}
+                  activeOpacity={0.8}
+                  style={{
+                    borderWidth: 1,
+                    width: 105,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingVertical: 2,
+                    borderRadius: 50,
+                    borderColor: Color.mainColor,
+                    marginVertical: 10,
+                    flexDirection: 'row',
+                    gap: 10,
+                  }}>
+                  <Text
+                    style={{
+                      color: Color.textColor,
+                      fontWeight: 'bold',
+                      fontSize: 12,
+                    }}>
+                    Get Help
+                  </Text>
+                  <AntDesign
+                    name="arrowright"
+                    color={Color.mainColor}
+                    size={15}
+                  />
+                </TouchableOpacity>
               </View>
-
             </View>
           </ScrollView>
         </>
       )}
     </View>
+    
   );
 };
 

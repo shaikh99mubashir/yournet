@@ -6,6 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import LinearGradient from 'react-native-linear-gradient';
+import {useDispatch, useSelector} from 'react-redux';
 
 const TransactionDetails = ({navigation, route}: any) => {
   const data: any = route.params;
@@ -18,6 +19,7 @@ const TransactionDetails = ({navigation, route}: any) => {
   const differenceInDays: number = Math.ceil(
     differenceInTime / (1000 * 3600 * 24),
   );
+  const companyName: any = useSelector(companyName => companyName);
 
   return (
     <ScrollView
@@ -90,7 +92,7 @@ const TransactionDetails = ({navigation, route}: any) => {
             paddingVertical: 10,
             fontWeight: '700',
           }}>
-          Hi Speed Internet
+          {companyName?.user?.companyData?.com_name}
         </Text>
         {/* Customer ID */}
         <View

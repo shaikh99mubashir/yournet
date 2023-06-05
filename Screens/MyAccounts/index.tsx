@@ -18,6 +18,7 @@ import axios from 'axios';
 import {BaseUrl} from '../../Constants/BaseUrl';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useIsFocused} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 
 const MyAccounts = () => {
   const [editNickName, setEditNickName] = useState<boolean>(false);
@@ -45,6 +46,9 @@ const MyAccounts = () => {
   useEffect(() => {
     gettingUserDatatoken();
   }, [focus]);
+
+  
+  const companyName: any = useSelector(companyName => companyName);
 
   const getCusData = () => {
     setLoading(true);
@@ -75,9 +79,9 @@ const MyAccounts = () => {
       });
   };
 
-  useEffect(() => {
-    getCusData();
-  }, [user_id,focus]);
+  // useEffect(() => {
+  //   getCusData();
+  // }, [user_id,focus]);
 
   const [email_address, setEmail_address] = useState('');
   const [updateEmail, setUpdateEmail] = useState(false);
@@ -108,7 +112,7 @@ const MyAccounts = () => {
       .then((res: any) => {
         ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);
         setUpdateEmail(!updateEmail);
-        getCusData();
+        // getCusData();
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
@@ -156,6 +160,12 @@ const MyAccounts = () => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
       });
   };
+
+
+  const cartData: any = useSelector(cartData => cartData);
+  useEffect(()=>{
+    setUserData(cartData?.user?.cart?.customer);
+  },[cartData,focus])
 
   return (
     <View style={{paddingHorizontal: 15, backgroundColor:'white', height:'100%'}}>
@@ -536,7 +546,7 @@ const MyAccounts = () => {
                 fontWeight: 'bold',
                 fontSize: 16,
               }}>
-              Yournet
+              {companyName?.user?.companyData?.com_name}
             </Text>
           </View>
         </View>

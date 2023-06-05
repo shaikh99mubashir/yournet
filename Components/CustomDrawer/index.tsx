@@ -16,6 +16,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { BaseUrl } from '../../Constants/BaseUrl';
 import { useIsFocused } from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {addToCart} from '../../Redux/Reducer/Reducers';
 function CustomDrawerContent(props: any) {
   const navigateToScreen = (screenName: any) => {
     props.navigation.navigate(screenName);
@@ -41,6 +43,12 @@ function CustomDrawerContent(props: any) {
  
   // get User DATA
   const [getUserData, setUserData] = useState<any>([]);
+  const cartData: any = useSelector(cartData => cartData);
+  // console.log('cartData?.user?.cart?.customer', cartData?.user?.cart?.customer);
+
+  useEffect(() => {
+    setUserData(cartData?.user?.cart?.customer);
+  }, [cartData, focus]);
   const getData = () => {
     const config = {
       headers: {
@@ -57,9 +65,9 @@ function CustomDrawerContent(props: any) {
       });
   };
 
-  useEffect(() => {
-    getData();
-  }, [user_id, focus]);  
+  // useEffect(() => {
+  //   getData();
+  // }, [user_id, focus]);  
   // props.navigation.addListener('state', () => {
   //   getData()
   // });
@@ -86,13 +94,13 @@ function CustomDrawerContent(props: any) {
   }
   const [nickName, setNickName] = useState<any>('');
   props.navigation.addListener('state', () => {
-    getData();
+    // getData();
     gettingUserNickName();
   });
   const gettingUserNickName = async () => {
     let value = await AsyncStorage.getItem('nickName');
     if (value !== null) {
-      console.log(value, 'value');
+      // console.log(value, 'value');
       setNickName(JSON.parse(value));
     }
   };

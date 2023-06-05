@@ -4,8 +4,9 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  ToastAndroid
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Color} from '../../Constants';
 import Header from '../../Components/Header';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -13,7 +14,70 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useDispatch, useSelector} from 'react-redux';
+import {contactData,trackComplaint} from '../../Redux/Reducer/Reducers';
+import { useIsFocused } from '@react-navigation/native';
+import axios from 'axios';
+import { BaseUrl } from '../../Constants/BaseUrl';
+
 const Help = ({navigation}: any) => {
+  const focus = useIsFocused()
+  const dispatch = useDispatch();
+  const [company_id,setCompany_id] = useState([])
+  const [customer_id,setCustomer_id] = useState([])
+  
+  const cartData: any = useSelector(cartData => cartData);
+  console.log(company_id,'company_id===>');
+  console.log(customer_id,'customer_id===>');
+  
+  
+  useEffect(() => {
+    setCompany_id(cartData?.user?.cart?.customer?.company_id);
+    setCustomer_id(cartData?.user?.cart?.customer?.customer_id);
+  }, [cartData, focus]);
+
+  const getContacts = () => {
+    const formData = new FormData();
+    formData.append('company_id', company_id);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+    .post(`${BaseUrl}getContactNumbersByCompanyId`, formData, config)
+    .then(({data}: any) => {
+      dispatch(contactData(data.companycontacts));
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+      });
+    };
+
+    const trackYourComplaint = () => {
+      const formData = new FormData();
+    formData.append('customer_id', customer_id);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}getAllComplain`, formData, config)
+      .then(({data}: any) => {
+        dispatch(trackComplaint(data.complaints))  
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error in Track Complaint', ToastAndroid.BOTTOM);
+      });
+    }
+    useEffect(()=>{
+      getContacts()
+    },[focus,company_id])
+    useEffect(()=>{
+      trackYourComplaint()
+    },[focus,customer_id])
+
   return (
     <ScrollView
     showsVerticalScrollIndicator={true}

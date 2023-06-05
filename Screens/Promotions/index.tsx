@@ -16,6 +16,7 @@ import axios from 'axios';
 import {BaseUrl} from '../../Constants/BaseUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 const Promotions = ({navigation}: any) => {
   const [loading, setLoading] = useState(false);
   const [user_id, setUser_id] = useState('');
@@ -54,7 +55,7 @@ const Promotions = ({navigation}: any) => {
   }, [focus]);
 
   const [promotionData, setPromotionData] = useState([]);
-  console.log('promotionData', promotionData);
+  // console.log('promotionData', promotionData);
 
   const getPromoData = () => {
     setLoading(true);
@@ -81,9 +82,14 @@ const Promotions = ({navigation}: any) => {
       });
   };
 
-  useEffect(() => {
-    getPromoData();
-  }, [user_id, focus]);
+  // useEffect(() => {
+  //   getPromoData();
+  // }, [user_id, focus]);
+
+  const cartData: any = useSelector(cartData => cartData);
+  useEffect(()=>{
+    setPromotionData(cartData?.user?.cart?.promotions)
+  },[cartData,focus])
 
   return (
     <View
@@ -114,6 +120,7 @@ const Promotions = ({navigation}: any) => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           nestedScrollEnabled={true}>
+        <>
           <Header />
           <Text
             style={{
@@ -178,7 +185,8 @@ const Promotions = ({navigation}: any) => {
               }}
             />
           </View>
-        </ScrollView>
+          </>
+         </ScrollView>
       )}
     </View>
   );

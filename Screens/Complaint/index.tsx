@@ -20,6 +20,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const Complaint = ({navigation}: any) => {
   const [complainName, setComplainName] = useState([]);
   const [user_id, setUser_id] = useState('');
+  console.log("complainName",complainName);
+  
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('user_id')
       .then(value => {
@@ -117,6 +119,7 @@ const Complaint = ({navigation}: any) => {
     company_id:'',
     status:'Pending',
   })
+  console.log('generateComplaint',generateComplaint);
   
   const sendComplaintData = () => {
     let data = {...generateComplaint}
@@ -129,10 +132,14 @@ const Complaint = ({navigation}: any) => {
     data.company_id = getUserData?.company_id
     data.complain = selectedServicedata.ID
 
-    let flag = Object.values(data);
-    let flag2 = flag.some((e, i) => e == '');
-    if (flag2) {
-      ToastAndroid.show('Required fields are missing', ToastAndroid.SHORT);
+    // let flag = Object.values(data);
+    // let flag2 = flag.some((e, i) => e == '');
+    // if (flag2) {
+    //   ToastAndroid.show('Your Information is In Completed Contact Admin', ToastAndroid.SHORT);
+    //   return;
+    // }
+    if (!selectedServicedata.ID) {
+      ToastAndroid.show('Your Information is In Completed Contact Admin', ToastAndroid.SHORT);
       return;
     }
     const formData = new FormData();
@@ -353,6 +360,7 @@ const Complaint = ({navigation}: any) => {
               {
                 // width: Dimensions.get('window').width / 1.21,
                 padding: 5,
+                color:'black'
               },
             ]}
             underlineColorAndroid="transparent"
@@ -380,7 +388,8 @@ const Complaint = ({navigation}: any) => {
                   paddingVertical: 5,
                   borderRadius: 30,
 
-              backgroundColor: generateComplaint.description ? Color.mainColor : 'darkgrey',
+              backgroundColor: selectedServicedata.ID ? Color.mainColor : 'darkgrey',
+              // backgroundColor: generateComplaint.description ? Color.mainColor : 'darkgrey',
             }}>
             <Text
               style={{

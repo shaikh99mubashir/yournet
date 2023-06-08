@@ -78,6 +78,7 @@ const Home = ({navigation}: any) => {
 
   const dispatch = useDispatch();
 
+  
   const getData = () => {
     setLoading(true);
     const config = {
@@ -85,10 +86,10 @@ const Home = ({navigation}: any) => {
         User_ID: user_id,
       },
     };
-    if(cartData && cartData.user && cartData.user.cart){
-      setLoading(false);
-      return
-    }
+    // if(cartData?.user?.cart?.status){
+    //   setLoading(false);
+    //   return
+    // }
     axios
       .post(`${BaseUrl}getAllData`, null, config)
       .then((res: any) => {
@@ -214,18 +215,19 @@ const Home = ({navigation}: any) => {
   //  promotion Work Ended
 
   // nickname
-  navigation.addListener('state', () => {
-    gettingUserNickName();
-  });
-  const gettingUserNickName = async () => {
-    let value = await AsyncStorage.getItem('nickName');
-    if (value !== null) {
-      setNickName(JSON.parse(value));
-    }
-  };
-  useEffect(() => {
-    gettingUserNickName();
-  }, []);
+  const userNickName: any = useSelector(userNickName => userNickName);
+  // navigation.addListener('state', () => {
+  //   gettingUserNickName();
+  // });
+  // const gettingUserNickName = async () => {
+  //   let value = await AsyncStorage.getItem('nickName');
+  //   if (value !== null) {
+  //     setNickName(JSON.parse(value));
+  //   }
+  // };
+  // useEffect(() => {
+  //   gettingUserNickName();
+  // }, []);
 
   // Back Handler
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -480,7 +482,7 @@ const Home = ({navigation}: any) => {
                     fontFamily: 'Poppins-SemiBold',
                     color: Color.textColor,
                   }}>
-                  {nickName ? nickName : getUserData?.first_name}
+                  {userNickName.user.userNickName ? userNickName.user.userNickName : getUserData?.first_name}
                 </Text>
                 <Text
                   style={{
@@ -527,33 +529,10 @@ const Home = ({navigation}: any) => {
                       Account{'\n'}Status{' '}
                     </Text>
                     <View style={{alignItems: 'center'}}>
-                      {/* 
-                    <Text
-                        style={[
-                          styles.status,
-                          {
-                            color: Color.white,
-                            fontSize: 25,
-                            backgroundColor:
-                              getUserData?.status == 'Active'
-                                ? '#8cce78'
-                                : getUserData?.status == 'Inactive '
-                                ? '#c73d3d'
-                                : getUserData?.status == 'Registered'
-                                ? 'darkgrey'
-                                : getUserData?.status == 'Terminate'
-                                ? '#999999'
-                                : 'white',
-                            paddingHorizontal: 10,
-                            paddingVertical: 3,
-                          },
-                        ]}>
-                        {getUserData?.status == 'Inactive'
-                          ? 'Expire'
-                          : getUserData?.status}
-                      </Text> */}
+                     
+                      {getUserData?.status == 'Active' ?
                       <ImageBackground
-                        source={require('../../Images/status.png')}
+                        source={require('../../Images/active.png')}
                         resizeMode="contain"
                         style={{
                           flex: 1,
@@ -566,6 +545,53 @@ const Home = ({navigation}: any) => {
                           {getUserData?.status}
                         </Text>
                       </ImageBackground>
+                      : getUserData?.status == 'Registered' ?
+                      <ImageBackground
+                      source={require('../../Images/register.png')}
+                      resizeMode="contain"
+                      style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: 50,
+                        width: 160,
+                      }}>
+                      <Text style={{color: 'white', fontSize: 20}}>
+                        {getUserData?.status}
+                      </Text>
+                    </ImageBackground>
+                    
+                    :getUserData?.status == 'InActive' ?
+                    <ImageBackground
+                    source={require('../../Images/inactive.png')}
+                    resizeMode="contain"
+                    style={{
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: 50,
+                      width: 160,
+                    }}>
+                    <Text style={{color: 'white', fontSize: 20}}>
+                      {getUserData?.status  == 'InActive' ? "Expired" :''}
+                    </Text>
+                  </ImageBackground> :
+                  getUserData?.status == 'Terminate' ?
+                  <ImageBackground
+                    source={require('../../Images/terminate.png')}
+                    resizeMode="contain"
+                    style={{
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: 50,
+                      width: 160,
+                    }}>
+                    <Text style={{color: 'white', fontSize: 20}}>
+                      {getUserData?.status}
+                    </Text>
+                  </ImageBackground>:''
+                  }
                     </View>
                     <View
                       style={{
@@ -721,7 +747,7 @@ const Home = ({navigation}: any) => {
             <View>
               <View
                 style={{
-                  height: height / 3,
+                  height: height / 4,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
@@ -742,8 +768,8 @@ const Home = ({navigation}: any) => {
                     return (
                       <View
                         style={{
-                          width: width / 1.05,
-                          height: height / 3,
+                          width: width / 1.055,
+                          height: height / 4,
                           justifyContent: 'center',
                           alignItems: 'center',
                         }}>
@@ -792,13 +818,14 @@ const Home = ({navigation}: any) => {
                 flexDirection: 'row',
                 width: '100%',
                 backgroundColor: 'white',
-                elevation: 5,
+                elevation: 2,
                 shadowRadius: 5,
-                marginVertical: 10,
+                marginVertical: 15,
                 borderWidth: 1,
                 borderColor: '#eee',
                 borderRadius: 10,
                 paddingVertical: 10,
+                
               }}>
               <View style={{width: '25%', alignItems: 'center', marginTop: 6}}>
                 <AntDesign

@@ -120,7 +120,7 @@ const Contact = ({navigation}:any) => {
       style={{
         backgroundColor: Color.white,
         height: '100%',
-        paddingHorizontal: 10,
+        paddingHorizontal: 15,
       }}>
         <ScrollView>
       <Header backBtn navigation={navigation} noLogo />
@@ -145,7 +145,7 @@ const Contact = ({navigation}:any) => {
           color: Color.textColor,
           fontWeight: 'bold',
         }}>
-        For Support you can Contact us Option Below
+        For Calls & WhatsApp Click on Numbers
       </Text>
       <View
         style={{
@@ -154,8 +154,8 @@ const Contact = ({navigation}:any) => {
           justifyContent: 'center',
           gap: 10,
         }}>
-        <MaterialIcons name="local-phone" size={30} color={Color.mainColor} />
-        <Text
+        {/* <MaterialIcons name="local-phone" size={30} color={Color.mainColor} /> */}
+        {/* <Text
           style={{
             textAlign: 'center',
             fontSize: 18,
@@ -164,7 +164,7 @@ const Contact = ({navigation}:any) => {
             fontWeight: 'bold',
           }}>
           For Calls
-        </Text>
+        </Text> */}
       </View>
       {number &&
         number.map((e: any, i: number) => (
@@ -175,13 +175,16 @@ const Contact = ({navigation}:any) => {
               padding: 10,
               borderRadius: 20,
               marginBottom: 10,
-              borderColor:Color.mainColor
+              borderColor:'#eee'
             }}
             key={i}
             onPress={() => handleMobileNumberPress(e)}>
-            <Text style={{color: 'black', fontSize: 16, fontWeight: 'bold'}}>
-              Call {e.number}
-            </Text>
+            {/* <Text style={{color: 'black', fontSize: 16, fontWeight: 'bold'}}>
+            </Text> */}
+            <View style={{flexDirection:'row', alignItems:'center', gap:10}}>
+            {/* <MaterialIcons name="local-phone" size={25} color={Color.mainColor} />  */}
+            <Text style={{color: Color.mainColor, fontSize: 16, fontWeight: 'bold'}}>{e.number}</Text>
+            </View>
           </TouchableOpacity>
         ))}
         </ScrollView>

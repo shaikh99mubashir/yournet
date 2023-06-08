@@ -9,6 +9,8 @@ import Feather from 'react-native-vector-icons/Feather';
 
 const ComplaintDetail = ({route, navigation}: any) => {
   const data = route.params;
+  console.log('data',data);
+  
 
   const [resolvedDateTime, setResolvedDateTime] = useState('')
   const [creationDateTime, setCreationDateTime] = useState('')
@@ -170,7 +172,7 @@ useEffect(()=>{
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
-            {data?.address.length > 20
+            {data?.address.length > 25
                   ? `${data?.address.slice(0, 25)} ...`
                   : data?.address}
           </Text>
@@ -189,11 +191,11 @@ useEffect(()=>{
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
             <FontAwesome name="circle" size={7} color={Color.mainColor} />
             <Text style={{color: 'gray', fontSize: 14, fontWeight: '600'}}>
-              Creation Date
+              Creation Date :
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
-            {creationDateTime ?creationDateTime :''}
+            {data.created_it ? data.created_it :''}
           </Text>
         </View>
         {/* Created By */}
@@ -263,12 +265,14 @@ useEffect(()=>{
             paddingVertical: 10,
           }}>
           <Text
-            style={{color: Color.mainColor, fontSize: 18, fontWeight: '600'}}>
+            style={{color: Color.mainColor, fontSize: 16, fontWeight: '600'}}>
             {data.complain_name}
           </Text>
-          <Text style={{color: 'black', fontSize: 14}}>{data.description ?data.description:''}</Text>
+          <Text style={{color: 'black', fontSize: 12}}>{data.description ?data.description.trim():''}</Text>
+          {data.Status == 'Resolved' ?
+          <>
           <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
-            {data.resolved_by_name? data.resolved_by_name :'' }
+          {data.resolved_by_name? `Resolved By : ${data.resolved_by_name}` :'' }
           </Text>
           <Text
             style={{
@@ -277,9 +281,10 @@ useEffect(()=>{
               fontWeight: '600',
               marginTop: -10,
             }}>
-            {resolvedDateTime? resolvedDateTime: ''}
-           
+            {data.Status == 'Resolved' ? data.created_it :''}
           </Text>
+          </>
+          :''}
         </View>
       </View>
       <View style={{marginBottom: 20}}></View>

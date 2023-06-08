@@ -19,6 +19,7 @@ import {BaseUrl} from '../../Constants/BaseUrl';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
+import { nickname } from '../../Redux/Reducer/Reducers';
 
 const MyAccounts = () => {
   const [editNickName, setEditNickName] = useState<boolean>(false);
@@ -26,9 +27,10 @@ const MyAccounts = () => {
   const [getUserData, setUserData] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [noInternet, setNoInternet] = useState(false)
-  AsyncStorage.setItem('nickName', JSON.stringify(nickName))
-  .then((res) => res)
-  .catch(error => console.log('Error saving nickName: ', error));
+  const dispatch = useDispatch()
+  // AsyncStorage.setItem('nickName', JSON.stringify(nickName))
+  // .then((res) => res)
+  // .catch(error => console.log('Error saving nickName: ', error));
   const focus = useIsFocused()
   const [user_id, setUser_id] = useState('');
   const gettingUserDatatoken = () => {
@@ -48,8 +50,7 @@ const MyAccounts = () => {
   }, [focus]);
 
   
-  const companyName: any = useSelector(companyName => companyName);
-
+ 
   const getCusData = () => {
     setLoading(true);
     const config = {
@@ -163,6 +164,10 @@ const MyAccounts = () => {
 
 
   const cartData: any = useSelector(cartData => cartData);
+  const companyName: any = useSelector(companyName => companyName);
+  const userNickName: any = useSelector(userNickName => userNickName);
+  
+  dispatch(nickname(nickName));
   useEffect(()=>{
     setUserData(cartData?.user?.cart?.customer);
   },[cartData,focus])
@@ -227,7 +232,7 @@ const MyAccounts = () => {
                   fontSize: 16,
                   width: '80%',
                 }}>
-                {nickName ? nickName : getUserData?.first_name}
+                {userNickName?.user?.userNickName ? userNickName.user.userNickName : getUserData?.first_name}
               </Text>
             )}
             <TouchableOpacity onPress={() => setEditNickName(!editNickName)}>

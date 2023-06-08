@@ -23,7 +23,7 @@ import axios from 'axios';
 import {BaseUrl} from '../../Constants/BaseUrl';
 import Loader from '../../Components/Loader';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 
 //   import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -31,14 +31,16 @@ interface CountdownProps {
   pendingStatus: boolean;
 }
 
-const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
+const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
   const [complaintData, setComplaintData] = useState([]);
   const [pendingComplaints, setPendingComplaints] = useState([]);
   const [completedComplaints, setCompletedComplaints] = useState([]);
   const [loading, setLoading] = useState(false);
+  console.log('completedComplaints==>', complaintData);
+
 
   const [userId, setUserId] = useState<any>('');
-  const focus = useIsFocused()
+  const focus = useIsFocused();
   // const gettingUserData = async () => {
   //   try {
   //     const value = await AsyncStorage.getItem('loginFields');
@@ -58,24 +60,24 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
   const trackcomplaintdata: any = useSelector(complaintData => complaintData);
 
   const registerComplaintData = () => {
-    setComplaintData(trackcomplaintdata?.user?.trackComplaint);  
+    setComplaintData(trackcomplaintdata?.user?.trackComplaint);
 
     const pendingComplaints = complaintData?.filter(
       (complaint: any) => complaint.Status === 'Pending',
     );
     const completedComplaints = complaintData?.filter(
-      (complaint: any) => complaint.Status === 'Completed',
+      (complaint: any) => complaint.Status === 'Resolved',
     );
 
     setPendingComplaints(pendingComplaints);
     setCompletedComplaints(completedComplaints);
-    }
+  };
 
-    useEffect(()=>{
-      registerComplaintData()
-    },[focus,trackcomplaintdata])
+  useEffect(() => {
+    registerComplaintData();
+  }, [focus, trackcomplaintdata]);
 
-    const getComplaintData = () => {
+  const getComplaintData = () => {
     setLoading(true);
     if (!userId?.customer_id) {
       navigation.replace('Login');
@@ -94,7 +96,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
     axios
       .post(`${BaseUrl}getAllComplain`, formData, config)
       .then((res: any) => {
-        setComplaintData(res?.data?.complaints);  
+        setComplaintData(res?.data?.complaints);
 
         const pendingComplaints = res.data.complaints.filter(
           (complaint: any) => complaint.Status === 'Pending',
@@ -157,9 +159,8 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
     );
   };
 
-  const [resolvedDateTime, setResolvedDateTime] = useState('')
-  const [creationDateTime, setCreationDateTime] = useState('')
-
+  const [resolvedDateTime, setResolvedDateTime] = useState('');
+  const [creationDateTime, setCreationDateTime] = useState('');
 
   const renderAllComplaint: any = ({item}: any) => {
     const dateTimeString: string = item?.created_it;
@@ -172,34 +173,34 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
     const CreatedTime: string = dateTime.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: 'numeric',
-      second: "numeric",
+      second: 'numeric',
       hour12: false,
     });
 
-    let resolvedDate:any;
-    let resolvedTime:any;
-      if(item?.resolved_it){
-        const resolved_it: string = item?.resolved_it;
-        const date: Date = new Date(resolved_it);
-         resolvedDate = date.toLocaleDateString('en-US', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-        });
-         resolvedTime = date.toLocaleTimeString('en-US', {
-          hour: 'numeric',
-          minute: 'numeric',
-          second: "numeric",
-          hour12: false,
-        });
-      }
-    
+    let resolvedDate: any;
+    let resolvedTime: any;
+    if (item?.resolved_it) {
+      const resolved_it: string = item?.resolved_it;
+      const date: Date = new Date(resolved_it);
+      resolvedDate = date.toLocaleDateString('en-US', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
+      resolvedTime = date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: false,
+      });
+    }
+
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('ComplaintDetail', item)}
         key={item.ID}
         activeOpacity={1}
-        style={[styles.mainBox, {marginTop:10, marginBottom: 5}]}>
+        style={[styles.mainBox, {marginTop: 10, marginBottom: 5}]}>
         <View style={[styles.box, {}]}>
           <View style={[styles.innerBox, {alignItems: 'center'}]}>
             {/* day or month */}
@@ -207,6 +208,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
               style={{
                 backgroundColor: '#eee',
                 width: 60,
+                // borderRadius: 10,
                 borderTopLeftRadius: 20,
                 borderTopRightRadius: 20,
               }}>
@@ -216,13 +218,13 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
                   top: 10,
                   color: 'black',
                   alignSelf: 'center',
-                  paddingBottom: 2,
+                  paddingVertical: 2,
                 }}>
                 Ticket No.
               </Text>
               <Text
                 style={{
-                  fontSize: 15,
+                  fontSize: 16,
                   top: 5,
                   paddingBottom: 3,
                   color: 'black',
@@ -247,7 +249,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
                 // backgroundColor: '#e8e9eb',
                 backgroundColor: '#e2e5de',
               }}>
-              {CreatedTime}
+              2023
             </Text>
 
             <View
@@ -261,7 +263,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
                 marginTop: 6,
                 borderRadius: 50,
               }}>
-              <Text style={{textAlign: 'center', color: 'white',fontSize:12}}>
+              <Text style={{textAlign: 'center', color: 'white', fontSize: 12}}>
                 {item.Status}
                 {/* Resolved */}
               </Text>
@@ -269,31 +271,34 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
           </View>
         </View>
         <View style={styles.box1}>
-          <View style={{gap: 0, width:'90%', borderWidth:0,}}>
+          <View style={{gap: 0, width: '90%', borderWidth: 0}}>
             <View>
               <Text style={{fontSize: 14, color: 'black', fontWeight: '500'}}>
                 {item.complain_name}
               </Text>
-              <Text style={{fontSize: 12, color: 'black'}}>
-                {item?.description.length > 25
-                  ? `${item?.description.slice(0, 25)} ...`
-                  : item?.description}
+              <Text style={{fontSize: 12, color: 'grey',}}>
+                {item?.description.length > 28
+                  ? `${item?.description.slice(0, 28).trim()} ...`
+                  : item?.description.trim()}
               </Text>
             </View>
-            <View style={{top:4}}>
+            <View style={{top: 4}}>
               <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
-              {CreatedDate}
+               {item.Status == 'Resolved' ? 'Resolved Date' : 'Complaint Date:'}
               </Text>
-              <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
+              <Text style={{fontSize: 12, color: 'grey', fontWeight: '500'}}>
+                {item.created_it}
+              </Text>
+              {/* <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
                 {resolvedDate ? resolvedDate :''}
-              </Text>
+              </Text> */}
               <Text
                 style={{
                   fontSize: 12,
                   fontWeight: '500',
                   color: 'black',
                 }}>
-                {item.created_by_name ? item.created_by_name :'Me'}
+                {item.created_by_name ? item.created_by_name : 'Me'}
               </Text>
             </View>
           </View>
@@ -304,7 +309,6 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
       </TouchableOpacity>
     );
   };
-
 
   const firstRoute = useCallback(() => {
     return (
@@ -342,7 +346,7 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
       </View>
     );
   }, [pendingComplaints]);
-  
+
   const thirdRoute = useCallback(() => {
     return (
       <View style={{marginVertical: 20, marginBottom: 10}}>
@@ -353,7 +357,6 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
             nestedScrollEnabled={true}
             // keyExtractor={(items: any, index: number): any => index}
             keyExtractor={(item, index) => String(index)}
-            
           />
         ) : (
           <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
@@ -365,43 +368,44 @@ const TrackYourComplaint = ({navigation,pendingStatus }: any) => {
   return (
     <ScrollView
       nestedScrollEnabled={true}
+      showsVerticalScrollIndicator={false}
       style={{
-          backgroundColor: Color.white,
+        backgroundColor: Color.white,
         height: Dimensions.get('window').height,
       }}>
       <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <View
-          style={{
-            marginHorizontal: 15,
-          }}>
-          <Header navigation={navigation} backBtn={true} noLogo />
-          <Text
+        {loading ? (
+          <Loader />
+        ) : (
+          <View
             style={{
-              textAlign: 'center',
-              fontSize: 18,
-              marginVertical: 10,
-              color: Color.mainColor,
-              fontWeight: 'bold',
+              marginHorizontal: 15,
             }}>
-            Complaint Status
-          </Text>
-          <View style={{marginTop: 10}}></View>
-          <CustomTabView
-            currentTab={currentTab}
-            firstRoute={firstRoute}
-            secondRoute={secondRoute}
-            thirdRoute={thirdRoute}
-            activateTab={activateTab}
-            firstRouteTitle="All"
-            secondRouteTitle="Pending"
-            thirdRouteTitle="Resolved"
-          />
-        </View>
-      )}
-    </>
+            <Header navigation={navigation} backBtn={true} noLogo />
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 18,
+                marginVertical: 10,
+                color: Color.mainColor,
+                fontWeight: 'bold',
+              }}>
+              Complaint Status
+            </Text>
+            <View style={{marginTop: 10}}></View>
+            <CustomTabView
+              currentTab={currentTab}
+              firstRoute={firstRoute}
+              secondRoute={secondRoute}
+              thirdRoute={thirdRoute}
+              activateTab={activateTab}
+              firstRouteTitle="All"
+              secondRouteTitle="Pending"
+              thirdRouteTitle="Resolved"
+            />
+          </View>
+        )}
+      </>
     </ScrollView>
   );
 };
@@ -417,10 +421,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     paddingHorizontal: 0,
     paddingVertical: 0,
-    alignItems:'center',
-    justifyContent:'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     elevation: 5,
-    shadowRadius:10,
+    shadowRadius: 10,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     flexDirection: 'row',
@@ -436,8 +440,8 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
     display: 'flex',
     // padding: 10,
-    paddingHorizontal:10,
-    paddingVertical:10,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
     elevation: 5,
     // gap: 7,
     justifyContent: 'space-between',

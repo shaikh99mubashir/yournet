@@ -42,15 +42,16 @@ const TransactionHistory = ({navigation}: any) => {
   const [paidRecipts, setPaidRecipts] = useState([])
   const [unPaidRecipts, setUnPaidRecipts] = useState([])
   const [loading, setLoading] = useState<boolean>(false);
+  console.log('receipts',receipts);
   
   const cartData: any = useSelector(cartData => cartData);
   const receiptsData = () => {
     setReceipts(cartData?.user?.cart?.receipts);
     const paid = receipts?.filter(
-      (check: any) => check.payment_method == '1',
+      (check: any) => check.payment_mode == '1',
     );
     const unpaid = receipts?.filter(
-      (check: any) => check.payment_method == null,
+      (check: any) => check.payment_mode == null,
     );
     setPaidRecipts(paid)
     setUnPaidRecipts(unpaid)
@@ -211,7 +212,7 @@ const TransactionHistory = ({navigation}: any) => {
                 borderRadius: 50,
               }}>
               <Text style={{textAlign: 'center', color: 'white', fontSize: 12}}>
-                {item.payment_method == '1' ? 'Paid' : 'UnPaid'}
+                {item.payment_mode == '1' ? 'Paid' : 'UnPaid'}
               </Text>
             </View>
           </View>
@@ -220,7 +221,7 @@ const TransactionHistory = ({navigation}: any) => {
           <View style={{gap: 10}}>
             <View>
               <Text style={{fontSize: 12, color: 'gray'}}>Transaction ID</Text>
-              <Text style={{fontSize: 12, color: 'black'}}>100000</Text>
+              <Text style={{fontSize: 12, color: 'black'}}>{item.payment_method == null ? '' : item?.inovoice_number}</Text>
             </View>
             <View>
               <Text style={{fontSize: 14, color: 'gray'}}>Amount</Text>

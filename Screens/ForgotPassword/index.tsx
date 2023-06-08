@@ -67,7 +67,7 @@ const ForgotPassword = ({navigation} :any) => {
           <TextInput
             placeholder="Email"
             onChangeText={(e)=> setForgotPassword(e)}
-            style={{width: Dimensions.get('window').width / 1.21, padding: 12}}
+            style={{width: Dimensions.get('window').width / 1.21, padding: 12,color:'black'}}
           />
         </View>
           {/* Send Button */}

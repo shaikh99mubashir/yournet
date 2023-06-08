@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 const TransactionDetails = ({navigation, route}: any) => {
   const data: any = route.params;
+  console.log('data ===>', data);
 
   const activationDate: Date = new Date(data.activation_date);
   const expiryDate: Date = new Date(data.expiry_date);
@@ -43,16 +44,21 @@ const TransactionDetails = ({navigation, route}: any) => {
             color: Color.white,
             fontWeight: 'bold',
           }}>
-          Transaction Details
+          Invoice Details
         </Text>
         <View style={{alignItems: 'center'}}>
-          <MaterialCommunityIcons
-            name="check-decagram"
-            size={45}
-            color={'white'}
-          />
-          {/* <Entypo name='circle-with-cross' size={55} color={'white'}/> */}
-          <Text style={{color: 'white', marginTop: 10}}>51114126145</Text>
+          {data.payment_mode == null ? (
+            <Entypo name="circle-with-cross" size={55} color={'white'} />
+          ) : (
+            <MaterialCommunityIcons
+              name="check-decagram"
+              size={45}
+              color={'white'}
+            />
+          )}
+          <Text style={{color: 'white', marginTop: 10}}>
+            {data.payment_mode == null ? '' : data?.inovoice_number}
+          </Text>
           <View
             style={{
               flexDirection: 'row',
@@ -60,17 +66,27 @@ const TransactionDetails = ({navigation, route}: any) => {
               gap: 10,
               marginTop: 20,
             }}>
-            <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
-              Paid
-            </Text>
-            <Text style={{color: 'white', fontWeight: '700', fontSize: 12,}}>by</Text>
+            {data.payment_mode == null ? (
+              <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>Un Paid</Text>
+            ) : (
+              <>
+                <Text
+                  style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
+                  Paid
+                </Text>
+                <Text style={{color: 'white', fontWeight: '700', fontSize: 12}}>
+                  by
+                </Text>
 
-            <Image
-              source={require('../../Images/payment-method.png')}
-              style={{width: 30, height: 25}}
-              resizeMode="contain"
-            />
+                <Image
+                  source={require('../../Images/payment-method.png')}
+                  style={{width: 30, height: 25}}
+                  resizeMode="contain"
+                />
+              </>
+            )}
           </View>
+          <Text style={{color:'white', fontSize:14, top:5}}>{data.created_at}</Text>
         </View>
       </View>
       <View
@@ -155,9 +171,9 @@ const TransactionDetails = ({navigation, route}: any) => {
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
-            {data?.customer_address.length > 20
-                  ? `${data?.customer_address.slice(0, 25)} ...`
-                  : data?.customer_address}
+            {data?.customer_address.length > 25
+              ? `${data?.customer_address.slice(0, 25)} ...`
+              : data?.customer_address}
           </Text>
         </View>
         {/* forperiod */}
@@ -178,7 +194,8 @@ const TransactionDetails = ({navigation, route}: any) => {
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
-            {differenceInDays ? differenceInDays : 'NaN'}
+            {/* {differenceInDays ? differenceInDays : 'NaN'} */}
+            {`${data.activation_date} to ${data.expiry_date}`}
           </Text>
         </View>
         {/* Due Date */}
@@ -199,7 +216,7 @@ const TransactionDetails = ({navigation, route}: any) => {
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
-            12989
+            {data.expiry_date}
           </Text>
         </View>
         {/* Package Name */}
@@ -340,7 +357,7 @@ const TransactionDetails = ({navigation, route}: any) => {
         <Image
           source={require('../../Images/ISP.png')}
           style={{width: 80, height: 80}}
-          resizeMode='contain'
+          resizeMode="contain"
         />
       </View>
     </ScrollView>

@@ -70,8 +70,9 @@ const Login = ({navigation}: any) => {
         // To store the loginFields
         AsyncStorage.setItem('user_id', JSON.stringify(res.data.user_id))
           .then(() => console.log('user_id Saved'))
-          .catch(error => console.log('Error saving login fields: ', error));
-
+          .catch(error => console.log('Error saving user_id: ', error));
+          console.log("res.data,",res.data);
+          
         if (res.data.status == 'success') {
           navigation.replace('Home');
           ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);

@@ -35,7 +35,8 @@ import CheckWebView from '../CheckWebView';
 import Loader from '../../Components/Loader';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToCart, companyName} from '../../Redux/Reducer/Reducers';
-
+import messaging from '@react-native-firebase/messaging';
+import firebase from '@react-native-firebase/app';
 const {height, width} = Dimensions.get('window');
 const Home = ({navigation}: any) => {
   // To retrieve the loginFields
@@ -68,8 +69,8 @@ const Home = ({navigation}: any) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const cartData: any = useSelector(cartData => cartData);
-  console.log('getUserData',getUserData);
-  
+  // console.log('getUserData',getUserData);
+
   useEffect(() => {
     setUserData(cartData?.user?.cart?.customer);
     WebPortalData(cartData?.user?.cart?.portals);
@@ -79,7 +80,6 @@ const Home = ({navigation}: any) => {
 
   const dispatch = useDispatch();
 
-  
   const getData = () => {
     setLoading(true);
     const config = {
@@ -116,8 +116,6 @@ const Home = ({navigation}: any) => {
     getData();
   }, [user_id, focus]);
 
-
-
   // Get company name
   const getCompanyName = () => {
     const formData = new FormData();
@@ -143,7 +141,6 @@ const Home = ({navigation}: any) => {
   useEffect(() => {
     getCompanyName();
   }, [getUserData?.customer_id]);
-
 
   // email work
   const saveEmailAdress = () => {
@@ -217,6 +214,42 @@ const Home = ({navigation}: any) => {
 
   //  promotion Work Ended
 
+  // Initialize Firebase app
+
+  const checkPermissionAndToken = async () => {
+    // const permissionEnabled = await messaging().hasPermission();
+    // if (permissionEnabled) {
+    //   const fcmToken = await messaging().getToken();
+    //   if (fcmToken) {
+    //     console.log("fcmToken=====>",);
+
+    //   } else {
+    //     console.log("User doesn't have a device token yet");
+    //   }
+    // }
+    messaging()
+      .hasPermission()
+      .then(enabled => {
+        if (enabled) {
+          messaging()
+            .getToken()
+            .then(fcmToken => {
+              if (fcmToken) {
+                console.log('fcmToken===============>', fcmToken);
+              } else {
+                console.log("user doesn't have a device token yet");
+              }
+            });
+        }
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  };
+
+  useEffect(() => {
+    checkPermissionAndToken();
+  }, []);
   // nickname
   const userNickName: any = useSelector(userNickName => userNickName);
   // navigation.addListener('state', () => {
@@ -485,7 +518,9 @@ const Home = ({navigation}: any) => {
                     fontFamily: 'Poppins-SemiBold',
                     color: Color.textColor,
                   }}>
-                  {userNickName.user.userNickName ? userNickName.user.userNickName : getUserData?.first_name}
+                  {userNickName.user.userNickName
+                    ? userNickName.user.userNickName
+                    : getUserData?.first_name}
                 </Text>
                 <Text
                   style={{
@@ -527,75 +562,75 @@ const Home = ({navigation}: any) => {
                           textAlign: 'center',
                           fontWeight: '600',
                           fontFamily: 'Poppins-SemiBold',
-                          top:12
+                          top: 12,
                         },
                       ]}>
                       Account Status
                     </Text>
                     <View style={{alignItems: 'center'}}>
-                     
-                      {getUserData?.status == 'Active' ?
-                      <ImageBackground
-                        source={require('../../Images/active.png')}
-                        resizeMode="contain"
-                        style={{
-                          flex: 1,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          height: 50,
-                          width: 160,
-                        }}>
-                        <Text style={{color: 'white', fontSize: 20}}>
-                          {getUserData?.status}
-                        </Text>
-                      </ImageBackground>
-                      : getUserData?.status == 'Registered' ?
-                      <ImageBackground
-                      source={require('../../Images/register.png')}
-                      resizeMode="contain"
-                      style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: 50,
-                        width: 160,
-                      }}>
-                      <Text style={{color: 'white', fontSize: 20}}>
-                        {getUserData?.status}
-                      </Text>
-                    </ImageBackground>
-                    
-                    :getUserData?.status == 'InActive' ?
-                    <ImageBackground
-                    source={require('../../Images/inactive.png')}
-                    resizeMode="contain"
-                    style={{
-                      flex: 1,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: 50,
-                      width: 160,
-                    }}>
-                    <Text style={{color: 'white', fontSize: 20}}>
-                      {getUserData?.status  == 'InActive' ? "Expired" :''}
-                    </Text>
-                  </ImageBackground> :
-                  getUserData?.status == 'Terminate' ?
-                  <ImageBackground
-                    source={require('../../Images/terminate.png')}
-                    resizeMode="contain"
-                    style={{
-                      flex: 1,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: 50,
-                      width: 160,
-                    }}>
-                    <Text style={{color: 'white', fontSize: 20}}>
-                      {getUserData?.status}
-                    </Text>
-                  </ImageBackground>:''
-                  }
+                      {getUserData?.status == 'Active' ? (
+                        <ImageBackground
+                          source={require('../../Images/active.png')}
+                          resizeMode="contain"
+                          style={{
+                            flex: 1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: 50,
+                            width: 160,
+                          }}>
+                          <Text style={{color: 'white', fontSize: 20}}>
+                            {getUserData?.status}
+                          </Text>
+                        </ImageBackground>
+                      ) : getUserData?.status == 'Registered' ? (
+                        <ImageBackground
+                          source={require('../../Images/register.png')}
+                          resizeMode="contain"
+                          style={{
+                            flex: 1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: 50,
+                            width: 160,
+                          }}>
+                          <Text style={{color: 'white', fontSize: 20}}>
+                            {getUserData?.status}
+                          </Text>
+                        </ImageBackground>
+                      ) : getUserData?.status == 'InActive' ? (
+                        <ImageBackground
+                          source={require('../../Images/inactive.png')}
+                          resizeMode="contain"
+                          style={{
+                            flex: 1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: 50,
+                            width: 160,
+                          }}>
+                          <Text style={{color: 'white', fontSize: 20}}>
+                            {getUserData?.status == 'InActive' ? 'Expired' : ''}
+                          </Text>
+                        </ImageBackground>
+                      ) : getUserData?.status == 'Terminate' ? (
+                        <ImageBackground
+                          source={require('../../Images/terminate.png')}
+                          resizeMode="contain"
+                          style={{
+                            flex: 1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: 50,
+                            width: 160,
+                          }}>
+                          <Text style={{color: 'white', fontSize: 20}}>
+                            {getUserData?.status}
+                          </Text>
+                        </ImageBackground>
+                      ) : (
+                        ''
+                      )}
                     </View>
                     <View
                       style={{
@@ -675,7 +710,7 @@ const Home = ({navigation}: any) => {
                             fontWeight: 'bold',
                             paddingHorizontal: 10,
                             fontFamily: 'BebasNeue-Regular',
-                            textAlign:'center'
+                            textAlign: 'center',
                           }}>
                           {userPackage?.package_name ? (
                             userPackage?.package_name
@@ -830,7 +865,6 @@ const Home = ({navigation}: any) => {
                 borderColor: '#eee',
                 borderRadius: 10,
                 paddingVertical: 10,
-                
               }}>
               <View style={{width: '25%', alignItems: 'center', marginTop: 6}}>
                 <AntDesign

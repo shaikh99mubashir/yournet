@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "758086907149",
+    "project_id": "isp-billing-7a121",
+    "storage_bucket": "isp-billing-7a121.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:758086907149:android:cf131ba84bd3648cf06c44",
+        "android_client_info": {
+          "package_name": "com.yournet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "758086907149-f83bboesm6lupoqebfh07ddhl2vpvpg8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAceKEUx6j-7bjLIjoALew4sma8snwOh0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "758086907149-f83bboesm6lupoqebfh07ddhl2vpvpg8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

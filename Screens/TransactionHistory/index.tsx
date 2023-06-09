@@ -42,9 +42,9 @@ const TransactionHistory = ({navigation}: any) => {
   const [paidRecipts, setPaidRecipts] = useState([])
   const [unPaidRecipts, setUnPaidRecipts] = useState([])
   const [loading, setLoading] = useState<boolean>(false);
-  // console.log('receipts',receipts);
-  console.log('paidRecipts====>',paidRecipts);
-  console.log('unPaidRecipts====>',unPaidRecipts);
+  // // console.log('receipts',receipts);
+  // console.log('paidRecipts====>',paidRecipts);
+  // console.log('unPaidRecipts====>',unPaidRecipts);
   
   const cartData: any = useSelector(cartData => cartData);
   const receiptsData = () => {
@@ -141,10 +141,29 @@ const TransactionHistory = ({navigation}: any) => {
   };
 
   const renderAllTransation = ({item, index}: any) => {
+    // const date = new Date(item?.receipt_date);
+    // const year = date.getFullYear();
+    // const month = date.getMonth(); // Months are zero-based, so 5 represents June
+    // const day = date.getDate();
+    // console.log('month',month);
+
+    const monthNames = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    
     const date = new Date(item?.receipt_date);
     const year = date.getFullYear();
-    const month = date.getMonth(); // Months are zero-based, so 5 represents June
-    const day = date.getDate();
+    const monthIndex = date.getMonth(); // Months are zero-based
+    
+    const monthName = monthNames[monthIndex];
+    
+    console.log(`${date.getDate()} ${monthName} ${year}`);
+
+
+console.log('item?.receipt_date',item?.receipt_date);
+
+    
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('TransactionDetails', item)} 
@@ -169,7 +188,7 @@ const TransactionHistory = ({navigation}: any) => {
                   alignSelf: 'center',
                   paddingBottom: 2,
                 }}>
-                {month}
+                {monthName}
                 {/* jan */}
               </Text>
               <Text
@@ -181,7 +200,8 @@ const TransactionHistory = ({navigation}: any) => {
                   fontWeight: '700',
                   alignSelf: 'center',
                 }}>
-                {day}
+                {/* {day} */}
+                {date.getDate()}
               </Text>
             </View>
             {/* year */}

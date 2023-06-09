@@ -21,6 +21,35 @@ const TransactionDetails = ({navigation, route}: any) => {
     differenceInTime / (1000 * 3600 * 24),
   );
   const companyName: any = useSelector(companyName => companyName);
+  console.log('data.expiry_date', data.expiry_date);
+  const dateString = data.expiry_date;
+  const dateStringactivation_date = data.activation_date;
+  const dateRegex = /^(\d+)(st|nd|rd|th)\s(\w+)(\s\d{4})$/;
+  const [, dayString, , monthString, yearString] = dateString.match(dateRegex) || [];
+  const [, dayStringa, , monthStringa, yearStringa] = dateStringactivation_date.match(dateRegex) || [];
+  const day = parseInt(dayString);
+  const monthAbbreviations: { [key: string]: string } = {
+    January: 'Jan',
+    February: 'Feb',
+    March: 'Mar',
+    April: 'Apr',
+    May: 'May',
+    June: 'Jun',
+    July: 'Jul',
+    August: 'Aug',
+    September: 'Sep',
+    October: 'Oct',
+    November: 'Nov',
+    December: 'Dec'
+  };
+  const month = monthAbbreviations[monthString];
+  const year = parseInt(yearString);
+  const montha = monthAbbreviations[monthStringa];
+  const yeara = parseInt(yearStringa);
+  
+  const expiry_date = `${dayString} ${month} ${year}`;
+  const activation_date = `${dayString} ${montha} ${yeara}`;
+  console.log(expiry_date);
 
   return (
     <ScrollView
@@ -47,7 +76,7 @@ const TransactionDetails = ({navigation, route}: any) => {
           Invoice Details
         </Text>
         <View style={{alignItems: 'center'}}>
-          {data.payment_mode == null ? (
+          {data.payment_method == 'Pay Later' || null ? (
             <Entypo name="circle-with-cross" size={55} color={'white'} />
           ) : (
             <MaterialCommunityIcons
@@ -56,9 +85,11 @@ const TransactionDetails = ({navigation, route}: any) => {
               color={'white'}
             />
           )}
+
           <Text style={{color: 'white', marginTop: 10}}>
-            {data.payment_mode == null ? '' : data?.inovoice_number}
+            {data?.inovoice_number}
           </Text>
+
           <View
             style={{
               flexDirection: 'row',
@@ -66,8 +97,10 @@ const TransactionDetails = ({navigation, route}: any) => {
               gap: 10,
               marginTop: 20,
             }}>
-            {data.payment_mode == null ? (
-              <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>Un Paid</Text>
+            {data.payment_method == 'Pay Later' || null ? (
+              <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
+                UnPaid
+              </Text>
             ) : (
               <>
                 <Text
@@ -86,7 +119,9 @@ const TransactionDetails = ({navigation, route}: any) => {
               </>
             )}
           </View>
-          <Text style={{color:'white', fontSize:14, top:5}}>{data.created_at}</Text>
+          <Text style={{color: 'white', fontSize: 14, top: 5}}>
+            {data.created_at}
+          </Text>
         </View>
       </View>
       <View

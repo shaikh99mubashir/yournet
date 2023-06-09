@@ -17,7 +17,7 @@ const PromotionsDetails = ({navigation, route}: any) => {
       }}>
         <ScrollView showsVerticalScrollIndicator={false}>
       <Header navigation={navigation} backBtn />
-      <Text
+      {/* <Text
         style={{
           textAlign: 'center',
           fontSize: 18,
@@ -26,7 +26,7 @@ const PromotionsDetails = ({navigation, route}: any) => {
           fontWeight: 'bold',
         }}>
         Promotions Details
-      </Text>
+      </Text> */}
       <View
         style={{
           alignItems: 'center',
@@ -36,6 +36,7 @@ const PromotionsDetails = ({navigation, route}: any) => {
           paddingVertical: 10,
           elevation: 2,
           shadowRadius: 10,
+          marginTop:10
         }}>
         <Image
           source={{uri: data?.image}}

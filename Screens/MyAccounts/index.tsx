@@ -304,6 +304,36 @@ const MyAccounts = () => {
             </Text>
           </View>
         </View>
+        {/* CNIC */}
+        <View
+          style={{
+            backgroundColor: Color.white,
+            elevation: 2,
+            padding: 10,
+            borderRadius: 10,
+            marginBottom: 15,
+          }}>
+          <Text
+            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
+           CNIC Number
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            <Text
+              style={{
+                color: Color.textColor,
+                fontWeight: 'bold',
+                fontSize: 16,
+              }}>
+              {getUserData?.CNIC_number}
+            </Text>
+          </View>
+        </View>
         {/* E-mail */}
         <View
           style={{

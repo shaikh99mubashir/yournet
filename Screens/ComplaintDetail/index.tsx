@@ -195,7 +195,7 @@ useEffect(()=>{
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
-            {data.created_it ? data.created_it :''}
+            {data.created_it ? `${data.CreatedDate} | ${data.CreatedTime} ` :''}
           </Text>
         </View>
         {/* Created By */}
@@ -281,7 +281,7 @@ useEffect(()=>{
               fontWeight: '600',
               marginTop: -10,
             }}>
-            {data.Status == 'Resolved' ? data.created_it :''}
+            {data.Status == 'Resolved' ? `${data.ResolvedDate} | ${data.ResolvedTime} ` :''}
           </Text>
           </>
           :''}

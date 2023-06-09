@@ -56,6 +56,7 @@ function MyDrawer() {
       <Drawer.Screen name="FeeDetails" component={FeeDetails} />
       <Drawer.Screen name="FAQs" component={FAQs} />
       <Drawer.Screen name="TransactionHistory" component={TransactionHistory} />
+      <Drawer.Screen name="Help" component={Help} />
       <Drawer.Screen name="PackagesPlans" component={PackagesPlans} />
       <Drawer.Screen name="TermsCondition" component={TermsCondition} />
     </Drawer.Navigator>

@@ -327,6 +327,7 @@ function CustomDrawerContent(props: any) {
               }}>
               <View style={{}}>
                 <TouchableOpacity
+                activeOpacity={0.8}
                   onPress={() => navigateToScreen('TransactionHistory')}
                   style={{
                     backgroundColor: Color.white,
@@ -339,7 +340,7 @@ function CustomDrawerContent(props: any) {
                     height: 120,
                   }}>
                   <Image source={require('../../Images/transactionhistory.png')} style={{width:35, height:35}} resizeMode='contain'/>
-                  <Text style={{color:Color.textColor}}> Transaction {'\n'} History</Text>
+                  <Text style={{color:Color.textColor}}> Invoice</Text>
                 </TouchableOpacity>
               </View>
               <View style={{justifyContent: 'center'}}>

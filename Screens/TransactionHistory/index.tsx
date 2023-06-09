@@ -42,16 +42,18 @@ const TransactionHistory = ({navigation}: any) => {
   const [paidRecipts, setPaidRecipts] = useState([])
   const [unPaidRecipts, setUnPaidRecipts] = useState([])
   const [loading, setLoading] = useState<boolean>(false);
-  console.log('receipts',receipts);
+  // console.log('receipts',receipts);
+  console.log('paidRecipts====>',paidRecipts);
+  console.log('unPaidRecipts====>',unPaidRecipts);
   
   const cartData: any = useSelector(cartData => cartData);
   const receiptsData = () => {
     setReceipts(cartData?.user?.cart?.receipts);
     const paid = receipts?.filter(
-      (check: any) => check.payment_mode == '1',
+      (check: any) => check.payment_method !==  'Pay Later' || null,
     );
     const unpaid = receipts?.filter(
-      (check: any) => check.payment_mode == null,
+      (check: any) => check.payment_method ==  'Pay Later' || null,
     );
     setPaidRecipts(paid)
     setUnPaidRecipts(unpaid)
@@ -83,7 +85,7 @@ const TransactionHistory = ({navigation}: any) => {
             (check: any) => check.payment_method == '1',
           );
           const unpaid = res?.data?.receipts.filter(
-            (check: any) => check.payment_method == null,
+            (check: any) => check.payment_method ==  'Pay Later' || null,
           );
           setPaidRecipts(paid)
           setUnPaidRecipts(unpaid)
@@ -145,7 +147,7 @@ const TransactionHistory = ({navigation}: any) => {
     const day = date.getDate();
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('TransactionDetails', item)}
+        onPress={() => navigation.navigate('TransactionDetails', item)} 
         activeOpacity={1}
         key={index}
         style={[styles.mainBox, {marginTop: 10, marginBottom: 5}]}>
@@ -202,7 +204,7 @@ const TransactionHistory = ({navigation}: any) => {
 
             <View
               style={{
-                backgroundColor: '#22b14c',
+                backgroundColor: item.payment_method ==  'Pay Later' || null ? 'red' :'#22b14c',
                 // backgroundColor: '#e60000',
                 width: 50,
                 alignItems: 'center',
@@ -211,8 +213,8 @@ const TransactionHistory = ({navigation}: any) => {
                 paddingVertical: 2,
                 borderRadius: 50,
               }}>
-              <Text style={{textAlign: 'center', color: 'white', fontSize: 12}}>
-                {item.payment_mode == '1' ? 'Paid' : 'UnPaid'}
+              <Text style={{textAlign: 'center', color: 'white', fontSize: 12, }}>
+                {item.payment_method ==  'Pay Later' || null ? 'UnPaid' : 'Paid'}
               </Text>
             </View>
           </View>
@@ -221,7 +223,7 @@ const TransactionHistory = ({navigation}: any) => {
           <View style={{gap: 10}}>
             <View>
               <Text style={{fontSize: 12, color: 'gray'}}>Transaction ID</Text>
-              <Text style={{fontSize: 12, color: 'black'}}>{item.payment_method == null ? '' : item?.inovoice_number}</Text>
+              <Text style={{fontSize: 12, color: 'black'}}>{item?.inovoice_number}</Text>
             </View>
             <View>
               <Text style={{fontSize: 14, color: 'gray'}}>Amount</Text>

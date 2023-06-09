@@ -287,7 +287,7 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
                {item.Status == 'Resolved' ? 'Resolved Date' : 'Complaint Date:'}
               </Text>
               <Text style={{fontSize: 12, color: 'grey', fontWeight: '500'}}>
-                {item.created_it}
+              {item.Status == 'Resolved' ? item.resolved_it : item.created_it}
               </Text>
               {/* <Text style={{fontSize: 12, color: 'black', fontWeight: '500'}}>
                 {resolvedDate ? resolvedDate :''}

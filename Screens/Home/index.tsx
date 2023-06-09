@@ -68,7 +68,8 @@ const Home = ({navigation}: any) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const cartData: any = useSelector(cartData => cartData);
-
+  console.log('getUserData',getUserData);
+  
   useEffect(() => {
     setUserData(cartData?.user?.cart?.customer);
     WebPortalData(cartData?.user?.cart?.portals);
@@ -114,6 +115,8 @@ const Home = ({navigation}: any) => {
   useEffect(() => {
     getData();
   }, [user_id, focus]);
+
+
 
   // Get company name
   const getCompanyName = () => {
@@ -524,9 +527,10 @@ const Home = ({navigation}: any) => {
                           textAlign: 'center',
                           fontWeight: '600',
                           fontFamily: 'Poppins-SemiBold',
+                          top:12
                         },
                       ]}>
-                      Account{'\n'}Status{' '}
+                      Account Status
                     </Text>
                     <View style={{alignItems: 'center'}}>
                      
@@ -599,7 +603,7 @@ const Home = ({navigation}: any) => {
                         gap: 10,
                         marginTop: 10,
                       }}>
-                      <View style={{marginTop: 6}}>
+                      <View style={{marginTop: 8}}>
                         <FontAwesome
                           name="circle"
                           size={8}
@@ -624,7 +628,7 @@ const Home = ({navigation}: any) => {
                         gap: 10,
                         marginVertical: 10,
                       }}>
-                      <View style={{marginTop: 6}}>
+                      <View style={{marginTop: 8}}>
                         <FontAwesome
                           name="circle"
                           size={8}
@@ -671,6 +675,7 @@ const Home = ({navigation}: any) => {
                             fontWeight: 'bold',
                             paddingHorizontal: 10,
                             fontFamily: 'BebasNeue-Regular',
+                            textAlign:'center'
                           }}>
                           {userPackage?.package_name ? (
                             userPackage?.package_name

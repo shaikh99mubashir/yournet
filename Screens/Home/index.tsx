@@ -217,16 +217,6 @@ const Home = ({navigation}: any) => {
   // Initialize Firebase app
 
   const checkPermissionAndToken = async () => {
-    // const permissionEnabled = await messaging().hasPermission();
-    // if (permissionEnabled) {
-    //   const fcmToken = await messaging().getToken();
-    //   if (fcmToken) {
-    //     console.log("fcmToken=====>",);
-
-    //   } else {
-    //     console.log("User doesn't have a device token yet");
-    //   }
-    // }
     messaging()
       .hasPermission()
       .then(enabled => {

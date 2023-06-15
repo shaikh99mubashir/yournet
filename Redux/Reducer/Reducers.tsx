@@ -5,6 +5,7 @@ interface UserState {
   contact:any[];
   trackComplaint:any[];
   companyData:any[];
+  notification:any[];
   userNickName:any ;
 }
 
@@ -13,10 +14,11 @@ const initialState: UserState = {
   contact:[],
   trackComplaint:[],
   companyData:[],
+  notification:[],
   userNickName:'',
 }; 
 
-export const userSlice = createSlice({
+export const userSlice : any = createSlice({
   name: 'user',
   initialState,
   reducers: {
@@ -38,7 +40,11 @@ export const userSlice = createSlice({
     },
     nickname: (state, action: PayloadAction<any[]>) => {
       state.userNickName = action.payload;
-      console.log(action.payload, ' : nickname Updated in Redux');
+      // console.log(action.payload, ' : nickname Updated in Redux');
+    },
+    pushNotification: (state, action: PayloadAction<any[]>) => {
+      state.notification = action.payload;
+      // console.log(action.payload, ' : nickname Updated in Redux');
     },
     logout: () => {
       return initialState; // Reset the state to the initial state
@@ -48,12 +54,13 @@ export const userSlice = createSlice({
 });
 
 
-export const {addToCart,contactData,trackComplaint,companyName,logout,nickname} = userSlice.actions;
+export const {addToCart,contactData,trackComplaint,companyName,logout,nickname,pushNotification} = userSlice.actions;
 
 export const selectUser = (state: {user: UserState}) => state.user.cart;
 export const selectContact = (state: {user: UserState}) => state.user.contact;
 export const selectTrackComplaint = (state: {user: UserState}) => state.user.trackComplaint;
 export const selectCompanyName = (state: {user: UserState}) => state.user.companyData;
 export const selectNickName = (state: {user: UserState}) => state.user.userNickName;
+export const selectNotification = (state: {user: UserState}) => state.user.notification;
 
 export default userSlice.reducer;

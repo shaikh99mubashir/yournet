@@ -68,6 +68,7 @@ const Help = ({navigation}: any) => {
         dispatch(trackComplaint(data.complaints))  
       })
       .catch(error => {
+        console.error('Error in Track Complaint:', error);
         ToastAndroid.show('Internal Server Error in Track Complaint', ToastAndroid.BOTTOM);
       });
     }

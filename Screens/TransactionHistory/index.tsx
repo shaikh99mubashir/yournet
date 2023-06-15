@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
+  Image,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import Header from '../../Components/Header';
@@ -43,7 +44,7 @@ const TransactionHistory = ({navigation}: any) => {
   const [unPaidRecipts, setUnPaidRecipts] = useState([])
   const [loading, setLoading] = useState<boolean>(false);
   // // console.log('receipts',receipts);
-  // console.log('paidRecipts====>',paidRecipts);
+  console.log('paidRecipts====>',paidRecipts);
   // console.log('unPaidRecipts====>',unPaidRecipts);
   
   const cartData: any = useSelector(cartData => cartData);
@@ -272,7 +273,7 @@ console.log('item?.receipt_date',item?.receipt_date);
   const firstRoute = useCallback(() => {
     return (
       // <View style={{marginVertical: 20, marginBottom: 80, flex:0,flexGrow: 1}}>
-      <View style={{}}>
+      <View style={{marginVertical: 20, marginBottom: 10}}>
         {receipts?.length > 0 ? (
           <FlatList
             data={receipts.length > 0 ? receipts : []}
@@ -285,7 +286,8 @@ console.log('item?.receipt_date',item?.receipt_date);
             keyExtractor={(item, index) => String(index)}
           />
         ) : (
-          <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
+          // <Text style={{fontWeight: 'bold', fontSize: 14,color:'grey'}}>No data found</Text>
+          <Image source={require('../../Images/nodata.png')} resizeMode='contain' style={{height:150}}/>
         )}
       </View>
     );
@@ -293,25 +295,7 @@ console.log('item?.receipt_date',item?.receipt_date);
 
   const secondRoute = useCallback(() => {
     return (
-      <View>
-        {paidRecipts?.length > 0 ? (
-          <FlatList
-            data={paidRecipts?.length > 0 ? paidRecipts : []}
-            renderItem={renderAllTransation}
-            scrollEnabled={true}
-            nestedScrollEnabled={true}
-            // keyExtractor={(items: any, index: number): any => index}
-            keyExtractor={(item, index) => String(index)}
-          />
-        ) : (
-          <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
-        )}
-      </View>
-    );
-  }, [paidRecipts]);
-  const thirdRoute = useCallback(() => {
-    return (
-      <View>
+      <View style={{marginVertical: 20, marginBottom: 10}}>
         {unPaidRecipts?.length > 0 ? (
           <FlatList
             data={unPaidRecipts.length > 0 ? unPaidRecipts : []}
@@ -322,11 +306,32 @@ console.log('item?.receipt_date',item?.receipt_date);
             keyExtractor={(item, index) => String(index)}
           />
         ) : (
-          <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
+          // <Text style={{fontWeight: 'bold', fontSize: 14,color:'grey'}}>No data found</Text>
+          <Image source={require('../../Images/nodata.png')} resizeMode='contain' style={{height:150}}/>
         )}
       </View>
     );
   }, [unPaidRecipts]);
+  const thirdRoute = useCallback(() => {
+    return (
+      <View style={{marginVertical: 20, marginBottom: 10}}>
+        {paidRecipts?.length > 0 ? (
+          <FlatList
+            data={paidRecipts?.length > 0 ? paidRecipts : []}
+            renderItem={renderAllTransation}
+            scrollEnabled={true}
+            nestedScrollEnabled={true}
+            // keyExtractor={(items: any, index: number): any => index}
+            keyExtractor={(item, index) => String(index)}
+          />
+        ) : (
+          // <Text style={{fontWeight: 'bold', fontSize: 14, color:'grey'}}>No data found</Text>
+          <Image source={require('../../Images/nodata.png')} resizeMode='contain' style={{height:150}}/>
+        )}
+      </View>
+    );
+    
+  }, [paidRecipts]);
 
   return (
     <View
@@ -369,8 +374,8 @@ console.log('item?.receipt_date',item?.receipt_date);
                 thirdRoute={thirdRoute}
                 activateTab={activateTab}
                 firstRouteTitle="All"
-                secondRouteTitle="Paid"
-                thirdRouteTitle="UnPaid"
+                secondRouteTitle="UnPaid"
+                thirdRouteTitle="Paid"
               />
             </View>
 

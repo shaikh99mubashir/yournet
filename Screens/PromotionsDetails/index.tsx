@@ -2,7 +2,6 @@ import {StyleSheet, Text, View, Image,ScrollView} from 'react-native';
 import React from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
-import {  } from 'react-native-gesture-handler';
 
 const PromotionsDetails = ({navigation, route}: any) => {
   const data = route.params;
@@ -17,19 +16,9 @@ const PromotionsDetails = ({navigation, route}: any) => {
       }}>
         <ScrollView showsVerticalScrollIndicator={false}>
       <Header navigation={navigation} backBtn />
-      {/* <Text
-        style={{
-          textAlign: 'center',
-          fontSize: 18,
-          marginVertical: 10,
-          color: Color.mainColor,
-          fontWeight: 'bold',
-        }}>
-        Promotions Details
-      </Text> */}
       <View
         style={{
-          alignItems: 'center',
+          paddingHorizontal:10,
           backgroundColor: '#eee',
           marginHorizontal: 10,
           borderRadius: 10,
@@ -40,9 +29,10 @@ const PromotionsDetails = ({navigation, route}: any) => {
         }}>
         <Image
           source={{uri: data?.image}}
-          style={{width: '95%', height: 200, borderRadius: 10, marginBottom: 5}}
+          resizeMode='contain'
+          style={{width: '100%', height: 200, borderRadius: 10, marginBottom: 5}}
         />
-        <View style={{alignItems: 'flex-start', paddingHorizontal: 12}}>
+        <View style={{ paddingHorizontal: 0, }}>
           <Text style={{fontSize: 14, fontWeight: 'bold', color:'black'}}>{data?.title}</Text>
           <Text style={{fontSize: 12,textAlign:'justify',color:Color.textColor}}>{data?.description}</Text>
         </View>

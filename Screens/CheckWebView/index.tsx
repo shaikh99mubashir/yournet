@@ -7,6 +7,8 @@ import {
   View,
   TouchableOpacity,
   Image,
+  PanResponder, Animated,
+  Platform 
 } from 'react-native';
 import WebView from 'react-native-webview';
 import { useFocusEffect } from '@react-navigation/native';
@@ -17,14 +19,41 @@ import RNFetchBlob from 'react-native-fetch-blob';
 const CheckWebView = ({ route, navigation }: any) => {
   const link = route.params;
   const webViewRef = useRef<WebView | null>(null);
+  const [currentUrl, setCurrentUrl] = useState('')
 
   const backAction = () => {
+    
     if (webViewRef.current) {
       webViewRef.current.goBack();
+      // backToHomePage();
       return true;
     }
     return false;
-  };
+  };  
+
+
+
+  const backToHomePage = () => {
+    console.log('working');
+    console.log('link.selectedLink',link.selectedLink);
+    console.log('link.selectedLink',currentUrl);
+    
+    if(link.selectedLink == currentUrl){
+      console.log('link====>',link.selectedLink);
+      console.log('currentUrl====>',currentUrl);
+      navigation.navigate('Home')
+      return true
+    }
+  }
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      backToHomePage();
+      return true; // Prevent default back button behavior
+    });
+  
+    return () => backHandler.remove(); // Clean up the event listener on unmount
+  }, []);
+
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: string) => {
@@ -56,9 +85,12 @@ const CheckWebView = ({ route, navigation }: any) => {
     React.useCallback(() => {
       const onBackPress = () => {
         if (backAction()) {
+          console.log('hi')
+          backToHomePage()
           return true;
         } else {
-          navigation.navigate('Home');
+          console.log('hi 2')
+          backToHomePage();
           return true;
         }
       };
@@ -75,91 +107,26 @@ const CheckWebView = ({ route, navigation }: any) => {
   const onMessage = async (event: any) => {
     console.log('event', event);
     const message = event.nativeEvent.data;
-    
+    console.log('Message',message);
+      
     if (message === 'navigateToHome') {
       navigation.navigate('Home');
     } 
   };
+
   
-  // Download 
-  // const [downloadUrl, setDownloadUrl] = useState('');
-  // const [downloadStart, setDownloadStart] = useState(false);
-  // const [showModalLoading, setShowModalLoading] = useState(false);
-  // const [showFileExplorer, setShowFileExplorer] = useState(false);
-  // const [startFolder, setStartFolder] = useState('');
+  const handleNavigationStateChange = (newNavState:any) => {
+    const url = newNavState.url;
+    if (url.includes(link.selectedLink) && url !== currentUrl) {
+      setCurrentUrl(url);
+    }
+  };
 
-  // useEffect(() => {
-  //   const directoryFile = `${RNFS.ExternalStorageDirectoryPath}/DownloadFile/`;
+  console.log('current link set hoo gia',currentUrl);
+  
+  
 
-  //   const handleUrlWithZip = (input:any) => {
-  //     // Check if another download is in progress or the URL doesn't contain a .zip file
-  //     if (downloadStart || !input.url.toLowerCase().includes('.zip')) {
-  //       return;
-  //     } else {
-  //       setDownloadStart(true);
-  //       setShowModalLoading(true);
-  //     }
 
-  //     // Delete existing folder and create a new one
-  //     if (RNFS.exists(directoryFile)) {
-  //       RNFS.unlink(directoryFile)
-  //         .then(() => {
-  //           console.log('FOLDER/FILE DELETED');
-  //         })
-  //         .catch((err) => {
-  //           console.log('CANT DELETE', err.message);
-  //           // Handle error
-  //         });
-
-  //       RNFS.mkdir(directoryFile);
-  //     }
-
-  //     if (input) {
-  //       // Verify if the URL contains a .zip file
-  //       if (input.url.toLowerCase().includes('.zip')) {
-  //         const urlDownload = input.url;
-
-  //         let fileName;
-  //         try {
-  //           fileName = urlDownload.substr(urlDownload.lastIndexOf('/')).replace('.zip', '') + '.zip';
-  //         } catch (e) {
-  //           console.log(e);
-  //           fileName = 'example.zip';
-  //         }
-
-  //         console.log('URL = ' + urlDownload);
-
-  //         // Download the file to the specified folder
-  //         const dirs = `${directoryFile}/${fileName}`;
-  //         RNFetchBlob.config({
-  //           path: dirs,
-  //         })
-  //           .fetch('GET', urlDownload, {
-  //             // Add necessary headers if required
-  //           })
-  //           .progress((received, total) => {
-  //             console.log('progress', received / total);
-  //           })
-  //           .then((res) => {
-  //             console.log('The file saved to ', res.path());
-
-  //             // Download finished
-  //             setDownloadStart(false);
-  //             setShowModalLoading(false);
-  //             setShowFileExplorer(true);
-  //             setStartFolder(directoryFile);
-  //           })
-  //           .catch((error) => {
-  //             console.error('Error downloading file:', error);
-  //             // Handle error
-  //           });
-  //       }
-  //     }
-  //   };
-  //   return () => {
-  //     // Perform any necessary cleanup tasks
-  //   };
-  // }, []);
   return (
     <View style={{ flex: 1 }}>
       <TouchableOpacity
@@ -172,10 +139,11 @@ const CheckWebView = ({ route, navigation }: any) => {
           backgroundColor: Color.mainColor,
           borderRadius: 50,
           padding: 5,
-        }}>
+        }}
+        >
         <Image
-          source={require('../../Images/logoIcon.png')}
-          style={{ width: 50, height: 50 }}
+          source={require('../../Images/ISPIcon.png')}
+          style={{ width: 40, height: 40 }}
           resizeMode="contain"
         />
       </TouchableOpacity>
@@ -189,7 +157,7 @@ const CheckWebView = ({ route, navigation }: any) => {
         mixedContentMode={'always'}
         style={{ flex: 1 }}
         onMessage={onMessage}
-        // onNavigationStateChange={(result) => handleUrlWithZip(result)}
+        onNavigationStateChange={handleNavigationStateChange}
       />
     </View>
   );
@@ -198,7 +166,21 @@ const CheckWebView = ({ route, navigation }: any) => {
 export default CheckWebView;
 
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  buttonContainer: {
+    position: 'absolute',
+    zIndex: 1,
+    bottom: 16,
+    right: 16,
+    backgroundColor: Color.mainColor,
+    borderRadius: 50,
+    padding: 5,
+  },
+  image: {
+    width: 50,
+    height: 50,
+  },
+});
 
 // import {
 //   BackHandler,

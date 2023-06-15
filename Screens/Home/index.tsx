@@ -34,7 +34,11 @@ import {useIsFocused} from '@react-navigation/native';
 import CheckWebView from '../CheckWebView';
 import Loader from '../../Components/Loader';
 import {useDispatch, useSelector} from 'react-redux';
-import {addToCart, companyName} from '../../Redux/Reducer/Reducers';
+import {
+  addToCart,
+  companyName,
+  pushNotification,
+} from '../../Redux/Reducer/Reducers';
 import messaging from '@react-native-firebase/messaging';
 import firebase from '@react-native-firebase/app';
 const {height, width} = Dimensions.get('window');
@@ -44,6 +48,8 @@ const Home = ({navigation}: any) => {
   const [nickName, setNickName] = useState<any>('');
 
   const [user_id, setUser_id] = useState('');
+  // console.log('userid', user_id);
+
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('user_id')
       .then(value => {
@@ -106,15 +112,76 @@ const Home = ({navigation}: any) => {
           setNoInternet(true);
           return;
         }
-        ToastAndroid.show('Internal Server Error', ToastAndroid.LONG);
+        ToastAndroid.show('Internal Server Error Home', ToastAndroid.LONG);
         setLoading(false);
         setUserData(null);
       });
+
+      const intervalId = setInterval(() => {
+    axios
+      .post(`${BaseUrl}getAllData`, null, config)
+      .then((res: any) => {
+        if (res.data && res.data.customer) {
+          dispatch(addToCart(res.data));
+          setLoading(false);
+        }
+      })
+      .catch(error => {
+        console.log('error,==>', error);
+        if (error == 'AxiosError: Network Error') {
+          ToastAndroid.show('You Are Offline', ToastAndroid.LONG);
+          setNoInternet(true);
+          return;
+        }
+        ToastAndroid.show('Internal Server Error Home', ToastAndroid.LONG);
+        setLoading(false);
+        setUserData(null);
+      });
+    }, 10000); 
+    return () => {
+      clearInterval(intervalId);
+    };
   };
 
   useEffect(() => {
     getData();
   }, [user_id, focus]);
+
+  // Get Notification
+  const getNotification = () => {
+    const formData = new FormData();
+    formData.append('customer_id', getUserData?.customer_id);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}getPushNotifications`, formData, config)
+      .then(({data}: any) => {
+        dispatch(pushNotification(data.push_notifications));
+      })
+      .catch(error => {
+        ToastAndroid.show(
+          'Internal Server Error in Notification',
+          ToastAndroid.BOTTOM,
+        );
+      });
+  };
+
+  useEffect(() => {
+    getNotification();
+    // Schedule the getNotification function to be called every hour
+    const intervalId = setInterval(() => {
+      getNotification();
+    // }, 60 * 60 * 1000); // 1 hour in milliseconds
+    }, 10000); 
+
+    // Clean up the interval on component unmount
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [getUserData?.customer_id]);
 
   // Get company name
   const getCompanyName = () => {
@@ -132,7 +199,7 @@ const Home = ({navigation}: any) => {
       })
       .catch(error => {
         ToastAndroid.show(
-          'Internal Server Error in Track Complaint',
+          'Internal Server Error in getCompanyName',
           ToastAndroid.BOTTOM,
         );
       });
@@ -214,8 +281,7 @@ const Home = ({navigation}: any) => {
 
   //  promotion Work Ended
 
-  // Initialize Firebase app
-
+  // Initialize Firebase app for notification
   const checkPermissionAndToken = async () => {
     messaging()
       .hasPermission()
@@ -225,7 +291,7 @@ const Home = ({navigation}: any) => {
             .getToken()
             .then(fcmToken => {
               if (fcmToken) {
-                console.log('fcmToken===============>', fcmToken);
+                // console.log('fcmToken===============>', fcmToken);
               } else {
                 console.log("user doesn't have a device token yet");
               }
@@ -242,18 +308,6 @@ const Home = ({navigation}: any) => {
   }, []);
   // nickname
   const userNickName: any = useSelector(userNickName => userNickName);
-  // navigation.addListener('state', () => {
-  //   gettingUserNickName();
-  // });
-  // const gettingUserNickName = async () => {
-  //   let value = await AsyncStorage.getItem('nickName');
-  //   if (value !== null) {
-  //     setNickName(JSON.parse(value));
-  //   }
-  // };
-  // useEffect(() => {
-  //   gettingUserNickName();
-  // }, []);
 
   // Back Handler
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -305,13 +359,13 @@ const Home = ({navigation}: any) => {
             opacity: 0.9,
           }}>
           <ActivityIndicator color="black" size={'large'} />
-          {noInternet ? (
+          {/* {noInternet ? (
             <Text style={{textAlign: 'center', marginTop: 50, color: 'black'}}>
               Currently You Are Offline
             </Text>
           ) : (
             ''
-          )}
+          )} */}
         </View>
       ) : (
         <>
@@ -764,7 +818,7 @@ const Home = ({navigation}: any) => {
                               : require('../../Images/slider3.jpg')
                           }
                           style={{width: 150, height: 130, borderRadius: 10}}
-                          resizeMode="contain"
+                          resizeMode="cover"
                         />
                       </TouchableOpacity>
                     );

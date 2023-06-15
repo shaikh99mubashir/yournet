@@ -312,7 +312,7 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
 
   const firstRoute = useCallback(() => {
     return (
-      <View style={{marginVertical: 0, marginBottom: 10}}>
+      <View style={{marginVertical: 20, marginBottom: 10}}>
         {complaintData?.length > 0 ? (
           <FlatList
             data={complaintData?.length > 0 ? complaintData : []}
@@ -323,7 +323,8 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
             keyExtractor={(item, index) => String(index)}
           />
         ) : (
-          <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
+          // <Text style={{fontWeight: 'bold', fontSize: 14,color:'grey'}}>No data found</Text>
+          <Image source={require('../../Images/nodata.png')} resizeMode='contain' style={{height:150}}/>
         )}
       </View>
     );
@@ -331,7 +332,7 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
 
   const secondRoute = useCallback(() => {
     return (
-      <View style={{marginVertical: 0, marginBottom: 10}}>
+      <View style={{marginVertical: 20, marginBottom: 10}}>
         {pendingComplaints?.length > 0 ? (
           <FlatList
             data={pendingComplaints}
@@ -341,7 +342,8 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
             keyExtractor={(item, index) => String(index)}
           />
         ) : (
-          <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
+          // <Text style={{fontWeight: 'bold', fontSize: 14,color:'grey'}}>No data found</Text>
+          <Image source={require('../../Images/nodata.png')} resizeMode='contain' style={{height:150}}/>
         )}
       </View>
     );
@@ -359,7 +361,8 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
             keyExtractor={(item, index) => String(index)}
           />
         ) : (
-          <Text style={{fontWeight: 'bold', fontSize: 14}}>No data found</Text>
+          // <Text style={{fontWeight: 'bold', fontSize: 14,color:'grey'}}>No data found</Text>
+          <Image source={require('../../Images/nodata.png')} resizeMode='contain' style={{height:150}}/>
         )}
       </View>
     );

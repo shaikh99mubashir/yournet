@@ -117,10 +117,10 @@ const Promotions = ({navigation}: any) => {
           )}
         </View>
       ) : (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          nestedScrollEnabled={true}>
-        <>
+        // <ScrollView
+        //   showsVerticalScrollIndicator={false}
+        //   nestedScrollEnabled={true}>
+        <View style={{flex:1}}>
           <Header />
           <Text
             style={{
@@ -132,7 +132,7 @@ const Promotions = ({navigation}: any) => {
             }}>
             Promotions
           </Text>
-          <View style={{marginHorizontal: 0, marginTop: 10, marginBottom: 40,}}>
+          <View style={{marginHorizontal: 0, marginTop: 10, marginBottom: 40,flex:1}}>
             <FlatList
               data={promotionData ?? []}
               nestedScrollEnabled={true}
@@ -162,6 +162,7 @@ const Promotions = ({navigation}: any) => {
                           borderRadius: 10,
                           marginBottom: 5,
                         }}
+                        resizeMode='contain'
                       />
                       <View
                         style={{
@@ -185,8 +186,8 @@ const Promotions = ({navigation}: any) => {
               }}
             />
           </View>
-          </>
-        </ScrollView>
+          </View>
+        // </ScrollView>
       )}
     </View>
   );

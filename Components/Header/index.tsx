@@ -6,10 +6,11 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Color from '../../Constants/Color';
+import { useSelector } from 'react-redux';
 export type Props = {
   navigation: any;
 };
@@ -28,6 +29,15 @@ const Header = (Props: any) => {
     myStyle,
   } = Props;
 
+  // const [userNotificarion, setUserNotificarion] = useState<any>([]);
+  const noti: any = useSelector(notification => notification);
+  const newNotificationCount = noti.user.notification.filter((notification:any) => notification.status == 'New').length;
+  // useEffect(() => {
+  //   setUserNotificarion(noti.user.notification);
+  // }, []);
+  console.log('newNotificationCount',newNotificationCount);
+  console.log('userNotificarion',noti.user.notification.length);
+  
   return (
     <View
       style={{
@@ -91,7 +101,12 @@ const Header = (Props: any) => {
               }}
               activeOpacity={0.8}
               onPress={() => navigation.navigate('Notification')}>
-              <FontAwesome name="bell" size={20} color="black" />
+              <FontAwesome name="bell" size={22} color="black" />
+              <View style={{backgroundColor:Color.mainColor,paddingHorizontal:3,borderRadius:10,left:70,top:30 ,position:'absolute'}}>
+              {newNotificationCount > 0 &&
+              <Text style={{fontSize:10, color:'white'}}>{newNotificationCount}</Text>
+              }
+              </View>
             </TouchableOpacity>
           </View>
         ) : backBtn ? (

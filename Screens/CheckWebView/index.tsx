@@ -13,9 +13,26 @@ import {
 import WebView from 'react-native-webview';
 import { useFocusEffect } from '@react-navigation/native';
 import { Color } from '../../Constants';
-import RNFS from 'react-native-fs';
-import RNFetchBlob from 'react-native-fetch-blob';
+import  {
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 
+import {
+  GestureHandlerRootView,
+  PanGestureHandler,
+  PanGestureHandlerGestureEvent,
+} from 'react-native-gesture-handler';
+
+const SIZE = 90;
+const CIRCLE_RADIUS = SIZE * 2;
+
+type ContextType = {
+  translateX: number;
+  translateY: number;
+};
 const CheckWebView = ({ route, navigation }: any) => {
   const link = route.params;
   const webViewRef = useRef<WebView | null>(null);
@@ -123,11 +140,67 @@ const CheckWebView = ({ route, navigation }: any) => {
   };
 
   console.log('current link set hoo gia',currentUrl);
+  // 
   
-  
+   // State and animated values
+   const translateX = useSharedValue(0);
+   const translateY = useSharedValue(0);
+ 
+   // Gesture handler event
+   const panGestureEvent = useAnimatedGestureHandler<
+  PanGestureHandlerGestureEvent,
+  ContextType
+>({
+  onStart: (event, context) => {
+    context.translateX = translateX.value;
+    context.translateY = translateY.value;
+  },
+  onActive: (event, context) => {
+    'worklet';
+    translateX.value = event.translationX + context.translateX;
+    translateY.value = event.translationY + context.translateY;
+  },
+  onEnd: () => {
+    'worklet';
+    const distance = Math.sqrt(
+      translateX.value ** 2 + translateY.value ** 2
+    );
 
+    if (distance < CIRCLE_RADIUS + SIZE / 2) {
+      translateX.value = withSpring(0);
+      translateY.value = withSpring(0);
+    }
+  },
+});
+ 
+   // Animated style
+   const rStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateX: translateX.value,
+        },
+        {
+          translateY: translateY.value,
+        },
+      ],
+    };
+  });
 
   return (
+  //   <View style={styles.container}>
+  //   <View style={styles.circle}>
+  //     <PanGestureHandler onGestureEvent={panGestureEvent}>
+  //       <Animated.View style={[styles.square, rStyle]} >
+  //       <Image
+  //         source={require('../../Images/ISPIcon.png')}
+  //         style={{ width: 40, height: 40 }}
+  //         resizeMode="contain"
+  //       />
+  //       </Animated.View>
+  //     </PanGestureHandler>
+  //   </View>
+  // </View>
     <View style={{ flex: 1 }}>
       <TouchableOpacity
         onPress={() => navigation.navigate('Home')}
@@ -179,6 +252,27 @@ const styles = StyleSheet.create({
   image: {
     width: 50,
     height: 50,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  square: {
+    width: SIZE,
+    height: SIZE,
+    backgroundColor: 'rgba(0, 0, 256, 0.5)',
+    borderRadius: 20,
+  },
+  circle: {
+    width: CIRCLE_RADIUS * 2,
+    height: CIRCLE_RADIUS * 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: CIRCLE_RADIUS,
+    borderWidth: 5,
+    borderColor: 'rgba(0, 0, 256, 0.5)',
   },
 });
 

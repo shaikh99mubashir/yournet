@@ -11,7 +11,6 @@ import {
   Linking,
   SafeAreaView,
   ImageBackground,
-  // BackHandler,
   Alert,
   ActivityIndicator,
   Modal,
@@ -93,10 +92,10 @@ const Home = ({navigation}: any) => {
         User_ID: user_id,
       },
     };
-    // if(cartData?.user?.cart?.status){
-    //   setLoading(false);
-    //   return
-    // }
+    if(getUserData){
+      setLoading(false);
+      return
+    }
     axios
       .post(`${BaseUrl}getAllData`, null, config)
       .then((res: any) => {
@@ -117,27 +116,27 @@ const Home = ({navigation}: any) => {
         setUserData(null);
       });
 
-      const intervalId = setInterval(() => {
-    axios
-      .post(`${BaseUrl}getAllData`, null, config)
-      .then((res: any) => {
-        if (res.data && res.data.customer) {
-          dispatch(addToCart(res.data));
+    const intervalId = setInterval(() => {
+      axios
+        .post(`${BaseUrl}getAllData`, null, config)
+        .then((res: any) => {
+          if (res.data && res.data.customer) {
+            dispatch(addToCart(res.data));
+            setLoading(false);
+          }
+        })
+        .catch(error => {
+          console.log('error,==>', error);
+          if (error == 'AxiosError: Network Error') {
+            ToastAndroid.show('You Are Offline', ToastAndroid.LONG);
+            setNoInternet(true);
+            return;
+          }
+          ToastAndroid.show('Internal Server Error Home', ToastAndroid.LONG);
           setLoading(false);
-        }
-      })
-      .catch(error => {
-        console.log('error,==>', error);
-        if (error == 'AxiosError: Network Error') {
-          ToastAndroid.show('You Are Offline', ToastAndroid.LONG);
-          setNoInternet(true);
-          return;
-        }
-        ToastAndroid.show('Internal Server Error Home', ToastAndroid.LONG);
-        setLoading(false);
-        setUserData(null);
-      });
-    }, 10000); 
+          setUserData(null);
+        });
+    }, 10000);
     return () => {
       clearInterval(intervalId);
     };
@@ -145,7 +144,7 @@ const Home = ({navigation}: any) => {
 
   useEffect(() => {
     getData();
-  }, [user_id, focus]);
+  }, [user_id, focus,dispatch]);
 
   // Get Notification
   const getNotification = () => {
@@ -174,8 +173,8 @@ const Home = ({navigation}: any) => {
     // Schedule the getNotification function to be called every hour
     const intervalId = setInterval(() => {
       getNotification();
-    // }, 60 * 60 * 1000); // 1 hour in milliseconds
-    }, 10000); 
+      // }, 60 * 60 * 1000); // 1 hour in milliseconds
+    }, 10000);
 
     // Clean up the interval on component unmount
     return () => {
@@ -195,7 +194,7 @@ const Home = ({navigation}: any) => {
     axios
       .post(`${BaseUrl}getCompanyData`, formData, config)
       .then(({data}: any) => {
-        dispatch(companyName(data.company));
+        dispatch(companyName(data?.company));
       })
       .catch(error => {
         ToastAndroid.show(
@@ -281,31 +280,55 @@ const Home = ({navigation}: any) => {
 
   //  promotion Work Ended
 
-  // Initialize Firebase app for notification
-  const checkPermissionAndToken = async () => {
-    messaging()
-      .hasPermission()
-      .then(enabled => {
-        if (enabled) {
-          messaging()
-            .getToken()
-            .then(fcmToken => {
-              if (fcmToken) {
-                // console.log('fcmToken===============>', fcmToken);
-              } else {
-                console.log("user doesn't have a device token yet");
-              }
-            });
-        }
-      })
-      .catch(error => {
-        console.log('error', error);
-      });
-  };
+  // // Initialize Firebase app for notification
+  // const checkPermissionAndToken = async () => {
+  //   messaging()
+  //     .hasPermission()
+  //     .then(enabled => {
+  //       if (enabled) {
+  //         messaging()
+  //           .getToken()
+  //           .then(fcmToken => {
+  //             if (fcmToken) {
+  //               // console.log('fcmToken===============>', fcmToken);
+  //               const formData = new FormData();
+  //               formData.append('customer_id', getUserData?.customer_id);
+  //               formData.append('device_token', fcmToken);
 
-  useEffect(() => {
-    checkPermissionAndToken();
-  }, []);
+  //               const config = {
+  //                 headers: {
+  //                   'Content-Type': 'multipart/form-data',
+  //                 },
+  //               };
+
+  //               axios
+  //                 .post(`${BaseUrl}saveDeviceToken`, formData, config)
+  //                 .then((res: any) => {
+  //                   // ToastAndroid.show(
+  //                   //   `${res.data.message}`,
+  //                   //   ToastAndroid.BOTTOM,
+  //                   // );
+  //                 })
+  //                 .catch(error => {
+  //                   ToastAndroid.show(
+  //                     'Internal Server Error fcmToken',
+  //                     ToastAndroid.BOTTOM,
+  //                   );
+  //                 });
+  //             } else {
+  //               console.log("user doesn't have a device token yet");
+  //             }
+  //           });
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log('error', error);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   checkPermissionAndToken();
+  // }, [getUserData?.customer_id]);
   // nickname
   const userNickName: any = useSelector(userNickName => userNickName);
 
@@ -810,7 +833,7 @@ const Home = ({navigation}: any) => {
                       <TouchableOpacity
                         onPress={() => handelWebView(item?.portal_link)}
                         activeOpacity={0.8}
-                        style={{paddingRight: 15}}>
+                        style={{paddingRight: 8}}>
                         <Image
                           source={
                             item.image

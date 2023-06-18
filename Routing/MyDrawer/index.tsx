@@ -47,18 +47,10 @@ function MyDrawer() {
       }}>
       <Drawer.Screen name="Hom" component={MyTabs} />
       <Drawer.Screen name="Payment" component={Payment} />
-      <Drawer.Screen name="Settings" component={Settings} />
       <Drawer.Screen name="Complaint" component={Complaint} />
       <Drawer.Screen name="Notification" component={Notification} />
-      <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="MyAccounts" component={MyAccounts} />
-      <Drawer.Screen name="CustomerSupport" component={CustomerSupport} />
       <Drawer.Screen name="FeeDetails" component={FeeDetails} />
-      <Drawer.Screen name="FAQs" component={FAQs} />
-      <Drawer.Screen name="TransactionHistory" component={TransactionHistory} />
-      <Drawer.Screen name="Help" component={Help} />
-      <Drawer.Screen name="PackagesPlans" component={PackagesPlans} />
-      <Drawer.Screen name="TermsCondition" component={TermsCondition} />
     </Drawer.Navigator>
   );
 }

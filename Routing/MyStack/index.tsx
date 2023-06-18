@@ -20,6 +20,12 @@ import CheckWebView from '../../Screens/CheckWebView';
 import Contact from '../../Screens/Contact';
 import TrackYourComplaint from '../../Screens/TrackYourComplaint';
 import ComplaintDetail from '../../Screens/ComplaintDetail';
+import FAQs from '../../Screens/FAQs';
+import TransactionHistory from '../../Screens/TransactionHistory';
+import Profile from '../../Screens/Profile';
+import Settings from '../../Screens/Settings';
+import PackagesPlans from '../../Screens/PackagesPlans';
+import TermsCondition from '../../Screens/TermsCondition';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +50,13 @@ const MyStack = () => {
         <Stack.Screen name="Contact" component={Contact} />
         <Stack.Screen name="TrackYourComplaint" component={TrackYourComplaint} />
         <Stack.Screen name="ComplaintDetail" component={ComplaintDetail} />
+        <Stack.Screen name="FAQs" component={FAQs} />
+        <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="PackagesPlans" component={PackagesPlans} />
+        <Stack.Screen name="TermsCondition" component={TermsCondition} />
+        <Stack.Screen name="CustomerSupport" component={CustomerSupport} />
       </Stack.Navigator>
     </NavigationContainer>
   );

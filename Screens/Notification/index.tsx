@@ -14,73 +14,96 @@ import React, {useEffect, useState} from 'react';
 import Header from '../../Components/Header';
 import Color from '../../Constants/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import {BaseUrl} from '../../Constants/BaseUrl';
-import {logout} from '../../Redux/Reducer/Reducers';
+import {useIsFocused} from '@react-navigation/native';
+import { pushNotification} from '../../Redux/Reducer/Reducers';
 const Notification = ({navigation}: any) => {
-  const [userNotificarion, setUserNotificarion] = useState([]);
-  const noti: any = useSelector(notification => notification);
+  const [refresh, setRefresh] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  useEffect(() => {
-    setUserNotificarion(noti.user.notification);
-  }, []);
-  const width = Dimensions.get('screen').width;
-  const height = Dimensions.get('screen').height;
+  const [userNotificarion, setUserNotificarion] = useState<any>([]);
+  const [getUserData, setUserData] = useState<any>(null);
+  const focus = useIsFocused();
 
-  const updateNotificationStatus = () => {
+  const cartData: any = useSelector(cartData => cartData);
+  useEffect(()=>{
+    setUserData(cartData?.user?.cart?.customer);
+  },[focus])
+  
+
+  const getNotification = () => {
     const formData = new FormData();
-    userNotificarion &&
-      userNotificarion.map((e: any) => {
-        formData.append('notification_id', e.id);
-
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        };
-
-        axios
-          .post(`${BaseUrl}updateNotificationStatus`, formData, config)
-          .then(({data}) => {
-            console.log('data', data);
-          })
-          .catch(error => {
-            ToastAndroid.show(
-              'Internal Server Error in Notification id',
-              ToastAndroid.BOTTOM,
-            );
-          });
+    formData.append('customer_id', getUserData?.customer_id);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}getPushNotifications`, formData, config)
+      .then(({data}: any) => {
+        console.log('dara',data.push_notifications);
+        setUserNotificarion(data.push_notifications)
+        // dispatch(pushNotification(data.push_notifications));
+      })
+      .catch(error => {
+        ToastAndroid.show(
+          'Internal Server Error in Notification',
+          ToastAndroid.BOTTOM,
+        );
       });
   };
 
-  // useEffect(()=>{
-  //   updateNotificationStatus()
-  // },[])
+  useEffect(()=>{
+    getNotification()
+  },[getUserData?.customer_id])
 
-  {
-    /* <View
-            style={{
-              backgroundColor: Color.mainColor,
-              padding: 10,
-              borderRadius: 10,
-              height: 50,
-            }}>
-            <FontAwesome name="bell" size={30} color="white" />
-          </View> */
-  }
-  const [modalData, setModalData] = useState('')
+
+
+
+
+  const width = Dimensions.get('screen').width;
+  const height = Dimensions.get('screen').height;
+
+  const [modalData, setModalData] = useState<any>('');
+  const dispatch = useDispatch();
+
   const NotificationModal = (item: any) => {
-    setModalVisible(true)
-    const modalData = JSON.parse(item)
-    setModalData(modalData)
+    setModalVisible(true);
+    setModalData(item);
 
+    const formData = new FormData();
+    formData.append('notification_id', item.id);
+  
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+  
+    // First API call: updateNotificationStatus
+    axios
+      .post(`${BaseUrl}updateNotificationStatus`, formData, config)
+      .then(({ data }) => { 
+        // Second API call: getPushNotifications
+        formData.append('customer_id', item?.customer_id);
+        getNotification()
+        return axios.post(`${BaseUrl}getPushNotifications`, formData, config);
+      })
+      .then(({ data }) => {
+        dispatch(pushNotification(data?.push_notifications));
+      })
+      .catch(error => {
+        ToastAndroid.show(
+          'Internal Server Error in Notification',
+          ToastAndroid.BOTTOM,
+        );
+      });
   };
 
-  console.log('modalData',modalData);
-  
   const renderNotificationItems = ({item}: any): any => {
+    // console.log('item',item);
     return (
       <>
         <Text
@@ -89,89 +112,89 @@ const Notification = ({navigation}: any) => {
             fontSize: 14,
             fontWeight: '700',
             marginBottom: 3,
-            textAlign:'left'
+            textAlign: 'left',
           }}>
-          {/* {item.created_at} */}
-          17th Jun 2023
+          {item.Creation_Date}
         </Text>
-      <View style={{alignItems:'center'}}>
-        <TouchableOpacity
-          onPress={() => NotificationModal(item)}
-          activeOpacity={0.8}
-          style={{
-            backgroundColor: 'white',
-            // shadowOpacity: 1,
-            shadowRadius: 10,
-            borderRadius: 5,
-            elevation: 2,
-            marginBottom: 10,
-            width: '99%',
-            paddingHorizontal:8,
-            paddingVertical:12
-          }}>
-          <View style={{flexDirection: 'row', gap: 10}}>
-            <View style={{flexDirection: 'column', width: '85%'}}>
-              <Text
-                style={{
-                  color: Color.textColor,
-                  fontSize: 14,
-                  fontWeight: '700',
-                }}>
-                title
-                {/* {item.name} */}
-              </Text>
-              <Text
-                style={{
-                  color: 'grey',
-                  fontSize: 14,
-                  paddingRight: 10,
-                }}>
-                {item.message.length > 35
-                  ? `${item.message.slice(0, 35).trim()}...`
-                  : item.message.trim()}
-              </Text>
-            </View>
-            <View
-              style={{justifyContent: 'space-between', alignItems: 'center'}}>
-              <Text
-                style={{
-                  paddingHorizontal: 8,
-                  borderRadius: 8,
-                  color: 'grey',
-                  fontSize: 12,
-                }}>
-                11:38
-              </Text>
-              {item.status == 'New' ? (
+        <View style={{alignItems: 'center'}}>
+          <TouchableOpacity
+            onPress={() => NotificationModal(item)}
+            activeOpacity={0.8}
+            style={{
+              backgroundColor: 'white',
+              // shadowOpacity: 1,
+              shadowRadius: 10,
+              borderRadius: 5,
+              elevation: 2,
+              marginBottom: 10,
+              width: '99%',
+              paddingHorizontal: 8,
+              paddingVertical: 12,
+            }}>
+            <View style={{flexDirection: 'row', gap: 10}}>
+              <View style={{flexDirection: 'column', width: '78%'}}>
                 <Text
                   style={{
-                    backgroundColor: Color.mainColor,
+                    color: Color.textColor,
+                    fontSize: 14,
+                    fontWeight: '700',
+                  }}>
+                  {item.title}
+                </Text>
+                <Text
+                  style={{
+                    color: 'grey',
+                    fontSize: 14,
+                    paddingRight: 10,
+                  }}>
+                  {item.message.length > 30
+                    ? `${item.message.slice(0, 30).trim()}...`
+                    : item.message.trim()}
+                </Text>
+              </View>
+              <View
+                style={{justifyContent: 'space-between', alignItems: 'center'}}>
+                <Text
+                  style={{
                     paddingHorizontal: 8,
                     borderRadius: 8,
-                    color: 'white',
+                    color: 'grey',
                     fontSize: 12,
                   }}>
-                  {item.status}
+                  {item.Creation_Time}
                 </Text>
-              ) : (
-                ''
-              )}
+                {item.status == 'New' ? (
+                  <Text
+                    style={{
+                      backgroundColor: Color.mainColor,
+                      paddingHorizontal: 8,
+                      borderRadius: 8,
+                      color: 'white',
+                      fontSize: 12,
+                    }}>
+                    {item.status}
+                  </Text>
+                ) : (
+                  ''
+                )}
+              </View>
             </View>
-          </View>
-          {/* <Text style={{color: 'grey', fontSize: 12}}>{item.created_at}</Text> */}
-        </TouchableOpacity>
-      </View>
+          </TouchableOpacity>
+        </View>
       </>
     );
   };
+
+ 
+  const CloseModal = () => {
+    setModalVisible(false)
+  }
   return (
     <View
       style={{
         backgroundColor: Color.white,
         flex: 1,
         paddingHorizontal: 15,
-        // alignItems: 'center',
-        // paddingBottom: 20,
       }}>
       <Header navigation={navigation} backBtn noLogo />
       <Text
@@ -208,7 +231,7 @@ const Notification = ({navigation}: any) => {
         </View>
       )}
 
-      {/* <Modal visible={modalVisible} animationType="fade" transparent={true}>
+      <Modal visible={modalVisible} animationType="fade" transparent={true}>
         <View
           style={{
             flex: 1,
@@ -221,17 +244,57 @@ const Notification = ({navigation}: any) => {
               backgroundColor: 'white',
               borderRadius: 10,
               width: '90%',
-              // paddingHorizontal:15,
-              paddingVertical:15
+              paddingVertical: 15,
             }}>
-              <View style={{borderBottomWidth:1, borderBottomColor:'grey'}}>
-              <Text style={{textAlign:'center',fontSize:20, marginBottom:10, color:Color.mainColor, fontWeight:'700' }}>Notification Details</Text>
-              </View>
-              <Image source={{uri: modalData.image}} style={{width:150,height:150, borderWidth:1}} resizeMode='contain'/>
-              <Text>{modalData.message}</Text>
+            <View style={{borderBottomWidth: 1, borderBottomColor: '#eee'}}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 20,
+                  marginBottom: 10,
+                  color: Color.mainColor,
+                  fontWeight: '700',
+                }}>
+                Notification Details
+              </Text>
             </View>
+
+            {modalData?.image ? (
+              <Image
+                source={{uri: modalData?.image}}
+                style={{
+                  width: '90%',
+                  height: 90,
+                  borderWidth: 1,
+                  alignSelf: 'center',
+                  marginVertical: 5,
+                }}
+                resizeMode="contain"
+              />
+            ) : null}
+
+            <View style={{paddingHorizontal: 15, marginBottom: 10}}>
+              <Text style={{color: 'grey', textAlign: 'justify'}}>
+                {modalData.message}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => CloseModal()}
+              style={{borderTopWidth: 1, borderTopColor: '#eee'}}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 20,
+                  marginVertical: 10,
+                  color: Color.mainColor,
+                  fontWeight: '700',
+                }}>
+                OK
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </Modal> */}
+      </Modal>
     </View>
   );
 };

@@ -44,7 +44,7 @@ const TransactionHistory = ({navigation}: any) => {
   const [unPaidRecipts, setUnPaidRecipts] = useState([])
   const [loading, setLoading] = useState<boolean>(false);
   // // console.log('receipts',receipts);
-  console.log('paidRecipts====>',paidRecipts);
+  // console.log('paidRecipts====>',paidRecipts);
   // console.log('unPaidRecipts====>',unPaidRecipts);
   
   const cartData: any = useSelector(cartData => cartData);
@@ -159,10 +159,10 @@ const TransactionHistory = ({navigation}: any) => {
     
     const monthName = monthNames[monthIndex];
     
-    console.log(`${date.getDate()} ${monthName} ${year}`);
+    // console.log(`${date.getDate()} ${monthName} ${year}`);
 
 
-console.log('item?.receipt_date',item?.receipt_date);
+// console.log('item?.receipt_date',item?.receipt_date);
 
     
     return (

@@ -312,6 +312,7 @@ const TransactionHistory = ({navigation}: any) => {
       </View>
     );
   }, [unPaidRecipts]);
+  
   const thirdRoute = useCallback(() => {
     return (
       <View style={{marginVertical: 20, marginBottom: 10}}>

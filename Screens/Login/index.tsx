@@ -24,6 +24,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import firebase from '@react-native-firebase/app';
+import { useDispatch } from 'react-redux';
+import { deviceToken } from '../../Redux/Reducer/Reducers';
 // import successGIF from '../../Images/successGIF.gif';
 
 const Login = ({navigation}: any) => {
@@ -42,50 +44,97 @@ const Login = ({navigation}: any) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   // Initialize Firebase app for notification
+  // const checkPermissionAndToken = async () => {
+  //   messaging()
+  //     .hasPermission()
+  //     .then(enabled => {
+  //       if (enabled) {
+  //         messaging()
+  //           .getToken()
+  //           .then(fcmToken => {
+  //             if (fcmToken) {
+  //               console.log('fcmToken===============>', fcmToken);
+  //               const formData = new FormData();
+  //               formData.append('customer_id', loginFields?.customer_id);
+  //               formData.append('device_token', fcmToken);
+
+  //               const config = {
+  //                 headers: {
+  //                   'Content-Type': 'multipart/form-data',
+  //                 },
+  //               };
+
+  //               axios
+  //                 .post(`${BaseUrl}saveDeviceToken`, formData, config)
+  //                 .then((res: any) => {
+  //                   // ToastAndroid.show(
+  //                   //   `${res.data.message}`,
+  //                   //   ToastAndroid.BOTTOM,
+  //                   // );
+  //                 })
+  //                 .catch(error => {
+  //                   ToastAndroid.show(
+  //                     'Internal Server Error fcmToken',
+  //                     ToastAndroid.BOTTOM,
+  //                   );
+  //                 });
+  //             } else {
+  //               console.log("user doesn't have a device token yet");
+  //             }
+  //           });
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log('error', error);
+  //     });
+  // };
+  const dispatch = useDispatch()
   const checkPermissionAndToken = async () => {
     messaging()
       .hasPermission()
-      .then(enabled => {
+      .then(async (enabled) => {
         if (enabled) {
-          messaging()
-            .getToken()
-            .then(fcmToken => {
-              if (fcmToken) {
-                console.log('fcmToken===============>', fcmToken);
-                const formData = new FormData();
-                formData.append('customer_id', loginFields?.customer_id);
-                formData.append('device_token', fcmToken);
-
-                const config = {
-                  headers: {
-                    'Content-Type': 'multipart/form-data',
-                  },
-                };
-
-                axios
-                  .post(`${BaseUrl}saveDeviceToken`, formData, config)
-                  .then((res: any) => {
-                    // ToastAndroid.show(
-                    //   `${res.data.message}`,
-                    //   ToastAndroid.BOTTOM,
-                    // );
-                  })
-                  .catch(error => {
-                    ToastAndroid.show(
-                      'Internal Server Error fcmToken',
-                      ToastAndroid.BOTTOM,
-                    );
-                  });
-              } else {
-                console.log("user doesn't have a device token yet");
-              }
-            });
+          try {
+            const fcmToken = await messaging().getToken();
+            if (fcmToken) {
+              dispatch(deviceToken(fcmToken))
+              const formData = new FormData();
+              formData.append('customer_id', loginFields?.customer_id);
+              formData.append('device_token', fcmToken);
+  
+              const config = {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              };
+  
+              axios
+                .post(`${BaseUrl}saveDeviceToken`, formData, config)
+                .then((res) => {
+                  // ToastAndroid.show(
+                  //   `${res.data.message}`,
+                  //   ToastAndroid.BOTTOM,
+                  // );
+                })
+                .catch((error) => {
+                  ToastAndroid.show(
+                    'Internal Server Error fcmToken',
+                    ToastAndroid.BOTTOM,
+                  );
+                });
+            } else {
+              console.log("user doesn't have a device token yet");
+            }
+          } catch (error) {
+            console.log('Error in retrieving FCM token:', error);
+          }
         }
       })
-      .catch(error => {
-        console.log('error', error);
+      .catch((error) => {
+        console.log('Permission check error:', error);
       });
   };
+  
   const LoginFunction = () => {
     let flag = Object.values(loginFields);
 

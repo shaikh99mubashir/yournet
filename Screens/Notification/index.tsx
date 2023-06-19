@@ -31,10 +31,13 @@ const Notification = ({navigation}: any) => {
     setUserData(cartData?.user?.cart?.customer);
   },[focus])
   
+  console.log('userNotificarion====================================notofication',userNotificarion);
+  console.log('getUserData?.customer_id====================================notofication',getUserData?.customer_id);
 
   const getNotification = () => {
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
+    formData.append('device_token', 'duCN8-hjSy6MaSe7wfMtOU:APA91bGybw4Ff3gPswAp1QurBNKbW6kECfLR-C1bx0huffL_z6KX3ib1P27NCjaE94IZXwsdPP_bUuYmxAm1EYUT1He_xtJ2Z63vtmIuUJ_kPuj6b0FKcCOsz5WQCzC1ipuHejo1X_6L');
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -195,6 +198,7 @@ const Notification = ({navigation}: any) => {
         backgroundColor: Color.white,
         flex: 1,
         paddingHorizontal: 15,
+        paddingTop:7
       }}>
       <Header navigation={navigation} backBtn noLogo />
       <Text

@@ -72,16 +72,19 @@ const Home = ({navigation}: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [noInternet, setNoInternet] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
+  const [fcmToken, setFCMToken] = useState('')
   const cartData: any = useSelector(cartData => cartData);
-  // console.log('getUserData',getUserData);
+  const deviceToken: any = useSelector(deviceToken => deviceToken);
+  console.log('deviceToken==========>',deviceToken.user.deviceToken);
+  
 
   useEffect(() => {
     setUserData(cartData?.user?.cart?.customer);
     WebPortalData(cartData?.user?.cart?.portals);
     setUserPackage(cartData?.user?.cart?.package);
     setPromotionData(cartData?.user?.cart?.promotions);
-  }, [cartData, focus]);
+    setFCMToken(deviceToken.user.deviceToken)
+  }, [cartData, focus,deviceToken]);
 
   const dispatch = useDispatch();
 
@@ -150,6 +153,7 @@ const Home = ({navigation}: any) => {
   const getNotification = () => {
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
+    formData.append('device_token', fcmToken);
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',

@@ -135,7 +135,7 @@ const Contact = ({navigation}:any) => {
           Contact Us
         </Text>
         <View style={{alignItems:'center'}}>
-        <Image source={require('../../Images/cus.jpg')} style={{width:150, height:150}} resizeMode='contain'/>
+        <Image source={require('../../Images/cus.png')} style={{width:150, height:150}} resizeMode='contain'/>
         </View>
       <Text
         style={{

@@ -32,6 +32,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
 import CheckWebView from '../CheckWebView';
 import Loader from '../../Components/Loader';
+import notifee, {AndroidImportance} from '@notifee/react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   addToCart,
@@ -149,6 +150,25 @@ const Home = ({navigation}: any) => {
     getData();
   }, [user_id, focus,dispatch]);
 
+
+// 
+const getAdminOption = () => {
+  console.log('runnuinn');
+  axios
+    .post(`${BaseUrl}getWhoWeAreOption`,  )
+    .then(({data}: any) => {
+      console.log('data',data.option_value);
+    })
+    .catch(error => {
+      ToastAndroid.show(
+        'Internal Server Error in AdminOption',
+        ToastAndroid.BOTTOM,
+      );
+    });
+};
+useEffect(()=>{
+  getAdminOption()
+},[])
   // Get Notification
   const getNotification = () => {
     const formData = new FormData();
@@ -171,6 +191,51 @@ const Home = ({navigation}: any) => {
         );
       });
   };
+
+  useEffect(() => {
+    getFCMToken();
+    requestPermission();
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('remoteMessage', JSON.stringify(remoteMessage));
+      DisplayNotification(remoteMessage);
+      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+    return unsubscribe;
+  }, []);
+
+  const getFCMToken = () => {
+    messaging()
+      .getToken()
+      .then(token => {
+        console.log('token=>>>', token);
+      });
+  };
+
+  const requestPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+  };
+
+  async function DisplayNotification(remoteMessage:any) {
+    // Create a channel
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+      importance: AndroidImportance.HIGH,
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      title: remoteMessage.notification.title,
+      body: remoteMessage.notification.body,
+      android: {
+        channelId,
+      },
+    });
+  }
+
+  
+
+
 
   useEffect(() => {
     getNotification();

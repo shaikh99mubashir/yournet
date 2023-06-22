@@ -96,6 +96,8 @@ const Login = ({navigation}: any) => {
         if (enabled) {
           try {
             const fcmToken = await messaging().getToken();
+            console.log('fcmToken',fcmToken);
+            
             if (fcmToken) {
               dispatch(deviceToken(fcmToken))
               const formData = new FormData();

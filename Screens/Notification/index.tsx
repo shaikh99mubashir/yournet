@@ -19,6 +19,7 @@ import axios from 'axios';
 import {BaseUrl} from '../../Constants/BaseUrl';
 import {useIsFocused} from '@react-navigation/native';
 import { pushNotification} from '../../Redux/Reducer/Reducers';
+import messaging from '@react-native-firebase/messaging';
 const Notification = ({navigation}: any) => {
   const [refresh, setRefresh] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -29,15 +30,22 @@ const Notification = ({navigation}: any) => {
   const cartData: any = useSelector(cartData => cartData);
   useEffect(()=>{
     setUserData(cartData?.user?.cart?.customer);
+    getFCMToken()
   },[focus])
-  
-  console.log('userNotificarion====================================notofication',userNotificarion);
-  console.log('getUserData?.customer_id====================================notofication',getUserData?.customer_id);
-
-  const getNotification = () => {
+  const [token, setToken] = useState<any>([])
+  const getFCMToken = () => {
+    messaging()
+      .getToken()
+      .then(token => {
+        setToken(token)
+      });
+    };
+    console.log('token=>>>', token);
+    console.log('getUserData=>>>', getUserData);
+  const getNotification = () => {    
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
-    formData.append('device_token', 'duCN8-hjSy6MaSe7wfMtOU:APA91bGybw4Ff3gPswAp1QurBNKbW6kECfLR-C1bx0huffL_z6KX3ib1P27NCjaE94IZXwsdPP_bUuYmxAm1EYUT1He_xtJ2Z63vtmIuUJ_kPuj6b0FKcCOsz5WQCzC1ipuHejo1X_6L');
+    formData.append('device_token', token);
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',

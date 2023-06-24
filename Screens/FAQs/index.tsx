@@ -7,35 +7,58 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useSelector } from 'react-redux';
 const FAQs = ({navigation}: any) => {
+  // const [faqsData, setFaqsData] = useState([
+  //   {
+  //     id: 1,
+  //     question: 'Question 1',
+  //     answer:
+  //       'Hey! Remember you have to attribute Ilham Fitrotul Hayat Every time you attribute, you get +10 to your Karma Select your favorite social network and share our icons with your contacts or friends. If you don’t have these social networks, simply copy the link and paste it in the one you use. For more information read the  or download the license.',
+  //       open: false,
+  //     },
+  //   {
+  //     id: 2,
+  //     question: 'Question 2',
+  //     answer:
+  //       'Hey! Remember you have to attribute Ilham Fitrotul Hayat Every time you attribute, you get +10 to your Karma Select your favorite social network and share our icons with your contacts or friends. If you don’t have these social networks, simply copy the link and paste it in the one you use. For more information read the  or download the license.',
+  //       open: false,
+  //     },
+  // ]);
   const [open, setOpen] = useState(false);
+  const [faqsData, setFaqsData] = useState([]);
+  
+  const faqs: any = useSelector(faqs => faqs);
+  const getfaqs = faqs?.user?.faqs;
+  console.log('faqsData===>',faqsData);
+  const getData = () => {
+    
+    const updatedFaqs = getfaqs.map((faq: any) => {
+      return {
+        ...faq,
+        open: false,
+      };
+    });
+    setFaqsData(updatedFaqs);
+  }
 
-  const [faqsData, setFaqsData] = useState([
-    {
-      id: 1,
-      question: 'Question 1',
-      answer:
-        'Hey! Remember you have to attribute Ilham Fitrotul Hayat Every time you attribute, you get +10 to your Karma Select your favorite social network and share our icons with your contacts or friends. If you don’t have these social networks, simply copy the link and paste it in the one you use. For more information read the  or download the license.',
-        open: false,
-      },
-    {
-      id: 2,
-      question: 'Question 2',
-      answer:
-        'Hey! Remember you have to attribute Ilham Fitrotul Hayat Every time you attribute, you get +10 to your Karma Select your favorite social network and share our icons with your contacts or friends. If you don’t have these social networks, simply copy the link and paste it in the one you use. For more information read the  or download the license.',
-        open: false,
-      },
-  ]);
+
+  useEffect(()=>{
+    getData()
+  },[])
+
+
+
 
   const handleQuestionPress = (index: number) => {
     console.log('index',index);
-    setFaqsData((prevData) =>
-      prevData.map((faq, i) => ({
+    setFaqsData((prevData:any) =>
+      prevData.map((faq:any, i:number) => ({
         ...faq,
         open: i == index ? !faq.open : false,
       }))
@@ -43,8 +66,8 @@ const FAQs = ({navigation}: any) => {
   };
   return (
     <View
-      style={{paddingHorizontal: 15, backgroundColor: 'white', height: '100%'}}>
-      <ScrollView>
+      style={{paddingHorizontal: 15, backgroundColor: 'white', height: '100%',flex:1}}>
+      {/* <ScrollView> */}
         <Header navigation={navigation} backBtn noLogo />
         <Text
           style={{
@@ -59,7 +82,7 @@ const FAQs = ({navigation}: any) => {
 
         <FlatList
           data={faqsData ?? []}
-          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           nestedScrollEnabled
           renderItem={({item, index}: any) => {
             return (
@@ -83,7 +106,7 @@ const FAQs = ({navigation}: any) => {
                   <View style={{width: '93%'}}>
                     <Text
                       style={{fontSize: 15, fontWeight: '600', color: 'black'}}>
-                      {item.question}
+                      {item.title}
                     </Text>
                   </View>
                   <TouchableOpacity onPress={() => handleQuestionPress(index)}>
@@ -120,7 +143,7 @@ const FAQs = ({navigation}: any) => {
                       
                     }}>
                     <Text style={{color: 'black'}}>
-                      {item.answer}
+                      {item.description}
                     </Text>
                   </View>
                 ) : (
@@ -130,7 +153,7 @@ const FAQs = ({navigation}: any) => {
             );
           }}
         />
-      </ScrollView>
+      {/* </ScrollView> */}
     </View>
   );
 };

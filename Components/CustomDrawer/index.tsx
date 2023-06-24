@@ -7,6 +7,7 @@ import {
   ToastAndroid,
   Image,
   Modal,
+  Dimensions
 } from 'react-native';
 import {
   DrawerContentScrollView,
@@ -33,6 +34,7 @@ function CustomDrawerContent(props: any) {
   const focus = useIsFocused();
   const [user_id, setUser_id] = useState('');
   const [openWWRModal, setOpenWWRModal] = useState(false);
+  const [openPPModal, setOpenPPModal] = useState(false);
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('user_id')
       .then(value => {
@@ -113,14 +115,28 @@ function CustomDrawerContent(props: any) {
   // useEffect(() => {
   //   gettingUserNickName();
   // }, [focus]);
+  
   const logoutFun = () => {
     props.navigation.replace('Login');
     AsyncStorage.removeItem('user_id');
     AsyncStorage.removeItem('loginFields');
     dispatch(logout());
   };
+
   const userNickName: any = useSelector(userNickName => userNickName);
   const nickname = userNickName?.user?.userNickName;
+  const whoWeAre: any = useSelector(whoWeAre => whoWeAre);
+  const getWhoWeAre = whoWeAre?.user?.whoWeAre;
+
+  const PackagesPlans: any = useSelector(PackagesPlans => PackagesPlans);
+  const getPackagesPlans = PackagesPlans?.user?.packagesPlans;
+  
+
+  const availOffer = () => {
+    setOpenPPModal(false)
+    props.navigation.navigate('Contact');
+  }
+
   const firstname = getUserData?.first_name;
 
   let initial = '';
@@ -424,7 +440,8 @@ if (typeof nickname === 'string' && nickname.length > 0) {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   // onPress={() => navigateToScreen('PackagesPlans')}
-                  onPress={ShowMessage}
+                  onPress={() => setOpenPPModal(!openPPModal)}
+                  // onPress={ShowMessage}
                   style={{
                     backgroundColor: Color.white,
                     padding: 10,
@@ -459,13 +476,14 @@ if (typeof nickname === 'string' && nickname.length > 0) {
               ISP Billing Version 1.001{' '}
             </Text>
             <TouchableOpacity
-              onPress={ShowMessage}
-              // onPress={() => navigateToScreen('TermsCondition')}
+              // onPress={ShowMessage}
+              onPress={() => navigateToScreen('TermsCondition')}
             >
               <Text style={{color: 'blue'}}>Terms & Condition</Text>
             </TouchableOpacity>
           </View>
         </View>
+        {/* Who We Are Modal */}
         <View style={{flex: 1}}>
           <Modal
             visible={openWWRModal}
@@ -487,7 +505,6 @@ if (typeof nickname === 'string' && nickname.length > 0) {
                   marginHorizontal: 20,
                 }}>
                 <TouchableOpacity onPress={() => setOpenWWRModal(false)}>
-                  {/* <Text style={{textAlign:'right', fontSize:16, fontWeight:'700', color:Color.mainColor}}>X</Text> */}
                   <View style={{alignItems: 'flex-end'}}>
                     <AntDesign
                       name="closecircleo"
@@ -511,12 +528,52 @@ if (typeof nickname === 'string' && nickname.length > 0) {
                     fontSize: 14,
                     color: Color.textColor,
                   }}>
-                  Filler text is text that shares some characteristics of a real
-                  written text, but is random or otherwise generated. It may be
-                  used to display a sample of fonts, generate text for testing,
-                  or to spoof an e-mail spam filter.
+                  {getWhoWeAre}
                 </Text>
               </View>
+            </View>
+          </Modal>
+        </View>
+
+        {/* Packages And Plans */}
+        <View style={{flex: 1}}>
+          <Modal
+            visible={openPPModal}
+            animationType="fade"
+            transparent={true}
+            onRequestClose={() => setOpenPPModal(false)}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  // padding: 15,
+                  borderRadius: 5,
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
+                    <AntDesign
+                      name="closecircleo"
+                      size={20}
+                      color={Color.mainColor}
+                    />
+                  </View>
+                </TouchableOpacity>
+                <Image source={{uri:getPackagesPlans?.image_url}} style={{width:Dimensions.get('screen').width/1.1,height:'80%'}} resizeMode='contain'/>
+              
+              <TouchableOpacity activeOpacity={0.8} onPress={availOffer} style={{backgroundColor:Color.mainColor, marginHorizontal:10, paddingVertical:10, alignItems:'center'}}>
+                <Text style={{color:'white',fontSize:16, fontWeight:'bold'}}>Avali Offer</Text>
+              </TouchableOpacity>
+              
+              </View>
+
             </View>
           </Modal>
         </View>

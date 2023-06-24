@@ -37,7 +37,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   addToCart,
   companyName,
+  faqsData,
+  packagesPlans,
   pushNotification,
+  termAndCondition,
+  whoWeAre,
 } from '../../Redux/Reducer/Reducers';
 import messaging from '@react-native-firebase/messaging';
 import firebase from '@react-native-firebase/app';
@@ -73,19 +77,18 @@ const Home = ({navigation}: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [noInternet, setNoInternet] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [fcmToken, setFCMToken] = useState('')
+  const [fcmToken, setFCMToken] = useState('');
   const cartData: any = useSelector(cartData => cartData);
   const deviceToken: any = useSelector(deviceToken => deviceToken);
-  console.log('deviceToken==========>',deviceToken.user.deviceToken);
-  
+  console.log('deviceToken==========>', deviceToken.user.deviceToken);
 
   useEffect(() => {
     setUserData(cartData?.user?.cart?.customer);
     WebPortalData(cartData?.user?.cart?.portals);
     setUserPackage(cartData?.user?.cart?.package);
     setPromotionData(cartData?.user?.cart?.promotions);
-    setFCMToken(deviceToken.user.deviceToken)
-  }, [cartData, focus,deviceToken]);
+    setFCMToken(deviceToken.user.deviceToken);
+  }, [cartData, focus, deviceToken]);
 
   const dispatch = useDispatch();
 
@@ -96,9 +99,9 @@ const Home = ({navigation}: any) => {
         User_ID: user_id,
       },
     };
-    if(getUserData){
+    if (getUserData) {
       setLoading(false);
-      return
+      return;
     }
     axios
       .post(`${BaseUrl}getAllData`, null, config)
@@ -148,27 +151,86 @@ const Home = ({navigation}: any) => {
 
   useEffect(() => {
     getData();
-  }, [user_id, focus,dispatch]);
+  }, [user_id, focus, dispatch]);
+
+  // get Who We Are
+  const getWhoWeAre = () => {
+    axios
+      .post(`${BaseUrl}getWhoWeAreOption`)
+      .then(({data}: any) => {
+        dispatch(whoWeAre(data.option_value));
+      })
+      .catch(error => {
+        ToastAndroid.show(
+          'Internal Server Error in WhoWeAre',
+          ToastAndroid.BOTTOM,
+        );
+      });
+  };
+
+  // get Term And Condition
+  const getTermAndConditions = () => {
+    axios
+      .post(`${BaseUrl}getTermsAndConditionsOption`)
+      .then(({data}: any) => {
+        // console.log('data', data.option_value);
+        dispatch(termAndCondition(data.option_value));
+      })
+      .catch(error => {
+        ToastAndroid.show(
+          'Internal Server Error in TermAndConditions',
+          ToastAndroid.BOTTOM,
+        );
+      });
+  };
+
+  // get FAqs
+  const getFAQs = () => {
+    console.log('runnuinn');
+    axios
+      .post(`${BaseUrl}getfaqs`)
+      .then(({data}: any) => {
+        console.log('data', data.faqs);
+        dispatch(faqsData(data.faqs));
+      })
+      .catch(error => {
+        ToastAndroid.show(
+          'Internal Server Error in faqs',
+          ToastAndroid.BOTTOM,
+        );
+      });
+  };
+  useEffect(() => {
+    getWhoWeAre();
+    getTermAndConditions()
+    getFAQs()
+  }, [focus]);
 
 
-// 
-const getAdminOption = () => {
-  console.log('runnuinn');
-  axios
-    .post(`${BaseUrl}getWhoWeAreOption`,  )
-    .then(({data}: any) => {
-      console.log('data',data.option_value);
-    })
-    .catch(error => {
-      ToastAndroid.show(
-        'Internal Server Error in AdminOption',
-        ToastAndroid.BOTTOM,
-      );
-    });
-};
-useEffect(()=>{
-  getAdminOption()
-},[])
+  const getPackagesPlans = () => {
+    const formData = new FormData();
+    formData.append('company_id', getUserData?.company_id);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}getPackageImagesByCompanyId`, formData, config)
+      .then(({data}: any) => {
+        // console.log('data',data.package_image);
+        dispatch(packagesPlans(data.package_image))
+        
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error PackagesPlans', ToastAndroid.BOTTOM);
+      });
+  };
+
+  useEffect(()=>{
+    getPackagesPlans()
+  },[getUserData?.company_id])
+
   // Get Notification
   const getNotification = () => {
     const formData = new FormData();
@@ -215,7 +277,7 @@ useEffect(()=>{
     const authStatus = await messaging().requestPermission();
   };
 
-  async function DisplayNotification(remoteMessage:any) {
+  async function DisplayNotification(remoteMessage: any) {
     // Create a channel
     const channelId = await notifee.createChannel({
       id: 'default',
@@ -232,10 +294,6 @@ useEffect(()=>{
       },
     });
   }
-
-  
-
-
 
   useEffect(() => {
     getNotification();

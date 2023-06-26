@@ -310,6 +310,7 @@ const Home = ({navigation}: any) => {
   }, [getUserData?.customer_id]);
 
   // Get company name
+  const companyName: any = useSelector(companyName => companyName);
   const getCompanyName = () => {
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
@@ -1081,7 +1082,7 @@ const Home = ({navigation}: any) => {
                       fontSize: 12,
                     }}>
                     {' '}
-                    Yournet
+                    {companyName?.user?.companyData?.com_name}
                   </Text>
                 </Text>
                 <TouchableOpacity

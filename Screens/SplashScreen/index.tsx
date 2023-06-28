@@ -50,7 +50,7 @@ const SplashScreen = ({navigation}:any) => {
 
   AsyncStorage.getItem('user_id').then((val: any) => {
     let date1 = JSON.parse(val);
-    console.log('data1', date1);
+    // console.log('data1', date1);
     if (date1) {
       setTimeout(() => {
         navigation.replace('Home');

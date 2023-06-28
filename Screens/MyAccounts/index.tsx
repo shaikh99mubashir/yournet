@@ -49,40 +49,34 @@ const MyAccounts = () => {
     gettingUserDatatoken();
   }, [focus]);
 
-  
- 
-  const getCusData = () => {
-    setLoading(true);
+  const [companyName, setCompanyName] = useState<any>('')  
+  const getCompanyName = () => {
+    const formData = new FormData();
+    formData.append('customer_id', getUserData?.customer_id);
     const config = {
       headers: {
-        user_id: user_id,
+        'Content-Type': 'multipart/form-data',
       },
     };
-
     axios
-      .post(
-        `${BaseUrl}getAllData`,
-        null, // pass null as the data parameter since you're making a POST request without any payload
-        config, // pass the config object as the third parameter
-      )
-      .then((res: any) => {
-        setUserData(res.data.customer);
-        setLoading(false);
+      .post(`${BaseUrl}getCompanyData`, formData, config)
+      .then(({data}: any) => {
+        console.log('datat',data?.company?.com_name);
+        setCompanyName(data?.company?.com_name)
+        // dispatch(companyName(companyName))
       })
       .catch(error => {
-        if(error == 'AxiosError: Network Error'){    
-          ToastAndroid.show('You Are Offline', ToastAndroid.LONG);
-          setNoInternet(true)
-          return
-        }
-        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-        setLoading(false);
+        // console.log('rerror',error.message);
+        ToastAndroid.show(
+          `Internal Server Error in getCompanyName ${error}`,
+          ToastAndroid.BOTTOM,
+        );
       });
   };
 
-  // useEffect(() => {
-  //   getCusData();
-  // }, [user_id,focus]);
+  useEffect(() => {
+    getCompanyName();
+  }, [getUserData?.customer_id,focus]);
 
   const [email_address, setEmail_address] = useState('');
   const [updateEmail, setUpdateEmail] = useState(false);
@@ -164,7 +158,7 @@ const MyAccounts = () => {
 
 
   const cartData: any = useSelector(cartData => cartData);
-  const companyName: any = useSelector(companyName => companyName);
+  // const companyName: any = useSelector(companyName => companyName);
   const userNickName: any = useSelector(userNickName => userNickName);
   
   dispatch(nickname(nickName));
@@ -582,7 +576,7 @@ const MyAccounts = () => {
                 fontWeight: 'bold',
                 fontSize: 16,
               }}>
-              {companyName?.user?.companyData?.com_name}
+              {companyName}
             </Text>
           </View>
         </View>

@@ -31,9 +31,9 @@ const Header = (Props: any) => {
 
   // const [userNotificarion, setUserNotificarion] = useState<any>([]);
   const noti: any = useSelector(notification => notification);
-  console.log('noti.user.notification header',noti.user.notification);
+  // console.log('noti.user.notification header',noti.user.notification);
   
-  const newNotificationCount = noti.user.notification.filter((notification:any) => notification.status == 'New').length;
+  const newNotificationCount = noti?.user?.notification && noti?.user?.notification.filter((notification:any) => notification.status == 'New').length;
   // useEffect(() => {
   //   setUserNotificarion(noti.user.notification);
   // }, []);

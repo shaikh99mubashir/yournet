@@ -9,7 +9,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 const ComplaintDetail = ({route, navigation}: any) => {
   const data = route.params;
-  console.log('data',data);
+  // console.log('data',data);
   
 
   const [resolvedDateTime, setResolvedDateTime] = useState('')

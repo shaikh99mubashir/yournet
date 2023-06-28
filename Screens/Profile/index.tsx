@@ -21,7 +21,7 @@ const Profile = ({navigation}:any) => {
   const [nickName, setNickName] = useState<any>('');
   const [userId, setUserId] = useState<any>('');
   const [getUserData, setUserData] = useState<any>([]);
-  const companyName: any = useSelector(companyName => companyName);
+  
   const focus = useIsFocused()
   const cartData: any = useSelector(cartData => cartData);
   useEffect(()=>{
@@ -32,42 +32,35 @@ const Profile = ({navigation}:any) => {
     .then(() => console.log('nickName fields saved'))
     .catch(error => console.log('Error saving nickName fields: ', error));
 
-
-  const gettingUserData = () => {
-    AsyncStorage.getItem('loginFields')
-      .then(value => {
-        if (value !== null) {
-          setUserId(JSON.parse(value));
-        } else {
-          console.log('No login fields found');
-        }
-      })
-      .catch(error => console.log('Error retrieving login fields: ', error));
-  };
-  // useEffect(() => {
-  //   gettingUserData();
-  // }, []);
-  const getData = () => {
-    const formData = new FormData();
-    formData.append('customer_id', userId?.customer_id);
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    const [companyName, setCompanyName] = useState<any>('')  
+    const getCompanyName = () => {
+      const formData = new FormData();
+      formData.append('customer_id', getUserData?.customer_id);
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+      axios
+        .post(`${BaseUrl}getCompanyData`, formData, config)
+        .then(({data}: any) => {
+          console.log('datat',data?.company?.com_name);
+          setCompanyName(data?.company?.com_name)
+          // dispatch(companyName(companyName))
+        })
+        .catch(error => {
+          // console.log('rerror',error.message);
+          ToastAndroid.show(
+            `Internal Server Error in getCompanyName ${error}`,
+            ToastAndroid.BOTTOM,
+          );
+        });
     };
-    axios
-      .post(`${BaseUrl}getdata`, formData, config)
-      .then((res: any) => {
-        setUserData(res.data.customer);
-      })
-      .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-      });
-  };
+  
+    useEffect(() => {
+      getCompanyName();
+    }, [getUserData?.customer_id,focus]);
 
-  // useEffect(() => {
-  //   getData();
-  // }, [userId?.customer_id]);
   return (
     <View       style={{paddingHorizontal: 15}}>
     <ScrollView
@@ -234,7 +227,7 @@ const Profile = ({navigation}:any) => {
               fontWeight: 'bold',
               fontSize: 16,
             }}>
-            {companyName?.user?.companyData?.com_name}
+            {companyName}
           </Text>
         </View>
       </View>

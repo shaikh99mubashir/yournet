@@ -78,17 +78,17 @@ const Home = ({navigation}: any) => {
   const [noInternet, setNoInternet] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [fcmToken, setFCMToken] = useState('');
+  
   const cartData: any = useSelector(cartData => cartData);
-  const deviceToken: any = useSelector(deviceToken => deviceToken);
-  console.log('deviceToken==========>', deviceToken.user.deviceToken);
+  // const deviceToken: any = useSelector(deviceToken => deviceToken);
+  // console.log('deviceToken==========>', deviceToken.user.deviceToken);
 
   useEffect(() => {
     setUserData(cartData?.user?.cart?.customer);
     WebPortalData(cartData?.user?.cart?.portals);
     setUserPackage(cartData?.user?.cart?.package);
     setPromotionData(cartData?.user?.cart?.promotions);
-    setFCMToken(deviceToken.user.deviceToken);
-  }, [cartData, focus, deviceToken]);
+  }, [cartData, focus,]);
 
   const dispatch = useDispatch();
 
@@ -186,11 +186,10 @@ const Home = ({navigation}: any) => {
 
   // get FAqs
   const getFAQs = () => {
-    console.log('runnuinn');
     axios
       .post(`${BaseUrl}getfaqs`)
       .then(({data}: any) => {
-        console.log('data', data.faqs);
+        // console.log('data', data.faqs);
         dispatch(faqsData(data.faqs));
       })
       .catch(error => {
@@ -236,6 +235,8 @@ const Home = ({navigation}: any) => {
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
     formData.append('device_token', fcmToken);
+    // console.log('fcmToken',fcmToken);
+    // console.log('getUserData?.customer_id',getUserData?.customer_id);
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -244,9 +245,13 @@ const Home = ({navigation}: any) => {
     axios
       .post(`${BaseUrl}getPushNotifications`, formData, config)
       .then(({data}: any) => {
+        console.log('data',data);
+        
         dispatch(pushNotification(data.push_notifications));
       })
       .catch(error => {
+        console.log('error',error);
+        
         ToastAndroid.show(
           'Internal Server Error in Notification',
           ToastAndroid.BOTTOM,
@@ -263,13 +268,14 @@ const Home = ({navigation}: any) => {
       // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
     return unsubscribe;
-  }, []);
+  }, [focus]);
 
   const getFCMToken = () => {
     messaging()
       .getToken()
       .then(token => {
-        console.log('token=>>>', token);
+        setFCMToken(token)
+        // console.log('token=>>>', token);
       });
   };
 
@@ -307,10 +313,10 @@ const Home = ({navigation}: any) => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [getUserData?.customer_id]);
+  }, [getUserData?.customer_id,fcmToken]);
 
   // Get company name
-  const companyName: any = useSelector(companyName => companyName);
+  const [companyName, setCompanyName] = useState<any>('')  
   const getCompanyName = () => {
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
@@ -322,11 +328,13 @@ const Home = ({navigation}: any) => {
     axios
       .post(`${BaseUrl}getCompanyData`, formData, config)
       .then(({data}: any) => {
-        dispatch(companyName(data?.company));
+        setCompanyName(data?.company?.com_name)
+        // dispatch(companyName(companyName))
       })
       .catch(error => {
+        // console.log('rerror',error.message);
         ToastAndroid.show(
-          'Internal Server Error in getCompanyName',
+          `Internal Server Error in getCompanyName ${error}`,
           ToastAndroid.BOTTOM,
         );
       });
@@ -334,7 +342,7 @@ const Home = ({navigation}: any) => {
 
   useEffect(() => {
     getCompanyName();
-  }, [getUserData?.customer_id]);
+  }, [getUserData?.customer_id,focus]);
 
   // email work
   const saveEmailAdress = () => {
@@ -409,54 +417,54 @@ const Home = ({navigation}: any) => {
   //  promotion Work Ended
 
   // // Initialize Firebase app for notification
-  // const checkPermissionAndToken = async () => {
-  //   messaging()
-  //     .hasPermission()
-  //     .then(enabled => {
-  //       if (enabled) {
-  //         messaging()
-  //           .getToken()
-  //           .then(fcmToken => {
-  //             if (fcmToken) {
-  //               // console.log('fcmToken===============>', fcmToken);
-  //               const formData = new FormData();
-  //               formData.append('customer_id', getUserData?.customer_id);
-  //               formData.append('device_token', fcmToken);
+  const checkPermissionAndToken = async () => {
+    messaging()
+      .hasPermission()
+      .then(enabled => {
+        if (enabled) {
+          messaging()
+            .getToken()
+            .then(fcmToken => {
+              if (fcmToken) {
+                // console.log('fcmToken===============>', fcmToken);
+                const formData = new FormData();
+                formData.append('customer_id', getUserData?.customer_id);
+                formData.append('device_token', fcmToken);
 
-  //               const config = {
-  //                 headers: {
-  //                   'Content-Type': 'multipart/form-data',
-  //                 },
-  //               };
+                const config = {
+                  headers: {
+                    'Content-Type': 'multipart/form-data',
+                  },
+                };
 
-  //               axios
-  //                 .post(`${BaseUrl}saveDeviceToken`, formData, config)
-  //                 .then((res: any) => {
-  //                   // ToastAndroid.show(
-  //                   //   `${res.data.message}`,
-  //                   //   ToastAndroid.BOTTOM,
-  //                   // );
-  //                 })
-  //                 .catch(error => {
-  //                   ToastAndroid.show(
-  //                     'Internal Server Error fcmToken',
-  //                     ToastAndroid.BOTTOM,
-  //                   );
-  //                 });
-  //             } else {
-  //               console.log("user doesn't have a device token yet");
-  //             }
-  //           });
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.log('error', error);
-  //     });
-  // };
+                axios
+                  .post(`${BaseUrl}saveDeviceToken`, formData, config)
+                  .then((res: any) => {
+                    // ToastAndroid.show(
+                    //   `${res.data.message}`,
+                    //   ToastAndroid.BOTTOM,
+                    // );
+                  })
+                  .catch(error => {
+                    ToastAndroid.show(
+                      'Internal Server Error fcmToken',
+                      ToastAndroid.BOTTOM,
+                    );
+                  });
+              } else {
+                console.log("user doesn't have a device token yet");
+              }
+            });
+        }
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  };
 
-  // useEffect(() => {
-  //   checkPermissionAndToken();
-  // }, [getUserData?.customer_id]);
+  useEffect(() => {
+    checkPermissionAndToken();
+  }, [getUserData?.customer_id]);
   // nickname
   const userNickName: any = useSelector(userNickName => userNickName);
 
@@ -1082,7 +1090,7 @@ const Home = ({navigation}: any) => {
                       fontSize: 12,
                     }}>
                     {' '}
-                    {companyName?.user?.companyData?.com_name}
+                    {companyName}
                   </Text>
                 </Text>
                 <TouchableOpacity

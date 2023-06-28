@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 const TransactionDetails = ({navigation, route}: any) => {
   const data: any = route.params;
-  console.log('data ===>', data);
+  // console.log('data ===>', data);
 
   const activationDate: Date = new Date(data.activation_date);
   const expiryDate: Date = new Date(data.expiry_date);
@@ -21,7 +21,7 @@ const TransactionDetails = ({navigation, route}: any) => {
     differenceInTime / (1000 * 3600 * 24),
   );
   const companyName: any = useSelector(companyName => companyName);
-  console.log('data.expiry_date', data.expiry_date);
+  // console.log('data.expiry_date', data.expiry_date);
   const dateString = data.expiry_date;
   const dateStringactivation_date = data.activation_date;
   const dateRegex = /^(\d+)(st|nd|rd|th)\s(\w+)(\s\d{4})$/;

@@ -28,6 +28,9 @@ const Notification = ({navigation}: any) => {
   const focus = useIsFocused();
 
   const cartData: any = useSelector(cartData => cartData);
+  const noti: any = useSelector(noti => noti);
+  console.log(noti.user.notification);
+  
   useEffect(()=>{
     setUserData(cartData?.user?.cart?.customer);
     getFCMToken()
@@ -41,7 +44,7 @@ const Notification = ({navigation}: any) => {
       });
     };
     console.log('token=>>>', token);
-    console.log('getUserData=>>>', getUserData);
+    // console.log('getUserData=>>>', getUserData);
   const getNotification = () => {    
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
@@ -59,6 +62,7 @@ const Notification = ({navigation}: any) => {
         // dispatch(pushNotification(data.push_notifications));
       })
       .catch(error => {
+        console.log('error noti page',error);
         ToastAndroid.show(
           'Internal Server Error in Notification',
           ToastAndroid.BOTTOM,
@@ -68,7 +72,7 @@ const Notification = ({navigation}: any) => {
 
   useEffect(()=>{
     getNotification()
-  },[getUserData?.customer_id])
+  },[getUserData?.customer_id, focus])
 
 
 
@@ -220,9 +224,9 @@ const Notification = ({navigation}: any) => {
         Notifications
       </Text>
 
-      {userNotificarion.length > 0 ? (
+      {noti.user.notification?.length > 0 ? (
         <FlatList
-          data={userNotificarion}
+          data={noti.user.notification ? noti.user.notification : userNotificarion}
           renderItem={renderNotificationItems}
           keyExtractor={(item: any) => item.id}
           showsVerticalScrollIndicator={false}

@@ -4,7 +4,7 @@ interface UserState {
   cart: any[];
   contact: any[];
   trackComplaint: any[];
-  companyData: any[];
+  companyData: any;
   notification: any[];
   userNickName: any;
   deviceToken: any;
@@ -18,7 +18,7 @@ const initialState: UserState = {
   cart: [],
   contact: [],
   trackComplaint: [],
-  companyData: [],
+  companyData: '',
   notification: [],
   userNickName: '',
   deviceToken: '',
@@ -44,7 +44,7 @@ export const userSlice: any = createSlice({
       state.trackComplaint = action.payload;
       // console.log(action.payload, ' : Track complaint Data Updated in Redux');
     },
-    companyName: (state, action: PayloadAction<any[]>) => {
+    companyName: (state, action: PayloadAction<any>) => {
       state.companyData = action.payload;
       // console.log(action.payload, ' : companyName Data Updated in Redux');
     },
@@ -54,7 +54,7 @@ export const userSlice: any = createSlice({
     },
     pushNotification: (state, action: PayloadAction<any[]>) => {
       state.notification = action.payload;
-      // console.log(action.payload, ' : nickname Updated in Redux');
+      console.log(action.payload, ' : pushNotification Updated in Redux');
     },
     deviceToken: (state, action: PayloadAction<any[]>) => {
       state.deviceToken = action.payload;

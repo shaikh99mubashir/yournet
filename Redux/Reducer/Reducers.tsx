@@ -54,7 +54,7 @@ export const userSlice: any = createSlice({
     },
     pushNotification: (state, action: PayloadAction<any[]>) => {
       state.notification = action.payload;
-      console.log(action.payload, ' : pushNotification Updated in Redux');
+      // console.log(action.payload, ' : pushNotification Updated in Redux');
     },
     deviceToken: (state, action: PayloadAction<any[]>) => {
       state.deviceToken = action.payload;

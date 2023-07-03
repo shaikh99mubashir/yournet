@@ -245,7 +245,7 @@ const Home = ({navigation}: any) => {
     axios
       .post(`${BaseUrl}getPushNotifications`, formData, config)
       .then(({data}: any) => {
-        console.log('data',data);
+        // console.log('data',data);
         
         dispatch(pushNotification(data.push_notifications));
       })
@@ -426,7 +426,7 @@ const Home = ({navigation}: any) => {
             .getToken()
             .then(fcmToken => {
               if (fcmToken) {
-                // console.log('fcmToken===============>', fcmToken);
+                console.log('fcmToken===============>', fcmToken);
                 const formData = new FormData();
                 formData.append('customer_id', getUserData?.customer_id);
                 formData.append('device_token', fcmToken);

@@ -235,7 +235,7 @@ const Home = ({navigation}: any) => {
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
     formData.append('device_token', fcmToken);
-    // console.log('fcmToken',fcmToken);
+    console.log('fcmToken',fcmToken);
     // console.log('getUserData?.customer_id',getUserData?.customer_id);
     const config = {
       headers: {
@@ -426,7 +426,7 @@ const Home = ({navigation}: any) => {
             .getToken()
             .then(fcmToken => {
               if (fcmToken) {
-                console.log('fcmToken===============>', fcmToken);
+                // console.log('fcmToken===============>', fcmToken);
                 const formData = new FormData();
                 formData.append('customer_id', getUserData?.customer_id);
                 formData.append('device_token', fcmToken);
@@ -501,6 +501,38 @@ const Home = ({navigation}: any) => {
   const [apply, setApply] = useState(false);
   const [cancel, setCancel] = useState(false);
   const [email_address, setEmail_address] = useState('');
+
+  const initialData = {
+    pushNotificationTitle: 'hello',
+    pushNotificationText: 'hello world',
+  }
+  // const [pushNotification, setPushNotification] = useState(initialData);
+  const handlePushNotification = () => {
+    fetch('http://192.168.1.114:5000/api/sendNotification', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'AAAAsIGANQ0:APA91bE1vwPfvC1PSjODKRG9yWTqPkR3Jpb9J78uyPW_MDBZAPGv0YUi8HFX3-OzJKOOJ76Bv1Co7lOOMGD4wJtenlQolHBv2uc9PUic4UhimhKGz276SckmbuI1XzyToc528pNDK7x1'
+      },
+      body: JSON.stringify({
+        notification: {
+          title:'hello1111',
+          body: 'hello World',
+        },
+        topic: 'allDevices'
+      })
+    }).then((res) => {
+      console.log(res,'hello');
+      
+
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
+  useEffect(()=>{
+    handlePushNotification()
+  })
 
   return (
     <View
@@ -914,6 +946,7 @@ const Home = ({navigation}: any) => {
                             paddingHorizontal: 10,
                             fontFamily: 'BebasNeue-Regular',
                             textAlign: 'center',
+                            width:100
                           }}>
                           {userPackage?.package_name ? (
                             userPackage?.package_name

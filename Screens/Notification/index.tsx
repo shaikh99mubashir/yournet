@@ -9,6 +9,7 @@ import {
   ToastAndroid,
   TouchableOpacity,
   Modal,
+  ActivityIndicator
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../../Components/Header';
@@ -21,7 +22,7 @@ import {useIsFocused} from '@react-navigation/native';
 import { pushNotification} from '../../Redux/Reducer/Reducers';
 import messaging from '@react-native-firebase/messaging';
 const Notification = ({navigation}: any) => {
-  const [refresh, setRefresh] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [userNotificarion, setUserNotificarion] = useState<any>([]);
   const [getUserData, setUserData] = useState<any>(null);
@@ -29,8 +30,7 @@ const Notification = ({navigation}: any) => {
 
   const cartData: any = useSelector(cartData => cartData);
   const noti: any = useSelector(noti => noti);
-  console.log(noti.user.notification);
-  
+  console.log(noti.user.notification,'noti.user.notification');
   useEffect(()=>{
     setUserData(cartData?.user?.cart?.customer);
     getFCMToken()
@@ -43,9 +43,9 @@ const Notification = ({navigation}: any) => {
         setToken(token)
       });
     };
-    console.log('token=>>>', token);
-    // console.log('getUserData=>>>', getUserData);
+
   const getNotification = () => {    
+    setLoading(true)
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
     formData.append('device_token', token);
@@ -57,12 +57,14 @@ const Notification = ({navigation}: any) => {
     axios
       .post(`${BaseUrl}getPushNotifications`, formData, config)
       .then(({data}: any) => {
-        console.log('dara',data.push_notifications);
+        // console.log('dara',data.push_notifications);
         setUserNotificarion(data.push_notifications)
+        setLoading(false)
         // dispatch(pushNotification(data.push_notifications));
       })
       .catch(error => {
         console.log('error noti page',error);
+        setLoading(false)
         ToastAndroid.show(
           'Internal Server Error in Notification',
           ToastAndroid.BOTTOM,
@@ -72,11 +74,7 @@ const Notification = ({navigation}: any) => {
 
   useEffect(()=>{
     getNotification()
-  },[getUserData?.customer_id, focus])
-
-
-
-
+  },[getUserData?.customer_id, focus,token])
 
   const width = Dimensions.get('screen').width;
   const height = Dimensions.get('screen').height;
@@ -223,10 +221,10 @@ const Notification = ({navigation}: any) => {
         }}>
         Notifications
       </Text>
-
-      {noti.user.notification?.length > 0 ? (
+     
+      {userNotificarion?.length > 0  ? (
         <FlatList
-          data={noti.user.notification ? noti.user.notification : userNotificarion}
+          data={userNotificarion?  userNotificarion : noti.user.notification }
           renderItem={renderNotificationItems}
           keyExtractor={(item: any) => item.id}
           showsVerticalScrollIndicator={false}
@@ -240,10 +238,19 @@ const Notification = ({navigation}: any) => {
             alignItems: 'center',
             height: height / 1.5,
           }}>
+            {isLoading ?  <ActivityIndicator color="black" size={'large'} />
+          :
+          <>
+          {!noti?.user?.notification.length?
+          <>
           <AntDesign name="copy1" size={20} color={Color.textColor} />
           <Text style={{color: Color.textColor}}>
             There are no Notifications
           </Text>
+          </>
+          :''}
+          </>
+          }
         </View>
       )}
 

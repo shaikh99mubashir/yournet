@@ -52,7 +52,7 @@ const Home = ({navigation}: any) => {
   const [nickName, setNickName] = useState<any>('');
 
   const [user_id, setUser_id] = useState('');
-  // console.log('userid', user_id);
+  console.log('userid', user_id);
 
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('user_id')
@@ -94,6 +94,8 @@ const Home = ({navigation}: any) => {
 
   const getData = () => {
     setLoading(true);
+    
+    
     const config = {
       headers: {
         User_ID: user_id,
@@ -107,6 +109,11 @@ const Home = ({navigation}: any) => {
       .post(`${BaseUrl}getAllData`, null, config)
       .then((res: any) => {
         if (res.data && res.data.customer) {
+          console.log('running get Dataa');
+          setUserData(res.data.customer);
+          WebPortalData(res.data.portals);
+          setUserPackage(res.data.package);
+          setPromotionData(res.data.promotions);
           dispatch(addToCart(res.data));
           setLoading(false);
         }
@@ -123,30 +130,31 @@ const Home = ({navigation}: any) => {
         setUserData(null);
       });
 
-    const intervalId = setInterval(() => {
-      axios
-        .post(`${BaseUrl}getAllData`, null, config)
-        .then((res: any) => {
-          if (res.data && res.data.customer) {
-            dispatch(addToCart(res.data));
-            setLoading(false);
-          }
-        })
-        .catch(error => {
-          console.log('error,==>', error);
-          if (error == 'AxiosError: Network Error') {
-            ToastAndroid.show('You Are Offline', ToastAndroid.LONG);
-            setNoInternet(true);
-            return;
-          }
-          ToastAndroid.show('Internal Server Error Home', ToastAndroid.LONG);
-          setLoading(false);
-          setUserData(null);
-        });
-    }, 10000);
-    return () => {
-      clearInterval(intervalId);
-    };
+    // const intervalId = setInterval(() => {
+    //   axios
+    //     .post(`${BaseUrl}getAllData`, null, config)
+    //     .then((res: any) => {
+    //       if (res.data && res.data.customer) {
+    //         dispatch(addToCart(res.data));
+    //         setLoading(false);
+    //         console.log('running get Dataa');
+    //       }
+    //     })
+    //     .catch(error => {
+    //       console.log('error,==>', error);
+    //       if (error == 'AxiosError: Network Error') {
+    //         ToastAndroid.show('You Are Offline', ToastAndroid.LONG);
+    //         setNoInternet(true);
+    //         return;
+    //       }
+    //       ToastAndroid.show('Internal Server Error Home', ToastAndroid.LONG);
+    //       setLoading(false);
+    //       setUserData(null);
+    //     });
+    // }, 1000);
+    // return () => {
+    //   clearInterval(intervalId);
+    // };
   };
 
   useEffect(() => {
@@ -235,7 +243,7 @@ const Home = ({navigation}: any) => {
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
     formData.append('device_token', fcmToken);
-    console.log('fcmToken',fcmToken);
+    // console.log('fcmToken',fcmToken);
     // console.log('getUserData?.customer_id',getUserData?.customer_id);
     const config = {
       headers: {
@@ -502,38 +510,6 @@ const Home = ({navigation}: any) => {
   const [cancel, setCancel] = useState(false);
   const [email_address, setEmail_address] = useState('');
 
-  const initialData = {
-    pushNotificationTitle: 'hello',
-    pushNotificationText: 'hello world',
-  }
-  // const [pushNotification, setPushNotification] = useState(initialData);
-  const handlePushNotification = () => {
-    fetch('http://192.168.1.114:5000/api/sendNotification', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'AAAAsIGANQ0:APA91bE1vwPfvC1PSjODKRG9yWTqPkR3Jpb9J78uyPW_MDBZAPGv0YUi8HFX3-OzJKOOJ76Bv1Co7lOOMGD4wJtenlQolHBv2uc9PUic4UhimhKGz276SckmbuI1XzyToc528pNDK7x1'
-      },
-      body: JSON.stringify({
-        notification: {
-          title:'hello1111',
-          body: 'hello World',
-        },
-        topic: 'allDevices'
-      })
-    }).then((res) => {
-      console.log(res,'hello');
-      
-
-    }).catch((error) => {
-      console.log(error)
-    })
-  }
-
-  useEffect(()=>{
-    handlePushNotification()
-  })
-
   return (
     <View
       style={{
@@ -600,7 +576,7 @@ const Home = ({navigation}: any) => {
                     justifyContent: 'center',
                     gap: 10,
                     marginTop: 20,
-                    marginBottom: 20,
+                    marginBottom: 0,
                   }}>
                   <TouchableOpacity
                     onPressIn={() => setCancel(true)}
@@ -642,7 +618,6 @@ const Home = ({navigation}: any) => {
                     <Text
                       style={{
                         color: apply ? Color.mainColor : 'white',
-
                         fontSize: 14,
                         fontFamily: 'Poppins-SemiBold',
                       }}>
@@ -682,7 +657,7 @@ const Home = ({navigation}: any) => {
                       justifyContent: 'center',
                       gap: 10,
                       marginTop: 20,
-                      marginBottom: 20,
+                      marginBottom: 0,
                     }}>
                     <TouchableOpacity
                       onPressIn={() => setCancel(true)}

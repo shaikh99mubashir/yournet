@@ -37,9 +37,9 @@ const Login = ({navigation}: any) => {
   });
 
   // To store the loginFields
-  AsyncStorage.setItem('loginFields', JSON.stringify(loginFields))
-    .then(() => console.log('Login fields saved'))
-    .catch(error => console.log('Error saving login fields: ', error));
+  // AsyncStorage.setItem('loginFields', JSON.stringify(loginFields))
+  //   .then(() => console.log('Login fields saved'))
+  //   .catch(error => console.log('Error saving login fields: ', error));
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -135,6 +135,19 @@ const Login = ({navigation}: any) => {
       .catch((error) => {
         console.log('Permission check error:', error);
       });
+  };
+  const [user_id, setUser_id] = useState('');
+  console.log('userid', user_id);
+  const gettingUserDatatoken = () => {
+    AsyncStorage.getItem('user_id')
+      .then(value => {
+        if (value !== null) {
+          setUser_id(JSON.parse(value));
+        } else {
+          console.log('No user_id found');
+        }
+      })
+      .catch(error => console.log('Error retrieving login fields: ', error));
   };
   
   const LoginFunction = () => {

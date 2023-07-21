@@ -165,7 +165,7 @@ const MyAccounts = () => {
   useEffect(()=>{
     setUserData(cartData?.user?.cart?.customer);
   },[cartData,focus])
-
+  
   return (
     <View style={{paddingHorizontal: 15, backgroundColor:'white', height:'100%'}}>
       {loading ? (
@@ -264,7 +264,7 @@ const MyAccounts = () => {
                 fontWeight: 'bold',
                 fontSize: 16,
               }}>
-              {getUserData?.first_name}
+              {getUserData?.customer_id}
             </Text>
           </View>
         </View>
@@ -295,6 +295,36 @@ const MyAccounts = () => {
                 fontSize: 16,
               }}>
               {getUserData?.mobile_number}
+            </Text>
+          </View>
+        </View>
+        {/* Adress */}
+        <View
+          style={{
+            backgroundColor: Color.white,
+            elevation: 2,
+            padding: 10,
+            borderRadius: 10,
+            marginBottom: 15,
+          }}>
+          <Text
+            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
+            Address
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            <Text
+              style={{
+                color: Color.textColor,
+                fontWeight: 'bold',
+                fontSize: 16,
+              }}>
+              {getUserData?.address}
             </Text>
           </View>
         </View>

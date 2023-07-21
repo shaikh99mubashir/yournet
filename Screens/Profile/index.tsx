@@ -92,7 +92,7 @@ const Profile = ({navigation}:any) => {
         }}>
         <Text
           style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
-          Login | Customer ID
+          User Name
         </Text>
         <View
           style={{
@@ -108,6 +108,37 @@ const Profile = ({navigation}:any) => {
               fontSize: 16,
             }}>
             {getUserData?.first_name}
+          </Text>
+        </View>
+      </View>
+      {/* userName */}
+      <View
+        style={{
+          backgroundColor: Color.white,
+          elevation: 2,
+          padding: 10,
+          borderRadius: 10,
+          marginBottom: 15,
+          marginTop:10
+        }}>
+        <Text
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
+          Login | Customer ID
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          <Text
+            style={{
+              color: Color.textColor,
+              fontWeight: 'bold',
+              fontSize: 16,
+            }}>
+            {getUserData?.customer_id}
           </Text>
         </View>
       </View>
@@ -138,6 +169,36 @@ const Profile = ({navigation}:any) => {
               fontSize: 16,
             }}>
             {getUserData?.mobile_number}
+          </Text>
+        </View>
+      </View>
+      {/* Address */}
+      <View
+        style={{
+          backgroundColor: Color.white,
+          elevation: 2,
+          padding: 10,
+          borderRadius: 10,
+          marginBottom: 15,
+        }}>
+        <Text
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
+          Address
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          <Text
+            style={{
+              color: Color.textColor,
+              fontWeight: 'bold',
+              fontSize: 16,
+            }}>
+            {getUserData?.address}
           </Text>
         </View>
       </View>

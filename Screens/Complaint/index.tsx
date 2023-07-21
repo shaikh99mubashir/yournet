@@ -20,7 +20,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const Complaint = ({navigation}: any) => {
   const [complainName, setComplainName] = useState([]);
   const [user_id, setUser_id] = useState('');
-  console.log("complainName",complainName);
+  // console.log("complainName",complainName);
   
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('user_id')
@@ -119,7 +119,9 @@ const Complaint = ({navigation}: any) => {
     company_id:'',
     status:'Pending',
   })
-  console.log('generateComplaint',generateComplaint);
+  // console.log('generateComplaint',generateComplaint);
+  // console.log('getUserData',getUserData);
+  // console.log('selectedServicedata.ID',selectedServicedata.ID);
   
   const sendComplaintData = () => {
     let data = {...generateComplaint}
@@ -131,7 +133,7 @@ const Complaint = ({navigation}: any) => {
     data.external_mobile = getUserData?.external_moble
     data.company_id = getUserData?.company_id
     data.complain = selectedServicedata.ID
-
+    
     let flag = Object.values(data);
     let flag2 = flag.some((e, i) => e == '');
     if (flag2) {

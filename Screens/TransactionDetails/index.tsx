@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 const TransactionDetails = ({navigation, route}: any) => {
   const data: any = route.params;
-  // console.log('data ===>', data);
+  console.log('data ===>', data);
 
   const activationDate: Date = new Date(data.activation_date);
   const expiryDate: Date = new Date(data.expiry_date);
@@ -110,12 +110,12 @@ const TransactionDetails = ({navigation, route}: any) => {
                 <Text style={{color: 'white', fontWeight: '700', fontSize: 12}}>
                   by
                 </Text>
-
-                <Image
+              <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>{data.AccountName}</Text>
+                {/* <Image
                   source={require('../../Images/payment-method.png')}
                   style={{width: 30, height: 25}}
                   resizeMode="contain"
-                />
+                /> */}
               </>
             )}
           </View>

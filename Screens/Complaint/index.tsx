@@ -136,14 +136,14 @@ const Complaint = ({navigation}: any) => {
     
     let flag = Object.values(data);
     let flag2 = flag.some((e, i) => e == '');
-    if (flag2) {
-      ToastAndroid.show('Your Information is In Completed Contact Admin', ToastAndroid.SHORT);
-      return;
-    }
-    // if (!selectedServicedata.ID) {
+    // if (flag2) {
     //   ToastAndroid.show('Your Information is In Completed Contact Admin', ToastAndroid.SHORT);
     //   return;
     // }
+    if (!selectedServicedata.ID) {
+      ToastAndroid.show('Your Information is In Completed Contact Admin', ToastAndroid.SHORT);
+      return;
+    }
     const formData = new FormData();
     const config = {
       headers: {

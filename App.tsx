@@ -4,7 +4,7 @@ import MyStack from './Routing/MyStack'
 import { OrientationLocker } from 'react-native-orientation-locker';
 import {Provider} from 'react-redux';
 import store from './Redux/store';
-import { requestUserPermission } from './Components/utils/notificationServices';
+import { requestUserPermission,notificationListeners } from './Components/utils/notificationServices';
 import messaging from '@react-native-firebase/messaging';
 const App = ({navigation}:any) => {
   // useEffect(() => {
@@ -55,6 +55,24 @@ const App = ({navigation}:any) => {
   //       }
         
   //     });
+  // },[])
+
+  // useEffect(()=>{
+
+  //   notificationListeners()
+  //   if(Platform.OS == 'android'){
+  //     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then((res)=>{
+  //         console.log("res+++++",res)
+  //         if(!!res && res == 'granted'){
+  //           requestUserPermission()
+  //         }
+  //     }).catch(error=>{
+  //       console.log('something wrong')
+  //     })
+  //   }else{
+  
+  //   }
+  
   // },[])
   
   return (

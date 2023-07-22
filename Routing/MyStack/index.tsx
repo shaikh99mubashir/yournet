@@ -26,12 +26,15 @@ import Profile from '../../Screens/Profile';
 import Settings from '../../Screens/Settings';
 import PackagesPlans from '../../Screens/PackagesPlans';
 import TermsCondition from '../../Screens/TermsCondition';
+import NavigationService from '../NavigationService';
 
 const Stack = createNativeStackNavigator();
 
 const MyStack = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer  
+    // ref={(ref) => NavigationService.setTopLevelNavigator(ref)}
+    >
       <Stack.Navigator screenOptions={{headerShown:false, animation: 'slide_from_right'}}>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Login" component={Login}/>

@@ -1,3 +1,5 @@
+import NavigationService from "../../Routing/NavigationService";
+
 export async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -21,44 +23,45 @@ const getFcmToken = async () => {
 }
 
 
-// export async function notificationListeners() {
-//     const unsubscribe = messaging().onMessage(async remoteMessage => {
-//         console.log('A new FCM message arrived!', remoteMessage);
-//         onDisplayNotification(remoteMessage)
-//     });
+export async function notificationListeners() {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+        console.log('A new FCM message arrived!', remoteMessage);
+        onDisplayNotification(remoteMessage)
+    });
 
 
-//     messaging().onNotificationOpenedApp(remoteMessage => {
-//         console.log(
-//             'Notification caused app to open from background state:',
-//             remoteMessage,
-//         );
+    messaging().onNotificationOpenedApp(remoteMessage => {
+        console.log(
+            'Notification caused app to open from background state:',
+            remoteMessage,
+        );
+        NavigationService.navigate('Notification')
 
-//         if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to == "ProductDetail") {
-//             setTimeout(() => {
-//                 NavigationService.navigate("ProductDetail", { data: remoteMessage?.data })
-//             }, 1200);
-//         }
+        // if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to == "ProductDetail") {
+        //     setTimeout(() => {
+        //         NavigationService.navigate("ProductDetail", { data: remoteMessage?.data })
+        //     }, 1200);
+        // }
 
-//         if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to == "Profile") {
-//             setTimeout(() => {
-//                 NavigationService.navigate("Profile", { data: remoteMessage?.data })
-//             }, 1200);
-//         }
-//     });
+        // if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to == "Profile") {
+        //     setTimeout(() => {
+        //         NavigationService.navigate("Profile", { data: remoteMessage?.data })
+        //     }, 1200);
+        // }
+    });
 
-//     // Check whether an initial notification is available
-//     messaging()
-//         .getInitialNotification()
-//         .then(remoteMessage => {
-//             if (remoteMessage) {
-//                 console.log(
-//                     'Notification caused app to open from quit state:',
-//                     remoteMessage.notification,
-//                 );
+    // Check whether an initial notification is available
+    messaging()
+        .getInitialNotification()
+        .then(remoteMessage => {
+            if (remoteMessage) {
+                console.log(
+                    'Notification caused app to open from quit state:',
+                    remoteMessage.notification,
+                );
 
-//             }
-//         });
+            }
+        });
 
-//     return unsubscribe;
-// }
+    return unsubscribe;
+}

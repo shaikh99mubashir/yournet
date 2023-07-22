@@ -79,10 +79,8 @@ const Home = ({navigation}: any) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [fcmToken, setFCMToken] = useState('');
   
-  const cartData: any = useSelector(cartData => cartData);
-  // const deviceToken: any = useSelector(deviceToken => deviceToken);
-  // console.log('deviceToken==========>', deviceToken.user.deviceToken);
-
+  const cartData: any = useSelector(cartData => cartData)
+  
   useEffect(() => {
     setUserData(cartData?.user?.cart?.customer);
     WebPortalData(cartData?.user?.cart?.portals);

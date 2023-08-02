@@ -222,9 +222,9 @@ const Notification = ({navigation}: any) => {
         Notifications
       </Text>
      
-      {userNotificarion?.length > 0  ? (
+      {noti.user.notification?.length > 0  ? (
         <FlatList
-          data={userNotificarion?  userNotificarion : noti.user.notification }
+          data={noti.user.notification?  noti.user.notification : userNotificarion }
           renderItem={renderNotificationItems}
           keyExtractor={(item: any) => item.id}
           showsVerticalScrollIndicator={false}
@@ -282,7 +282,7 @@ const Notification = ({navigation}: any) => {
               </Text>
             </View>
 
-            {modalData?.image ? (
+            {/* {modalData?.image ? (
               <Image
                 source={{uri: modalData?.image}}
                 style={{
@@ -294,14 +294,18 @@ const Notification = ({navigation}: any) => {
                 }}
                 resizeMode="contain"
               />
-            ) : null}
+            ) : null} */}
 
-            <View style={{paddingHorizontal: 15, marginBottom: 10}}>
-              <Text style={{color: 'grey', textAlign: 'justify'}}>
+            <View style={{paddingHorizontal: 15, marginBottom: 10,marginVertical:10}}>
+              <Text style={{fontSize: 14, fontWeight: 'bold', color:'black'}}>
+                {modalData.title}
+              </Text>
+              <Text style={{fontSize: 12,textAlign:'justify',color:Color.textColor}}>
                 {modalData.message}
               </Text>
             </View>
             <TouchableOpacity
+            activeOpacity={0.8}
               onPress={() => CloseModal()}
               style={{borderTopWidth: 1, borderTopColor: '#eee'}}>
               <Text

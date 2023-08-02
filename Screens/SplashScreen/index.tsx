@@ -66,6 +66,9 @@ const SplashScreen = ({navigation}:any) => {
         .post(`${BaseUrl}getAllData`, null, config)
         .then((res: any) => {
           if (res.data && res.data.customer) {
+            console.log('res.data',res.data);
+            console.log('res.data.company===>',res.data.company);
+            
             dispatch(addToCart(res.data));
           }
         })

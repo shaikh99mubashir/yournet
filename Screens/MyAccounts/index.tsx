@@ -50,33 +50,33 @@ const MyAccounts = () => {
   }, [focus]);
 
   const [companyName, setCompanyName] = useState<any>('')  
-  const getCompanyName = () => {
-    const formData = new FormData();
-    formData.append('customer_id', getUserData?.customer_id);
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    };
-    axios
-      .post(`${BaseUrl}getCompanyData`, formData, config)
-      .then(({data}: any) => {
-        console.log('datat',data?.company?.com_name);
-        setCompanyName(data?.company?.com_name)
-        // dispatch(companyName(companyName))
-      })
-      .catch(error => {
-        // console.log('rerror',error.message);
-        ToastAndroid.show(
-          `Internal Server Error in getCompanyName ${error}`,
-          ToastAndroid.BOTTOM,
-        );
-      });
-  };
+  // const getCompanyName = () => {
+  //   const formData = new FormData();
+  //   formData.append('customer_id', getUserData?.customer_id);
+  //   const config = {
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data',
+  //     },
+  //   };
+  //   axios
+  //     .post(`${BaseUrl}getCompanyData`, formData, config)
+  //     .then(({data}: any) => {
+  //       console.log('datat',data?.company?.com_name);
+  //       setCompanyName(data?.company?.com_name)
+  //       // dispatch(companyName(companyName))
+  //     })
+  //     .catch(error => {
+  //       // console.log('rerror',error.message);
+  //       ToastAndroid.show(
+  //         `Internal Server Error in getCompanyName ${error}`,
+  //         ToastAndroid.BOTTOM,
+  //       );
+  //     });
+  // };
 
-  useEffect(() => {
-    getCompanyName();
-  }, [getUserData?.customer_id,focus]);
+  // useEffect(() => {
+  //   getCompanyName();
+  // }, [getUserData?.customer_id,focus]);
 
   const [email_address, setEmail_address] = useState('');
   const [updateEmail, setUpdateEmail] = useState(false);
@@ -156,7 +156,8 @@ const MyAccounts = () => {
       });
   };
 
-
+  // console.log('getUserData',getUserData);
+  
   const cartData: any = useSelector(cartData => cartData);
   // const companyName: any = useSelector(companyName => companyName);
   const userNickName: any = useSelector(userNickName => userNickName);
@@ -164,6 +165,7 @@ const MyAccounts = () => {
   dispatch(nickname(nickName));
   useEffect(()=>{
     setUserData(cartData?.user?.cart?.customer);
+    setCompanyName(cartData?.user?.cart?.company?.com_name)
   },[cartData,focus])
   
   return (

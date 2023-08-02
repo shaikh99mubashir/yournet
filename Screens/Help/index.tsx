@@ -27,8 +27,8 @@ const Help = ({navigation}: any) => {
   const [customer_id,setCustomer_id] = useState([])
   
   const cartData: any = useSelector(cartData => cartData);
-  console.log(company_id,'company_id===>');
-  console.log(customer_id,'customer_id===>');
+  // console.log(company_id,'company_id===>');
+  // console.log(customer_id,'customer_id===>');
   
   
   useEffect(() => {

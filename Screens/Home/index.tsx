@@ -91,7 +91,7 @@ const Home = ({navigation}: any) => {
   const dispatch = useDispatch();
 
   const getData = () => {
-    setLoading(true);
+    // setLoading(true);
     
     
     const config = {
@@ -99,15 +99,15 @@ const Home = ({navigation}: any) => {
         User_ID: user_id,
       },
     };
-    if (getUserData) {
-      setLoading(false);
-      return;
-    }
+    // if (getUserData) {
+    //   setLoading(false);
+    //   return;
+    // }
     axios
       .post(`${BaseUrl}getAllData`, null, config)
       .then((res: any) => {
         if (res.data && res.data.customer) {
-          console.log('running get Dataa');
+          console.log('running get Dataa========================>',res.data.company);
           setUserData(res.data.customer);
           WebPortalData(res.data.portals);
           setUserPackage(res.data.package);
@@ -157,7 +157,7 @@ const Home = ({navigation}: any) => {
 
   useEffect(() => {
     getData();
-  }, [user_id, focus, dispatch]);
+  }, [user_id, focus,]);
 
   // get Who We Are
   const getWhoWeAre = () => {

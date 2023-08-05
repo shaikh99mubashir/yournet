@@ -57,10 +57,11 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
   //   gettingUserData();
   // }, [focus]);
 
-  const trackcomplaintdata: any = useSelector(complaintData => complaintData);
-
+  // const trackcomplaintdata: any = useSelector(complaintData => complaintData);
+  const cartData: any = useSelector(cartData => cartData);
   const registerComplaintData = () => {
-    setComplaintData(trackcomplaintdata?.user?.trackComplaint);
+    setComplaintData(cartData?.user?.cart?.complaints);
+    // setComplaintData(trackcomplaintdata?.user?.trackComplaint);
 
     const pendingComplaints = complaintData?.filter(
       (complaint: any) => complaint.Status === 'Pending',
@@ -75,45 +76,45 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
 
   useEffect(() => {
     registerComplaintData();
-  }, [focus, trackcomplaintdata]);
+  }, [focus]);
 
-  const getComplaintData = () => {
-    setLoading(true);
-    if (!userId?.customer_id) {
-      navigation.replace('Login');
-      AsyncStorage.removeItem('token');
-      AsyncStorage.removeItem('loginFields');
-      return; // Don't make the API call if the userId is not valid
-    }
+  // const getComplaintData = () => {
+  //   setLoading(true);
+  //   if (!userId?.customer_id) {
+  //     navigation.replace('Login');
+  //     AsyncStorage.removeItem('token');
+  //     AsyncStorage.removeItem('loginFields');
+  //     return; // Don't make the API call if the userId is not valid
+  //   }
 
-    const formData = new FormData();
-    formData.append('customer_id', userId.customer_id);
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    };
-    axios
-      .post(`${BaseUrl}getAllComplain`, formData, config)
-      .then((res: any) => {
-        setComplaintData(res?.data?.complaints);
+  //   const formData = new FormData();
+  //   formData.append('customer_id', userId.customer_id);
+  //   const config = {
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data',
+  //     },
+  //   };
+  //   axios
+  //     .post(`${BaseUrl}getAllComplain`, formData, config)
+  //     .then((res: any) => {
+  //       setComplaintData(res?.data?.complaints);
 
-        const pendingComplaints = res.data.complaints.filter(
-          (complaint: any) => complaint.Status === 'Pending',
-        );
-        const completedComplaints = res.data.complaints.filter(
-          (complaint: any) => complaint.Status === 'Completed',
-        );
+  //       const pendingComplaints = res.data.complaints.filter(
+  //         (complaint: any) => complaint.Status === 'Pending',
+  //       );
+  //       const completedComplaints = res.data.complaints.filter(
+  //         (complaint: any) => complaint.Status === 'Completed',
+  //       );
 
-        setPendingComplaints(pendingComplaints);
-        setCompletedComplaints(completedComplaints);
-        setLoading(false);
-      })
-      .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-        setLoading(false);
-      });
-  };
+  //       setPendingComplaints(pendingComplaints);
+  //       setCompletedComplaints(completedComplaints);
+  //       setLoading(false);
+  //     })
+  //     .catch(error => {
+  //       ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+  //       setLoading(false);
+  //     });
+  // };
 
   // useEffect(() => {
   //   if (userId?.customer_id) {

@@ -11,61 +11,62 @@ import { useIsFocused } from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 
 const Contact = ({navigation}:any) => {
-  const mobileNumber = [
-    {
-      id: 1,
-      number: '03353375813',
-    },
-    {
-      id: 2,
-      number: '03353375813',
-    },
-  ];
+  // const mobileNumber = [
+  //   {
+  //     id: 1,
+  //     number: '03353375813',
+  //   },
+  //   {
+  //     id: 2,
+  //     number: '03353375813',
+  //   },
+  // ];
 
   const [number, setNumber] = useState([])
   // console.log('number',number);
   
   const cartData: any = useSelector(cartData => cartData);
-  // console.log('cartData',cartData.user.contact);
+  // console.log('cartData',cartData?.user?.cart?.companycontacts);
   useEffect(()=>{
-    setNumber(cartData?.user?.contact);
+    // setNumber(cartData?.user?.contact);
+    setNumber(cartData?.user?.cart?.companycontacts);
   },[])
 
 
-  const [userData, setUserData ] :any = useState()
-  const focus = useIsFocused()
-  const gettingUserDatatoken = () => {
-    AsyncStorage.getItem('userData')
-      .then(value => {
-        if (value !== null) {
-          setUserData(JSON.parse(value));
-        } else {
-          console.log('No login fields found');
-        }
-      })
-      .catch(error => console.log('Error retrieving login fields: ', error));
-  };
+  // const [userData, setUserData ] :any = useState()
+  // const focus = useIsFocused()
+  // const gettingUserDatatoken = () => {
+  //   AsyncStorage.getItem('userData')
+  //     .then(value => {
+  //       if (value !== null) {
+  //         setUserData(JSON.parse(value));
+  //       } else {
+  //         console.log('No login fields found');
+  //       }
+  //     })
+  //     .catch(error => console.log('Error retrieving login fields: ', error));
+  // };
   
   // useEffect(() => {
   //   gettingUserDatatoken();
   // }, [focus]);
   
-  const getData = () => {
-    const formData = new FormData();
-    formData.append('company_id', userData?.company_id);
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    };
-    axios
-      .post(`${BaseUrl}getContactNumbersByCompanyId`, formData, config)
-      .then((res: any) => {
-      })
-      .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-      });
-    };
+  // const getData = () => {
+  //   const formData = new FormData();
+  //   formData.append('company_id', userData?.company_id);
+  //   const config = {
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data',
+  //     },
+  //   };
+  //   axios
+  //     .post(`${BaseUrl}getContactNumbersByCompanyId`, formData, config)
+  //     .then((res: any) => {
+  //     })
+  //     .catch(error => {
+  //       ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+  //     });
+  //   };
     // useEffect(()=>{
     //   getData()
     // },[focus,userData?.company_id])

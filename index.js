@@ -9,7 +9,6 @@ import {name as appName} from './app.json';
 import 'react-native-gesture-handler';  
 import notifee, {AndroidImportance} from '@notifee/react-native';
 import { useNavigation } from '@react-navigation/native';
-const navigate = useNavigation
 messaging().setBackgroundMessageHandler(async remoteMessage => {
     // console.log('Message handled in the background!', remoteMessage);
     DisplayNotification(remoteMessage);

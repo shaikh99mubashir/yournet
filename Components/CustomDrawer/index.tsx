@@ -32,24 +32,24 @@ function CustomDrawerContent(props: any) {
     props.navigation.navigate(screenName);
   };
   const focus = useIsFocused();
-  const [user_id, setUser_id] = useState('');
+  // const [user_id, setUser_id] = useState('');
   const [openWWRModal, setOpenWWRModal] = useState(false);
   const [openPPModal, setOpenPPModal] = useState(false);
-  const gettingUserDatatoken = () => {
-    AsyncStorage.getItem('user_id')
-      .then(value => {
-        if (value !== null) {
-          setUser_id(JSON.parse(value));
-        } else {
-          console.log('No login fields found');
-        }
-      })
-      .catch(error => console.log('Error retrieving login fields: ', error));
-  };
+  // const gettingUserDatatoken = () => {
+  //   AsyncStorage.getItem('user_id')
+  //     .then(value => {
+  //       if (value !== null) {
+  //         setUser_id(JSON.parse(value));
+  //       } else {
+  //         console.log('No login fields found');
+  //       }
+  //     })
+  //     .catch(error => console.log('Error retrieving login fields: ', error));
+  // };
 
-  useEffect(() => {
-    gettingUserDatatoken();
-  }, [focus]);
+  // useEffect(() => {
+  //   gettingUserDatatoken();
+  // }, [focus]);
 
   // get User DATA
   const [getUserData, setUserData] = useState<any>([]);
@@ -59,21 +59,22 @@ function CustomDrawerContent(props: any) {
   useEffect(() => {
     setUserData(cartData?.user?.cart?.customer);
   }, [cartData, focus]);
-  const getData = () => {
-    const config = {
-      headers: {
-        User_ID: user_id,
-      },
-    };
-    axios
-      .post(`${BaseUrl}getAllData`, null, config)
-      .then((res: any) => {
-        setUserData(res.data.customer);
-      })
-      .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-      });
-  };
+
+  // const getData = () => {
+  //   const config = {
+  //     headers: {
+  //       User_ID: user_id,
+  //     },
+  //   };
+  //   axios
+  //     .post(`${BaseUrl}getAllData`, null, config)
+  //     .then((res: any) => {
+  //       setUserData(res.data.customer);
+  //     })
+  //     .catch(error => {
+  //       ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+  //     });
+  // };
 
   // useEffect(() => {
   //   getData();
@@ -81,6 +82,7 @@ function CustomDrawerContent(props: any) {
   // props.navigation.addListener('state', () => {
   //   getData()
   // });
+ 
   const share = async () => {
     const options = {
       message: 'Internet service Provider',
@@ -125,11 +127,12 @@ function CustomDrawerContent(props: any) {
 
   const userNickName: any = useSelector(userNickName => userNickName);
   const nickname = userNickName?.user?.userNickName;
-  const whoWeAre: any = useSelector(whoWeAre => whoWeAre);
-  const getWhoWeAre = whoWeAre?.user?.whoWeAre;
+  // const whoWeAre: any = useSelector(whoWeAre => whoWeAre);
+  // const getWhoWeAre = whoWeAre?.user?.whoWeAre;
+  const getWhoWeAre = cartData?.user?.cart?.whoweare;
 
   const PackagesPlans: any = useSelector(PackagesPlans => PackagesPlans);
-  const getPackagesPlans = PackagesPlans?.user?.packagesPlans;
+  const getPackagesPlans = cartData?.user?.cart?.package_image;
   
 
   const availOffer = () => {

@@ -31,10 +31,10 @@ const Help = ({navigation}: any) => {
   // console.log(customer_id,'customer_id===>');
   
   
-  useEffect(() => {
-    setCompany_id(cartData?.user?.cart?.customer?.company_id);
-    setCustomer_id(cartData?.user?.cart?.customer?.customer_id);
-  }, [cartData, focus]);
+  // useEffect(() => {
+  //   setCompany_id(cartData?.user?.cart?.customer?.company_id);
+  //   setCustomer_id(cartData?.user?.cart?.customer?.customer_id);
+  // }, [cartData, focus]);
 
   const getContacts = () => {
     const formData = new FormData();
@@ -72,12 +72,12 @@ const Help = ({navigation}: any) => {
         ToastAndroid.show('Internal Server Error in Track Complaint', ToastAndroid.BOTTOM);
       });
     }
-    useEffect(()=>{
-      getContacts()
-    },[focus,company_id])
-    useEffect(()=>{
-      trackYourComplaint()
-    },[focus,customer_id])
+    // useEffect(()=>{
+    //   getContacts()
+    // },[focus,company_id])
+    // useEffect(()=>{
+    //   trackYourComplaint()
+    // },[focus,customer_id])
 
   return (
     <ScrollView

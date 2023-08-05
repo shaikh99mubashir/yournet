@@ -17,86 +17,91 @@ import {BaseUrl} from '../../Constants/BaseUrl';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
 const Complaint = ({navigation}: any) => {
   const [complainName, setComplainName] = useState([]);
-  const [user_id, setUser_id] = useState('');
+  const [getUserData, setUserData] = useState<any>([]);
+  // const [user_id, setUser_id] = useState('');
   // console.log("complainName",complainName);
   
-  const gettingUserDatatoken = () => {
-    AsyncStorage.getItem('user_id')
-      .then(value => {
-        if (value !== null) {
-          setUser_id(JSON.parse(value));
-        } else {
-          console.log('No login fields found');
-        }
-      })
-      .catch(error => console.log('Error retrieving login fields: ', error));
-  };
+  // const gettingUserDatatoken = () => {
+  //   AsyncStorage.getItem('user_id')
+  //     .then(value => {
+  //       if (value !== null) {
+  //         setUser_id(JSON.parse(value));
+  //       } else {
+  //         console.log('No login fields found');
+  //       }
+  //     })
+  //     .catch(error => console.log('Error retrieving login fields: ', error));
+  // };
   
-  useEffect(() => {
-    gettingUserDatatoken();
-  }, []);
+  // useEffect(() => {
+  //   gettingUserDatatoken();
+  // }, []);
   // get User DATA
-  const [getUserData, setUserData] = useState<any>([]);
-  const [loading, setLoading] = useState(false);
-  const getData = () => {
-    setLoading(!loading);
-    const config = {
-      headers: {
-        User_ID: user_id,
-      },
-    };
-    axios
-      .post(
-        `${BaseUrl}getAllData`,
-        null, 
-        config,
-      )
-      .then((res: any) => {
-        setUserData(res.data.customer);
-        setLoading(!loading);
-      })
-      .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-        setLoading(!loading);
-      });
-    };
+ 
+  // const [loading, setLoading] = useState(false);
+  // const getData = () => {
+  //   setLoading(!loading);
+  //   const config = {
+  //     headers: {
+  //       User_ID: user_id,
+  //     },
+  //   };
+  //   axios
+  //     .post(
+  //       `${BaseUrl}getAllData`,
+  //       null, 
+  //       config,
+  //     )
+  //     .then((res: any) => {
+  //       setUserData(res.data.customer);
+  //       setLoading(!loading);
+  //     })
+  //     .catch(error => {
+  //       ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+  //       setLoading(!loading);
+  //     });
+  //   };
     
-    useEffect(() => {
-    getData();
-  }, [user_id]);
+  //   useEffect(() => {
+  //   getData();
+  // }, [user_id]);
 
-  const getComplaintName = () => {
-    if (!user_id) {
-      navigation.replace('Login');
-      AsyncStorage.removeItem('user_id');
-      AsyncStorage.removeItem('loginFields');
-      return; // Don't make the API call if the userId is not valid
-    }
+  // const getComplaintName = () => {
+  //   if (!user_id) {
+  //     navigation.replace('Login');
+  //     AsyncStorage.removeItem('user_id');
+  //     AsyncStorage.removeItem('loginFields');
+  //     return; // Don't make the API call if the userId is not valid
+  //   }
 
-    const formData = new FormData();
-    formData.append('company_id', getUserData?.company_id);
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    };
-    axios
-      .post(`${BaseUrl}getAllComplainName`, formData, config)
-      .then((res: any) => {
-        setComplainName(res?.data?.complain_names);
-      })
-      .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-      });
-  };
-
+  //   const formData = new FormData();
+  //   formData.append('company_id', getUserData?.company_id);
+  //   const config = {
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data',
+  //     },
+  //   };
+  //   axios
+  //     .post(`${BaseUrl}getAllComplainName`, formData, config)
+  //     .then((res: any) => {
+  //       setComplainName(res?.data?.complain_names);
+  //     })
+  //     .catch(error => {
+  //       ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+  //     });
+  // };
+  const cartData: any = useSelector(cartData => cartData);
+  // console.log('cartData',cartData?.user?.cart?.customer);
   useEffect(() => {
-    if (getUserData?.company_id) {
-      getComplaintName();
-    }
-  }, [getUserData?.company_id]);
+    setComplainName(cartData?.user?.cart?.complainNames);
+    setUserData(cartData?.user?.cart?.customer)
+    // if (getUserData?.company_id) {
+    //   getComplaintName();
+    // }
+  }, []);
 
   const [selectedServicedata, setSelectedServicedata]: any = useState({});
   
@@ -119,9 +124,6 @@ const Complaint = ({navigation}: any) => {
     company_id:'',
     status:'Pending',
   })
-  // console.log('generateComplaint',generateComplaint);
-  // console.log('getUserData',getUserData);
-  // console.log('selectedServicedata.ID',selectedServicedata.ID);
   
   const sendComplaintData = () => {
     let data = {...generateComplaint}
@@ -285,7 +287,8 @@ const Complaint = ({navigation}: any) => {
               borderBottomStartRadius: 5,
               borderWidth: !serviceDD ? 0 : 1,
               borderTopWidth: !serviceDD ? 0 : 1,
-              borderColor: Color.textColor,
+              borderColor: 'darkgrey',
+              // borderColor: Color.textColor,
             }}>
             <ScrollView style={{maxHeight: 100}} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
               {serviceDD == true &&

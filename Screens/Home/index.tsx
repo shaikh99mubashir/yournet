@@ -52,7 +52,7 @@ const Home = ({navigation}: any) => {
   const [nickName, setNickName] = useState<any>('');
 
   const [user_id, setUser_id] = useState('');
-  console.log('userid', user_id);
+  // console.log('userid', user_id);
 
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('user_id')
@@ -78,7 +78,7 @@ const Home = ({navigation}: any) => {
   const [noInternet, setNoInternet] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [fcmToken, setFCMToken] = useState('');
-  
+  const [companyName, setCompanyName] = useState<any>('') 
   const cartData: any = useSelector(cartData => cartData)
   
   useEffect(() => {
@@ -86,12 +86,13 @@ const Home = ({navigation}: any) => {
     WebPortalData(cartData?.user?.cart?.portals);
     setUserPackage(cartData?.user?.cart?.package);
     setPromotionData(cartData?.user?.cart?.promotions);
+    setCompanyName(cartData?.user?.cart?.company?.com_name)
   }, [cartData, focus,]);
 
   const dispatch = useDispatch();
 
   const getData = () => {
-    // setLoading(true);
+    setLoading(true);
     
     
     const config = {
@@ -99,15 +100,15 @@ const Home = ({navigation}: any) => {
         User_ID: user_id,
       },
     };
-    // if (getUserData) {
-    //   setLoading(false);
-    //   return;
-    // }
+    if (getUserData) {
+      setLoading(false);
+      return;
+    }
     axios
       .post(`${BaseUrl}getAllData`, null, config)
       .then((res: any) => {
         if (res.data && res.data.customer) {
-          console.log('running get Dataa========================>',res.data.company);
+          // console.log('running get Dataa========================>',res.data);
           setUserData(res.data.customer);
           WebPortalData(res.data.portals);
           setUserPackage(res.data.package);
@@ -160,81 +161,81 @@ const Home = ({navigation}: any) => {
   }, [user_id, focus,]);
 
   // get Who We Are
-  const getWhoWeAre = () => {
-    axios
-      .post(`${BaseUrl}getWhoWeAreOption`)
-      .then(({data}: any) => {
-        dispatch(whoWeAre(data.option_value));
-      })
-      .catch(error => {
-        ToastAndroid.show(
-          'Internal Server Error in WhoWeAre',
-          ToastAndroid.BOTTOM,
-        );
-      });
-  };
+  // const getWhoWeAre = () => {
+  //   axios
+  //     .post(`${BaseUrl}getWhoWeAreOption`)
+  //     .then(({data}: any) => {
+  //       dispatch(whoWeAre(data.option_value));
+  //     })
+  //     .catch(error => {
+  //       ToastAndroid.show(
+  //         'Internal Server Error in WhoWeAre',
+  //         ToastAndroid.BOTTOM,
+  //       );
+  //     });
+  // };
 
   // get Term And Condition
-  const getTermAndConditions = () => {
-    axios
-      .post(`${BaseUrl}getTermsAndConditionsOption`)
-      .then(({data}: any) => {
-        // console.log('data', data.option_value);
-        dispatch(termAndCondition(data.option_value));
-      })
-      .catch(error => {
-        ToastAndroid.show(
-          'Internal Server Error in TermAndConditions',
-          ToastAndroid.BOTTOM,
-        );
-      });
-  };
+  // const getTermAndConditions = () => {
+  //   axios
+  //     .post(`${BaseUrl}getTermsAndConditionsOption`)
+  //     .then(({data}: any) => {
+  //       // console.log('data', data.option_value);
+  //       dispatch(termAndCondition(data.option_value));
+  //     })
+  //     .catch(error => {
+  //       ToastAndroid.show(
+  //         'Internal Server Error in TermAndConditions',
+  //         ToastAndroid.BOTTOM,
+  //       );
+  //     });
+  // };
 
   // get FAqs
-  const getFAQs = () => {
-    axios
-      .post(`${BaseUrl}getfaqs`)
-      .then(({data}: any) => {
-        // console.log('data', data.faqs);
-        dispatch(faqsData(data.faqs));
-      })
-      .catch(error => {
-        ToastAndroid.show(
-          'Internal Server Error in faqs',
-          ToastAndroid.BOTTOM,
-        );
-      });
-  };
-  useEffect(() => {
-    getWhoWeAre();
-    getTermAndConditions()
-    getFAQs()
-  }, [focus]);
+  // const getFAQs = () => {
+  //   axios
+  //     .post(`${BaseUrl}getfaqs`)
+  //     .then(({data}: any) => {
+  //       // console.log('data', data.faqs);
+  //       dispatch(faqsData(data.faqs));
+  //     })
+  //     .catch(error => {
+  //       ToastAndroid.show(
+  //         'Internal Server Error in faqs',
+  //         ToastAndroid.BOTTOM,
+  //       );
+  //     });
+  // };
+  // useEffect(() => {
+  //   getWhoWeAre();
+  //   getTermAndConditions()
+  //   getFAQs()
+  // }, [focus]);
 
 
-  const getPackagesPlans = () => {
-    const formData = new FormData();
-    formData.append('company_id', getUserData?.company_id);
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    };
-    axios
-      .post(`${BaseUrl}getPackageImagesByCompanyId`, formData, config)
-      .then(({data}: any) => {
-        // console.log('data',data.package_image);
-        dispatch(packagesPlans(data.package_image))
+  // const getPackagesPlans = () => {
+  //   const formData = new FormData();
+  //   formData.append('company_id', getUserData?.company_id);
+  //   const config = {
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data',
+  //     },
+  //   };
+  //   axios
+  //     .post(`${BaseUrl}getPackageImagesByCompanyId`, formData, config)
+  //     .then(({data}: any) => {
+  //       // console.log('data',data.package_image);
+  //       dispatch(packagesPlans(data.package_image))
         
-      })
-      .catch(error => {
-        ToastAndroid.show('Internal Server Error PackagesPlans', ToastAndroid.BOTTOM);
-      });
-  };
+  //     })
+  //     .catch(error => {
+  //       ToastAndroid.show('Internal Server Error PackagesPlans', ToastAndroid.BOTTOM);
+  //     });
+  // };
 
-  useEffect(()=>{
-    getPackagesPlans()
-  },[getUserData?.company_id])
+  // useEffect(()=>{
+  //   getPackagesPlans()
+  // },[getUserData?.company_id])
 
   // Get Notification
   const getNotification = () => {
@@ -266,10 +267,24 @@ const Home = ({navigation}: any) => {
   };
 
   useEffect(() => {
+    getNotification();
+    // Schedule the getNotification function to be called every hour
+    const intervalId = setInterval(() => {
+      getNotification();
+      // }, 60 * 60 * 1000); // 1 hour in milliseconds
+    }, 10000);
+
+    // Clean up the interval on component unmount
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [getUserData?.customer_id,fcmToken]);
+
+  useEffect(() => {
     getFCMToken();
     requestPermission();
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('remoteMessage', JSON.stringify(remoteMessage));
+      // console.log('remoteMessage', JSON.stringify(remoteMessage));
       DisplayNotification(remoteMessage);
       // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
@@ -307,50 +322,39 @@ const Home = ({navigation}: any) => {
     });
   }
 
-  useEffect(() => {
-    getNotification();
-    // Schedule the getNotification function to be called every hour
-    const intervalId = setInterval(() => {
-      getNotification();
-      // }, 60 * 60 * 1000); // 1 hour in milliseconds
-    }, 10000);
 
-    // Clean up the interval on component unmount
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [getUserData?.customer_id,fcmToken]);
 
-  // Get company name
-  const [companyName, setCompanyName] = useState<any>('')  
-  const getCompanyName = () => {
-    const formData = new FormData();
-    formData.append('customer_id', getUserData?.customer_id);
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    };
-    axios
-      .post(`${BaseUrl}getCompanyData`, formData, config)
-      .then(({data}: any) => {
-        setCompanyName(data?.company?.com_name)
-        // dispatch(companyName(companyName))
-      })
-      .catch(error => {
-        // console.log('rerror',error.message);
-        ToastAndroid.show(
-          `Internal Server Error in getCompanyName ${error}`,
-          ToastAndroid.BOTTOM,
-        );
-      });
-  };
+  // Get company name  
+  // const getCompanyName = () => {
+  //   const formData = new FormData();
+  //   formData.append('customer_id', getUserData?.customer_id);
+  //   const config = {
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data',
+  //     },
+  //   };
+  //   axios
+  //     .post(`${BaseUrl}getCompanyData`, formData, config)
+  //     .then(({data}: any) => {
+  //       setCompanyName(data?.company?.com_name)
+  //       // dispatch(companyName(companyName))
+  //     })
+  //     .catch(error => {
+  //       // console.log('rerror',error.message);
+  //       ToastAndroid.show(
+  //         `Internal Server Error in getCompanyName ${error}`,
+  //         ToastAndroid.BOTTOM,
+  //       );
+  //     });
+  // };
 
-  useEffect(() => {
-    getCompanyName();
-  }, [getUserData?.customer_id,focus]);
+  // useEffect(() => {
+  //   getCompanyName();
+  // }, [getUserData?.customer_id,focus]);
 
   // email work
+  
+  
   const saveEmailAdress = () => {
     const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     const userEmail: any = email_address;
@@ -452,10 +456,12 @@ const Home = ({navigation}: any) => {
                     // );
                   })
                   .catch(error => {
-                    ToastAndroid.show(
-                      'Internal Server Error fcmToken',
-                      ToastAndroid.BOTTOM,
-                    );
+                    // ToastAndroid.show(
+                    //   'Internal Server Error fcmToken',
+                    //   ToastAndroid.BOTTOM,
+                    // );
+                    console.log('Internal Server Error fcmToken');
+                    
                   });
               } else {
                 console.log("user doesn't have a device token yet");
@@ -507,7 +513,7 @@ const Home = ({navigation}: any) => {
   const [apply, setApply] = useState(false);
   const [cancel, setCancel] = useState(false);
   const [email_address, setEmail_address] = useState('');
-
+  
   return (
     <View
       style={{

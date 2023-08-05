@@ -22,15 +22,23 @@ import {useIsFocused} from '@react-navigation/native';
 import { pushNotification} from '../../Redux/Reducer/Reducers';
 import messaging from '@react-native-firebase/messaging';
 const Notification = ({navigation}: any) => {
-  const [isLoading, setLoading] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [userNotificarion, setUserNotificarion] = useState<any>([]);
   const [getUserData, setUserData] = useState<any>(null);
   const focus = useIsFocused();
 
   const cartData: any = useSelector(cartData => cartData);
-  const noti: any = useSelector(noti => noti);
-  console.log(noti.user.notification,'noti.user.notification');
+  const noti: any = useSelector(notification => notification);
+  const newNotificationCount = noti?.user?.notification && noti?.user?.notification.filter((notification:any) => notification.status == 'New').length;
+  // const newNotificationCount = cartData?.user?.cart?.push_notifications && cartData?.user?.cart?.push_notifications.filter((notification:any) => notification.status == 'New').length;
+  // console.log('newNotificationCount',newNotificationCount);
+  // console.log('newNotificationCount====>',userNotificarion,'newNotificationCount====>');
+  
+  //  userNotificarion  = cartData?.user?.cart?.push_notifications
+  // console.log('cartData',cartData?.user?.cart?.push_notifications);
+  // const noti: any = useSelector(noti => noti);
+  // console.log(noti.user.notification,'noti.user.notification');
   useEffect(()=>{
     setUserData(cartData?.user?.cart?.customer);
     getFCMToken()
@@ -44,7 +52,8 @@ const Notification = ({navigation}: any) => {
       });
     };
 
-  const getNotification = () => {    
+  const getNotification = () => { 
+    console.log('running');
     setLoading(true)
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
@@ -55,9 +64,10 @@ const Notification = ({navigation}: any) => {
       },
     };
     axios
-      .post(`${BaseUrl}getPushNotifications`, formData, config)
-      .then(({data}: any) => {
-        // console.log('dara',data.push_notifications);
+    .post(`${BaseUrl}getPushNotifications`, formData, config)
+    .then(({data}: any) => {
+        console.log('running12');
+        // console.log('dara',data.push_notifications,'==========data.push_notifications==========');
         setUserNotificarion(data.push_notifications)
         setLoading(false)
         // dispatch(pushNotification(data.push_notifications));
@@ -73,8 +83,12 @@ const Notification = ({navigation}: any) => {
   };
 
   useEffect(()=>{
+    console.log('Updated userNotificarion:', userNotificarion);
+    newNotificationCount > 0 ?
     getNotification()
-  },[getUserData?.customer_id, focus,token])
+    :
+    setUserNotificarion(cartData?.user?.cart?.push_notifications)
+  },[userNotificarion])
 
   const width = Dimensions.get('screen').width;
   const height = Dimensions.get('screen').height;
@@ -198,7 +212,6 @@ const Notification = ({navigation}: any) => {
     );
   };
 
- 
   const CloseModal = () => {
     setModalVisible(false)
   }
@@ -222,9 +235,10 @@ const Notification = ({navigation}: any) => {
         Notifications
       </Text>
      
-      {noti.user.notification?.length > 0  ? (
+      {userNotificarion?.length > 0  ? (
         <FlatList
-          data={noti.user.notification?  noti.user.notification : userNotificarion }
+          // data={noti.user.notification?  noti.user.notification : userNotificarion }
+          data={userNotificarion }
           renderItem={renderNotificationItems}
           keyExtractor={(item: any) => item.id}
           showsVerticalScrollIndicator={false}
@@ -241,7 +255,7 @@ const Notification = ({navigation}: any) => {
             {isLoading ?  <ActivityIndicator color="black" size={'large'} />
           :
           <>
-          {!noti?.user?.notification.length?
+          {userNotificarion.length?
           <>
           <AntDesign name="copy1" size={20} color={Color.textColor} />
           <Text style={{color: Color.textColor}}>

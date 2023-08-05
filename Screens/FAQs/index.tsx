@@ -33,8 +33,10 @@ const FAQs = ({navigation}: any) => {
   const [open, setOpen] = useState(false);
   const [faqsData, setFaqsData] = useState([]);
   
-  const faqs: any = useSelector(faqs => faqs);
-  const getfaqs = faqs?.user?.faqs;
+  // const faqs: any = useSelector(faqs => faqs);
+  // const getfaqs = faqs?.user?.faqs;
+  const cartData: any = useSelector(cartData => cartData);
+  const getfaqs = cartData?.user?.cart?.faqs;
   console.log('faqsData===>',faqsData);
   const getData = () => {
     

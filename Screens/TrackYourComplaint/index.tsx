@@ -36,7 +36,7 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
   const [pendingComplaints, setPendingComplaints] = useState([]);
   const [completedComplaints, setCompletedComplaints] = useState([]);
   const [loading, setLoading] = useState(false);
-  console.log('completedComplaints==>', complaintData);
+  // console.log('completedComplaints==>', complaintData);
 
 
   const [userId, setUserId] = useState<any>('');
@@ -60,23 +60,27 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
   // const trackcomplaintdata: any = useSelector(complaintData => complaintData);
   const cartData: any = useSelector(cartData => cartData);
   const registerComplaintData = () => {
-    setComplaintData(cartData?.user?.cart?.complaints);
+    console.log('running');
+    const complaintDataArray = cartData?.user?.cart?.complaints || [];
+    setComplaintData(complaintDataArray);
     // setComplaintData(trackcomplaintdata?.user?.trackComplaint);
 
-    const pendingComplaints = complaintData?.filter(
+    const pendingComplaints = complaintDataArray?.filter(
       (complaint: any) => complaint.Status === 'Pending',
     );
-    const completedComplaints = complaintData?.filter(
+    const completedComplaints = complaintDataArray?.filter(
       (complaint: any) => complaint.Status === 'Resolved',
     );
 
     setPendingComplaints(pendingComplaints);
+    console.log('pendingComplaints',pendingComplaints);
+    
     setCompletedComplaints(completedComplaints);
   };
 
   useEffect(() => {
     registerComplaintData();
-  }, [focus]);
+  }, []);
 
   // const getComplaintData = () => {
   //   setLoading(true);
@@ -310,6 +314,7 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
       </TouchableOpacity>
     );
   };
+
 
   const firstRoute = useCallback(() => {
     return (

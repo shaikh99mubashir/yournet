@@ -21,23 +21,23 @@ import CustomTabView from '../../Components/CustomTabView';
 import {useDispatch, useSelector} from 'react-redux';
 
 const TransactionHistory = ({navigation}: any) => {
-  const [user_id, setUser_id] = useState('');
   const focus = useIsFocused();
-  const gettingUserDatatoken = () => {
-    AsyncStorage.getItem('user_id')
-      .then(value => {
-        if (value !== null) {
-          setUser_id(JSON.parse(value));
-        } else {
-          console.log('No login fields found');
-        }
-      })
-      .catch(error => console.log('Error retrieving login fields: ', error));
-  };
+  const [user_id, setUser_id] = useState('');
+  // const gettingUserDatatoken = () => {
+  //   AsyncStorage.getItem('user_id')
+  //     .then(value => {
+  //       if (value !== null) {
+  //         setUser_id(JSON.parse(value));
+  //       } else {
+  //         console.log('No login fields found');
+  //       }
+  //     })
+  //     .catch(error => console.log('Error retrieving login fields: ', error));
+  // };
 
-  useEffect(() => {
-    gettingUserDatatoken();
-  }, [focus]);
+  // useEffect(() => {
+  //   gettingUserDatatoken();
+  // }, [focus]);
 
   const [receipts, setReceipts] = useState([]);
   const [paidRecipts, setPaidRecipts] = useState([])
@@ -49,14 +49,18 @@ const TransactionHistory = ({navigation}: any) => {
   
   const cartData: any = useSelector(cartData => cartData);
   const receiptsData = () => {
-    setReceipts(cartData?.user?.cart?.receipts);
-    const paid = receipts?.filter(
+
+    const receiptsDataArray = cartData?.user?.cart?.receipts || [];
+    setReceipts(receiptsDataArray);
+    const paid = receiptsDataArray?.filter(
       (check: any) => check.payment_method !==  'Pay Later' || null,
     );
-    const unpaid = receipts?.filter(
+    const unpaid = receiptsDataArray?.filter(
       (check: any) => check.payment_method ==  'Pay Later' || null,
     );
     setPaidRecipts(paid)
+    console.log('paid',paid);
+    
     setUnPaidRecipts(unpaid)
   }
   useEffect(()=>{
@@ -65,39 +69,39 @@ const TransactionHistory = ({navigation}: any) => {
 
 
 
-  const getTransData = () => {
-    setLoading(true);
-    const config = {
-      headers: {
-        User_ID: user_id,
-      },
-    };
+  // const getTransData = () => {
+  //   setLoading(true);
+  //   const config = {
+  //     headers: {
+  //       User_ID: user_id,
+  //     },
+  //   };
 
-    axios
-      .post(
-        `${BaseUrl}getAllData`,
-        null, // pass null as the data parameter since you're making a POST request without any payload
-        config, // pass the config object as the third parameter
-      )
-      .then((res: any) => {
-        if (res?.data && res?.data?.receipts) {
-          setReceipts(res?.data?.setReceipts);
-          const paid = res?.data?.receipts.filter(
-            (check: any) => check.payment_method == '1',
-          );
-          const unpaid = res?.data?.receipts.filter(
-            (check: any) => check.payment_method ==  'Pay Later' || null,
-          );
-          setPaidRecipts(paid)
-          setUnPaidRecipts(unpaid)
-          setLoading(false);
-        }
-      })
-      .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-        setLoading(false);
-      });
-  };
+  //   axios
+  //     .post(
+  //       `${BaseUrl}getAllData`,
+  //       null, // pass null as the data parameter since you're making a POST request without any payload
+  //       config, // pass the config object as the third parameter
+  //     )
+  //     .then((res: any) => {
+  //       if (res?.data && res?.data?.receipts) {
+  //         setReceipts(res?.data?.setReceipts);
+  //         const paid = res?.data?.receipts.filter(
+  //           (check: any) => check.payment_method == '1',
+  //         );
+  //         const unpaid = res?.data?.receipts.filter(
+  //           (check: any) => check.payment_method ==  'Pay Later' || null,
+  //         );
+  //         setPaidRecipts(paid)
+  //         setUnPaidRecipts(unpaid)
+  //         setLoading(false);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+  //       setLoading(false);
+  //     });
+  // };
 
   // useEffect(() => {
   //   getTransData();

@@ -31,28 +31,12 @@ const Help = ({navigation}: any) => {
   // console.log(customer_id,'customer_id===>');
   
   
-  // useEffect(() => {
-  //   setCompany_id(cartData?.user?.cart?.customer?.company_id);
-  //   setCustomer_id(cartData?.user?.cart?.customer?.customer_id);
-  // }, [cartData, focus]);
+  useEffect(() => {
+    setCompany_id(cartData?.user?.cart?.customer?.company_id);
+    setCustomer_id(cartData?.user?.cart?.customer?.customer_id);
+  }, [cartData, focus]);
 
-  const getContacts = () => {
-    const formData = new FormData();
-    formData.append('company_id', company_id);
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    };
-    axios
-    .post(`${BaseUrl}getContactNumbersByCompanyId`, formData, config)
-    .then(({data}: any) => {
-      dispatch(contactData(data.companycontacts));
-      })
-      .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-      });
-    };
+
 
     const trackYourComplaint = () => {
       const formData = new FormData();
@@ -65,6 +49,8 @@ const Help = ({navigation}: any) => {
     axios
       .post(`${BaseUrl}getAllComplain`, formData, config)
       .then(({data}: any) => {
+        console.log('data',data);
+        
         dispatch(trackComplaint(data.complaints))  
       })
       .catch(error => {
@@ -72,13 +58,30 @@ const Help = ({navigation}: any) => {
         ToastAndroid.show('Internal Server Error in Track Complaint', ToastAndroid.BOTTOM);
       });
     }
-    // useEffect(()=>{
-    //   getContacts()
-    // },[focus,company_id])
-    // useEffect(()=>{
-    //   trackYourComplaint()
-    // },[focus,customer_id])
+ 
+    useEffect(()=>{
+      trackYourComplaint()
+    },[focus,customer_id])
 
+    // const getContacts = () => {
+    //   const formData = new FormData();
+    //   formData.append('company_id', company_id);
+    //   const config = {
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data',
+    //     },
+    //   };
+    //   axios
+    //   .post(`${BaseUrl}getContactNumbersByCompanyId`, formData, config)
+    //   .then(({data}: any) => {
+    //     dispatch(contactData(data.companycontacts));
+    //     })
+    //     .catch(error => {
+    //       ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+    //     });
+    //   };   // useEffect(()=>{
+        //   getContacts()
+        // },[focus,company_id])
   return (
     <ScrollView
     showsVerticalScrollIndicator={true}

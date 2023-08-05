@@ -59,9 +59,10 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
 
   // const trackcomplaintdata: any = useSelector(complaintData => complaintData);
   const cartData: any = useSelector(cartData => cartData);
+  const trackcomplaintdata: any = useSelector(complaintData => complaintData);
   const registerComplaintData = () => {
-    console.log('running');
-    const complaintDataArray = cartData?.user?.cart?.complaints || [];
+    // const complaintDataArray = cartData?.user?.cart?.complaints || [];
+    const complaintDataArray = trackcomplaintdata?.user?.trackComplaint || [];
     setComplaintData(complaintDataArray);
     // setComplaintData(trackcomplaintdata?.user?.trackComplaint);
 
@@ -80,7 +81,7 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
 
   useEffect(() => {
     registerComplaintData();
-  }, []);
+  }, [cartData]);
 
   // const getComplaintData = () => {
   //   setLoading(true);

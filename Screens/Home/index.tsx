@@ -158,7 +158,7 @@ const Home = ({navigation}: any) => {
 
   useEffect(() => {
     getData();
-  }, [user_id, focus,]);
+  }, [user_id, focus]);
 
   // get Who We Are
   // const getWhoWeAre = () => {

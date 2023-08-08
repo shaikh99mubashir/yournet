@@ -326,7 +326,7 @@ const MyAccounts = () => {
                 fontWeight: 'bold',
                 fontSize: 16,
               }}>
-              {getUserData?.address}
+              {getUserData?.FullAddress}
             </Text>
           </View>
         </View>

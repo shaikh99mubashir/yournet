@@ -569,7 +569,7 @@ if (typeof nickname === 'string' && nickname.length > 0) {
                     />
                   </View>
                 </TouchableOpacity>
-                <Image source={{uri:getPackagesPlans?.image_url}} style={{width:Dimensions.get('screen').width/1.1,height:'80%'}} resizeMode='contain'/>
+                <Image source={{uri:getPackagesPlans?.image_url}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
               
               <TouchableOpacity activeOpacity={0.8} onPress={availOffer} style={{backgroundColor:Color.mainColor, marginHorizontal:10, paddingVertical:10, alignItems:'center'}}>
                 <Text style={{color:'white',fontSize:16, fontWeight:'bold'}}>Avali Offer</Text>
@@ -580,6 +580,8 @@ if (typeof nickname === 'string' && nickname.length > 0) {
             </View>
           </Modal>
         </View>
+
+
       </DrawerContentScrollView>
     </View>
   );

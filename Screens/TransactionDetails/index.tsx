@@ -49,7 +49,7 @@ const TransactionDetails = ({navigation, route}: any) => {
   
   const expiry_date = `${dayString} ${month} ${year}`;
   const activation_date = `${dayString} ${montha} ${yeara}`;
-  console.log(expiry_date);
+  console.log('data',data);
 
   return (
     <ScrollView
@@ -384,7 +384,7 @@ const TransactionDetails = ({navigation, route}: any) => {
           </View>
           <Text
             style={{color: Color.mainColor, fontSize: 18, fontWeight: '600'}}>
-            Rs.{data.total_amount}/-
+            Rs.{data.debit}/-
           </Text>
         </View>
       </View>

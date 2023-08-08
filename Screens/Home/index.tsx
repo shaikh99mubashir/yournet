@@ -18,6 +18,7 @@ import {
   BackHandler,
   Platform,
   TextInput,
+  RefreshControl,
 } from 'react-native';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -46,6 +47,9 @@ import {
 import messaging from '@react-native-firebase/messaging';
 import firebase from '@react-native-firebase/app';
 const {height, width} = Dimensions.get('window');
+interface Receipt {
+  created_at: string; 
+}
 const Home = ({navigation}: any) => {
   // To retrieve the loginFields
   const focus = useIsFocused();
@@ -79,31 +83,33 @@ const Home = ({navigation}: any) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [fcmToken, setFCMToken] = useState('');
   const [companyName, setCompanyName] = useState<any>('') 
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [refresh, setRefresh] = useState(false)
+  const [receipts, setReceipts] = useState([]);
   const cartData: any = useSelector(cartData => cartData)
-  
+ 
   useEffect(() => {
     setUserData(cartData?.user?.cart?.customer);
     WebPortalData(cartData?.user?.cart?.portals);
     setUserPackage(cartData?.user?.cart?.package);
     setPromotionData(cartData?.user?.cart?.promotions);
     setCompanyName(cartData?.user?.cart?.company?.com_name)
+    setReceipts(cartData?.user?.cart?.receipts)
   }, [cartData, focus,]);
 
   const dispatch = useDispatch();
 
   const getData = () => {
     setLoading(true);
-    
-    
     const config = {
       headers: {
         User_ID: user_id,
       },
     };
-    if (getUserData) {
-      setLoading(false);
-      return;
-    }
+    // if (getUserData) {
+    //   setLoading(false);
+    //   return;
+    // }
     axios
       .post(`${BaseUrl}getAllData`, null, config)
       .then((res: any) => {
@@ -156,86 +162,20 @@ const Home = ({navigation}: any) => {
     // };
   };
 
+
   useEffect(() => {
     getData();
-  }, [user_id, focus]);
-
-  // get Who We Are
-  // const getWhoWeAre = () => {
-  //   axios
-  //     .post(`${BaseUrl}getWhoWeAreOption`)
-  //     .then(({data}: any) => {
-  //       dispatch(whoWeAre(data.option_value));
-  //     })
-  //     .catch(error => {
-  //       ToastAndroid.show(
-  //         'Internal Server Error in WhoWeAre',
-  //         ToastAndroid.BOTTOM,
-  //       );
-  //     });
-  // };
-
-  // get Term And Condition
-  // const getTermAndConditions = () => {
-  //   axios
-  //     .post(`${BaseUrl}getTermsAndConditionsOption`)
-  //     .then(({data}: any) => {
-  //       // console.log('data', data.option_value);
-  //       dispatch(termAndCondition(data.option_value));
-  //     })
-  //     .catch(error => {
-  //       ToastAndroid.show(
-  //         'Internal Server Error in TermAndConditions',
-  //         ToastAndroid.BOTTOM,
-  //       );
-  //     });
-  // };
-
-  // get FAqs
-  // const getFAQs = () => {
-  //   axios
-  //     .post(`${BaseUrl}getfaqs`)
-  //     .then(({data}: any) => {
-  //       // console.log('data', data.faqs);
-  //       dispatch(faqsData(data.faqs));
-  //     })
-  //     .catch(error => {
-  //       ToastAndroid.show(
-  //         'Internal Server Error in faqs',
-  //         ToastAndroid.BOTTOM,
-  //       );
-  //     });
-  // };
-  // useEffect(() => {
-  //   getWhoWeAre();
-  //   getTermAndConditions()
-  //   getFAQs()
-  // }, [focus]);
+  }, [user_id, focus,refresh]);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      setRefresh(!refresh)
+    }, 2000);
+  }, [refresh]);
 
 
-  // const getPackagesPlans = () => {
-  //   const formData = new FormData();
-  //   formData.append('company_id', getUserData?.company_id);
-  //   const config = {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data',
-  //     },
-  //   };
-  //   axios
-  //     .post(`${BaseUrl}getPackageImagesByCompanyId`, formData, config)
-  //     .then(({data}: any) => {
-  //       // console.log('data',data.package_image);
-  //       dispatch(packagesPlans(data.package_image))
-        
-  //     })
-  //     .catch(error => {
-  //       ToastAndroid.show('Internal Server Error PackagesPlans', ToastAndroid.BOTTOM);
-  //     });
-  // };
 
-  // useEffect(()=>{
-  //   getPackagesPlans()
-  // },[getUserData?.company_id])
 
   // Get Notification
   const getNotification = () => {
@@ -513,6 +453,29 @@ const Home = ({navigation}: any) => {
   const [apply, setApply] = useState(false);
   const [cancel, setCancel] = useState(false);
   const [email_address, setEmail_address] = useState('');
+  // console.log('getUserData',receipts);
+
+
+  // const currentDate = new Date();
+  // const lastMonth = new Date(currentDate);
+  // lastMonth.setMonth(lastMonth.getMonth() - 1);
+
+  // const lastMonthReceiptDays: number[] = receipts
+  // .filter((receipt:any) => {
+  //   const createdAt = new Date(receipt.created_at);
+  //   const isLastMonth =
+  //     createdAt.getMonth() === lastMonth.getMonth() &&
+  //     createdAt.getFullYear() === lastMonth.getFullYear();
+
+  //   return isLastMonth;
+  // })
+  // .map((receipt:any) => {
+  //   const createdAt = new Date(receipt.created_at);
+  //   return createdAt.getDate(); // Get the day of the month
+  // });
+
+  // console.log('getUserData',getUserData);
+  
   
   return (
     <View
@@ -748,7 +711,11 @@ const Home = ({navigation}: any) => {
               </View>
             </View>
           </View>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView showsVerticalScrollIndicator={false} 
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          >
             <View style={{marginHorizontal: 10}}>
               <Text
                 style={{
@@ -782,7 +749,8 @@ const Home = ({navigation}: any) => {
                       Account Status
                     </Text>
                     <View style={{alignItems: 'center'}}>
-                      {getUserData?.status == 'Active' ? (
+                      {
+                      getUserData?.status == 'Active' ? (
                         <ImageBackground
                           source={require('../../Images/active.png')}
                           resizeMode="contain"
@@ -797,7 +765,26 @@ const Home = ({navigation}: any) => {
                             {getUserData?.status}
                           </Text>
                         </ImageBackground>
-                      ) : getUserData?.status == 'Registered' ? (
+                      ) 
+                      : 
+                      getUserData?.status == 'Manual' ? (
+                        <ImageBackground
+                          source={require('../../Images/active.png')}
+                          resizeMode="contain"
+                          style={{
+                            flex: 1,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: 50,
+                            width: 160,
+                          }}>
+                          <Text style={{color: 'white', fontSize: 20}}>
+                            {getUserData?.status}
+                          </Text>
+                        </ImageBackground>
+                      ) 
+                      : 
+                      getUserData?.status == 'Registered' ? (
                         <ImageBackground
                           source={require('../../Images/register.png')}
                           resizeMode="contain"
@@ -843,7 +830,7 @@ const Home = ({navigation}: any) => {
                           </Text>
                         </ImageBackground>
                       ) : (
-                        ''
+                        ""
                       )}
                     </View>
                     <View
@@ -866,7 +853,7 @@ const Home = ({navigation}: any) => {
                         ]}>
                         Last Renewal Date: {'\n'}
                         <Text style={{color: Color.textColor, fontSize: 14}}>
-                          {getUserData?.activation_date}
+                          {getUserData?.last_renewal_date}
                         </Text>
                       </Text>
                     </View>

@@ -131,7 +131,7 @@ const Complaint = ({navigation}: any) => {
     data.customer_name = getUserData?.first_name
     data.package_name = getUserData?.package_name
     data.mobile_number = getUserData?.mobile_number
-    data.address = getUserData?.address
+    data.address = getUserData?.FullAddress
     data.external_mobile = getUserData?.external_moble
     data.company_id = getUserData?.company_id
     data.complain = selectedServicedata.ID

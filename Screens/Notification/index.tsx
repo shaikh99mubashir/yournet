@@ -66,7 +66,7 @@ const Notification = ({navigation}: any) => {
     axios
     .post(`${BaseUrl}getPushNotifications`, formData, config)
     .then(({data}: any) => {
-        console.log('running12');
+        // console.log('running12');
         // console.log('dara',data.push_notifications,'==========data.push_notifications==========');
         setUserNotificarion(data.push_notifications)
         setLoading(false)

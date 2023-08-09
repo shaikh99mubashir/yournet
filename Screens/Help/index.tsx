@@ -49,7 +49,7 @@ const Help = ({navigation}: any) => {
     axios
       .post(`${BaseUrl}getAllComplain`, formData, config)
       .then(({data}: any) => {
-        console.log('data',data);
+        // console.log('data',data);
         
         dispatch(trackComplaint(data.complaints))  
       })

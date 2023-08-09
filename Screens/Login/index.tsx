@@ -37,9 +37,9 @@ const Login = ({navigation}: any) => {
   });
 
   // To store the loginFields
-  // AsyncStorage.setItem('loginFields', JSON.stringify(loginFields))
-  //   .then(() => console.log('Login fields saved'))
-  //   .catch(error => console.log('Error saving login fields: ', error));
+  AsyncStorage.setItem('loginFields', JSON.stringify(loginFields))
+    .then(() => console.log('Login fields saved'))
+    .catch(error => console.log('Error saving login fields: ', error));
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -137,8 +137,8 @@ const Login = ({navigation}: any) => {
       });
   };
   const [user_id, setUser_id] = useState('');
-  console.log('userid', user_id);
-  const gettingUserDatatoken = () => {
+  // console.log('userid', user_id);
+  const gettingUserData = () => {
     AsyncStorage.getItem('user_id')
       .then(value => {
         if (value !== null) {
@@ -149,6 +149,10 @@ const Login = ({navigation}: any) => {
       })
       .catch(error => console.log('Error retrieving login fields: ', error));
   };
+  // console.log('gettingUserData',user_id);
+  useEffect(()=>{
+    gettingUserData
+  },[])
   
   const LoginFunction = () => {
     let flag = Object.values(loginFields);
@@ -182,7 +186,7 @@ const Login = ({navigation}: any) => {
         AsyncStorage.setItem('user_id', JSON.stringify(res.data.user_id))
           .then(() => console.log('user_id Saved'))
           .catch(error => console.log('Error saving user_id: ', error));
-          console.log("res.data,",res.data);
+          // console.log("res.data,",res.data);
           
         if (res.data.status == 'success') {
           navigation.replace('Home');

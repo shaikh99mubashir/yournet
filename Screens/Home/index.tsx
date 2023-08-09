@@ -35,6 +35,7 @@ import CheckWebView from '../CheckWebView';
 import Loader from '../../Components/Loader';
 import notifee, {AndroidImportance} from '@notifee/react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import { AppState,AppStateStatus  } from 'react-native';
 import {
   addToCart,
   companyName,
@@ -56,7 +57,7 @@ const Home = ({navigation}: any) => {
   const [nickName, setNickName] = useState<any>('');
 
   const [user_id, setUser_id] = useState('');
-  // console.log('userid', user_id);
+  console.log('userid', user_id);
 
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('user_id')
@@ -174,7 +175,34 @@ const Home = ({navigation}: any) => {
     }, 2000);
   }, [refresh]);
 
+// manage foreground and background
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        console.log('App has come to the foreground!');
+        // navigation.navigate('SplashScreen')
+      }
+      if (appState.current === 'background') {
+        navigation.navigate('SplashScreen'); 
+        return;
+      }
+
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+      console.log('AppState', appState.current);
+    });
+    // console.log('navigation:===>',navigation);
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+  
 
 
   // Get Notification
@@ -492,7 +520,7 @@ const Home = ({navigation}: any) => {
             backgroundColor: Color.white,
             opacity: 0.9,
           }}>
-          <ActivityIndicator color="black" size={'large'} />
+          <ActivityIndicator color={Color.mainColor} size={'large'} />
           {/* {noInternet ? (
             <Text style={{textAlign: 'center', marginTop: 50, color: 'black'}}>
               Currently You Are Offline

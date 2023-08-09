@@ -1,81 +1,46 @@
 import { StyleSheet, Text, View ,PermissionsAndroid, Platform,Alert ,Linking } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect,useRef ,useState } from 'react'
 import MyStack from './Routing/MyStack'
 import { OrientationLocker } from 'react-native-orientation-locker';
 import {Provider} from 'react-redux';
 import store from './Redux/store';
 import { requestUserPermission,notificationListeners } from './Components/utils/notificationServices';
 import messaging from '@react-native-firebase/messaging';
+import { AppState,AppStateStatus  } from 'react-native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 const App = ({navigation}:any) => {
+  
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
   // useEffect(() => {
-  //   const locker :any = OrientationLocker;
-  //   locker.lockToPortrait();
-  //   return () => {
-  //     locker.unlockAllOrientations();
-  //   };
-  // }, []);
+  //   const subscription = AppState.addEventListener('change', nextAppState => {
+  //     if (
+  //       appState.current.match(/inactive|background/) &&
+  //       nextAppState === 'active'
+  //     ) {
+  //       console.log('App has come to the foreground!');
+  //       // navigation.navigate('SplashScreen')
+  //     }
+  //     if (appState.current === 'background') {
+  //       navigation.navigate('SplashScreen'); 
+  //       return;
+  //     }
 
-  // const getFCMToken = () => {
-  //   messaging()
-  //     .getToken()
-  //     .then(token => {
-  //       console.log('token=>>>', token);
-  //     });
-  // };
-
-//   messaging().setBackgroundMessageHandler(async remoteMessage => {
-//     console.log('remoteMessage=====>',remoteMessage);
-    
-//     navigation.navigate('Notification'); //navigate to notification screen
-// });
-  // useEffect(()=>{
-  //   getFCMToken()
-  //   messaging().onNotificationOpenedApp(remoteMessage => {
-  //     console.log(
-  //       'Notification caused app to open from background state:',
-  //       remoteMessage.notification,
-  //     );
-  //     console.log(
-  //       'remoteMessage==============>:',
-  //       remoteMessage,
-  //     );
-  //     navigation.navigate('Home');
+  //     appState.current = nextAppState;
+  //     setAppStateVisible(appState.current);
+  //     console.log('AppState', appState.current);
   //   });
 
-  //   messaging()
-  //     .getInitialNotification()
-  //     .then(remoteMessage => {
-  //       if (remoteMessage) {
-  //         console.log(
-  //           'Notification caused app to open from quit state:',
-  //           remoteMessage.notification,
-  //         );
-  //         // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
-  //         navigation.navigate('Home');
-  //       }
-        
-  //     });
-  // },[])
-
-  // useEffect(()=>{
-
-  //   notificationListeners()
-  //   if(Platform.OS == 'android'){
-  //     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then((res)=>{
-  //         console.log("res+++++",res)
-  //         if(!!res && res == 'granted'){
-  //           requestUserPermission()
-  //         }
-  //     }).catch(error=>{
-  //       console.log('something wrong')
-  //     })
-  //   }else{
+  //   return () => {
+  //     subscription.remove();
+  //   };
+  // }, []);
+  // console.log('navigation:===>',navigation);
   
-  //   }
-  
-  // },[])
   
   return (
+    
     <Provider store={store}>
       <MyStack/>
     </Provider>

@@ -36,7 +36,7 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
   const [pendingComplaints, setPendingComplaints] = useState([]);
   const [completedComplaints, setCompletedComplaints] = useState([]);
   const [loading, setLoading] = useState(false);
-  // console.log('completedComplaints==>', complaintData);
+  // console.log('completedComplaints==>', completedComplaints);
 
 
   const [userId, setUserId] = useState<any>('');
@@ -53,79 +53,89 @@ const TrackYourComplaint = ({navigation, pendingStatus}: any) => {
   //     console.log('Error retrieving login fields: ', error);
   //   }
   // };
+  // console.log('userId',userId);
+  
   // useEffect(() => {
   //   gettingUserData();
   // }, [focus]);
 
   // const trackcomplaintdata: any = useSelector(complaintData => complaintData);
   const cartData: any = useSelector(cartData => cartData);
-  const trackcomplaintdata: any = useSelector(complaintData => complaintData);
-  const registerComplaintData = () => {
-    // const complaintDataArray = cartData?.user?.cart?.complaints || [];
-    const complaintDataArray = trackcomplaintdata?.user?.trackComplaint || [];
-    setComplaintData(complaintDataArray);
-    // setComplaintData(trackcomplaintdata?.user?.trackComplaint);
+  // console.log('cartData?.user?.cart?.complaints',cartData?.user?.cart?.customer?.customer_id);
+  
+  // const trackcomplaintdata: any = useSelector(complaintData => complaintData);
+  // const registerComplaintData = () => {
+  //   // const complaintDataArray = cartData?.user?.cart?.complaints || [];
+  //   const complaintDataArray = trackcomplaintdata?.user?.trackComplaint || [];
+  //   setComplaintData(complaintDataArray);
+  //   // setComplaintData(trackcomplaintdata?.user?.trackComplaint);
 
-    const pendingComplaints = complaintDataArray?.filter(
-      (complaint: any) => complaint.Status === 'Pending',
-    );
-    const completedComplaints = complaintDataArray?.filter(
-      (complaint: any) => complaint.Status === 'Resolved',
-    );
+  //   const pendingComplaints = complaintDataArray?.filter(
+  //     (complaint: any) => complaint.Status === 'Pending',
+  //   );
+  //   const completedComplaints = complaintDataArray?.filter(
+  //     (complaint: any) => complaint.Status === 'Resolved',
+  //   );
 
-    setPendingComplaints(pendingComplaints);
-    console.log('pendingComplaints',pendingComplaints);
+  //   setPendingComplaints(pendingComplaints);
+  //   console.log('pendingComplaints',pendingComplaints);
     
-    setCompletedComplaints(completedComplaints);
-  };
-
-  useEffect(() => {
-    registerComplaintData();
-  }, [cartData]);
-
-  // const getComplaintData = () => {
-  //   setLoading(true);
-  //   if (!userId?.customer_id) {
-  //     navigation.replace('Login');
-  //     AsyncStorage.removeItem('token');
-  //     AsyncStorage.removeItem('loginFields');
-  //     return; // Don't make the API call if the userId is not valid
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append('customer_id', userId.customer_id);
-  //   const config = {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data',
-  //     },
-  //   };
-  //   axios
-  //     .post(`${BaseUrl}getAllComplain`, formData, config)
-  //     .then((res: any) => {
-  //       setComplaintData(res?.data?.complaints);
-
-  //       const pendingComplaints = res.data.complaints.filter(
-  //         (complaint: any) => complaint.Status === 'Pending',
-  //       );
-  //       const completedComplaints = res.data.complaints.filter(
-  //         (complaint: any) => complaint.Status === 'Completed',
-  //       );
-
-  //       setPendingComplaints(pendingComplaints);
-  //       setCompletedComplaints(completedComplaints);
-  //       setLoading(false);
-  //     })
-  //     .catch(error => {
-  //       ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-  //       setLoading(false);
-  //     });
+  //   setCompletedComplaints(completedComplaints);
   // };
 
   // useEffect(() => {
-  //   if (userId?.customer_id) {
-  //     getComplaintData();
-  //   }
-  // }, [userId, focus]);
+  //   registerComplaintData();
+  // }, [cartData]);
+
+  const getComplaintData = () => {
+    setLoading(true);
+    console.log('running');
+    
+    // if (!userId?.customer_id) {
+    //   navigation.replace('Login');
+    //   AsyncStorage.removeItem('token');
+    //   AsyncStorage.removeItem('loginFields');
+    //   return; // Don't make the API call if the userId is not valid
+    // }
+
+    const formData = new FormData();
+    formData.append('customer_id', cartData?.user?.cart?.customer?.customer_id);
+    // formData.append('customer_id', 'fiberon_0007');
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}getAllComplain`, formData, config)
+      .then((res: any) => {
+        // console.log('res========>',res);
+        
+        setComplaintData(res?.data?.complaints);
+
+        const pendingComplaints = res.data.complaints.filter(
+          (complaint: any) => complaint.Status === 'Pending',
+        );
+        const completedComplaints = res.data.complaints.filter(
+          (complaint: any) => complaint.Status === 'Resolved',
+        );
+          console.log('completedComplaints',completedComplaints,'completedComplaints===>');
+          
+        setPendingComplaints(pendingComplaints);
+        setCompletedComplaints(completedComplaints);
+        setLoading(false);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+   
+      getComplaintData();
+    
+  }, []);
 
   const [currentTab, setCurrentTab]: any = useState([
     {

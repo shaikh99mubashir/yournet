@@ -31,11 +31,10 @@ import NavigationService from '../NavigationService';
 const Stack = createNativeStackNavigator();
 
 const MyStack = () => {
+  
   return (
-    <NavigationContainer  
-    // ref={(ref) => NavigationService.setTopLevelNavigator(ref)}
-    >
-      <Stack.Navigator screenOptions={{headerShown:false, animation: 'slide_from_right'}}>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{headerShown:false, animation: 'slide_from_right'}} initialRouteName="SplashScreen">
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="ForgotPassword" component={ForgotPassword}/>

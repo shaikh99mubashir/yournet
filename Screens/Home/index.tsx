@@ -57,7 +57,7 @@ const Home = ({navigation}: any) => {
   const [nickName, setNickName] = useState<any>('');
 
   const [user_id, setUser_id] = useState('');
-  console.log('userid', user_id);
+  // console.log('userid', user_id);
 
   const gettingUserDatatoken = () => {
     AsyncStorage.getItem('user_id')

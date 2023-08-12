@@ -276,7 +276,7 @@ const TransactionDetails = ({navigation, route}: any) => {
           </Text>
         </View>
         {/* package Price */}
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
@@ -295,7 +295,7 @@ const TransactionDetails = ({navigation, route}: any) => {
           <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
             {data.package_price}
           </Text>
-        </View>
+        </View> */}
         {/* Balance */}
         <View
           style={{

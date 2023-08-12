@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { BaseUrl } from '../../Constants/BaseUrl';
 import {useDispatch, useSelector} from 'react-redux';
-import {addToCart, companyName} from '../../Redux/Reducer/Reducers';
+import {addToCart, companyName, logout} from '../../Redux/Reducer/Reducers';
 const SplashScreen = ({navigation}:any) => {
   // const navigateToHomeScreen = () => {
   //   const dispatch = useDispatch()
@@ -52,10 +52,10 @@ const SplashScreen = ({navigation}:any) => {
     let date1 = JSON.parse(val);
     // console.log('data1', date1);
     if (date1) {
-      setTimeout(() => {
-        navigation.replace('Home');
-      }, 3000);
-
+      // setTimeout(() => {
+      //   navigation.replace('Home');
+      // }, 3000);
+ 
       const config = {
         headers: {
           User_ID: date1,
@@ -68,8 +68,32 @@ const SplashScreen = ({navigation}:any) => {
           if (res.data && res.data.customer) {
             // console.log('res.data',res.data);
             // console.log('res.data.company===>',res.data.company);
-            
-            dispatch(addToCart(res.data));
+              AsyncStorage.getItem('loginFields')
+                .then(value => {
+                  if (value !== null) {
+                   let Loginfields =  JSON.parse(value)
+                   console.log('Loginfields password',Loginfields.password);
+                   console.log('res.data.customer.password',res.data.customer.password);
+                   if(Loginfields.password === res.data.customer.password){
+                    console.log('condition True');
+                    
+                    dispatch(addToCart(res.data));
+                    navigation.replace('Home');
+                   }
+                   else{
+                    navigation.replace('Login');
+                    AsyncStorage.removeItem('user_id');
+                    AsyncStorage.removeItem('loginFields');
+                    AsyncStorage.removeItem('nickName');
+                    dispatch(logout());
+                    ToastAndroid.show('Password Change Update Your Password', ToastAndroid.LONG);
+                   }
+                   
+                  } else {
+                    console.log('No user_id found');
+                  }
+                })
+                .catch(error => console.log('Error retrieving login fields: ', error));
           }
         })
         .catch(error => {

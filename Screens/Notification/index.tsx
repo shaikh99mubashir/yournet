@@ -53,7 +53,7 @@ const Notification = ({navigation}: any) => {
     };
 
   const getNotification = () => { 
-    console.log('running');
+    // console.log('running');
     setLoading(true)
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
@@ -83,7 +83,7 @@ const Notification = ({navigation}: any) => {
   };
 
   useEffect(()=>{
-    console.log('Updated userNotificarion:', userNotificarion);
+    // console.log('Updated userNotificarion:', userNotificarion);
     newNotificationCount > 0 ?
     getNotification()
     :
@@ -321,7 +321,7 @@ const Notification = ({navigation}: any) => {
             <TouchableOpacity
             activeOpacity={0.8}
               onPress={() => CloseModal()}
-              style={{borderTopWidth: 1, borderTopColor: '#eee'}}>
+              style={{borderTopWidth: 1, borderTopColor: '#eee',}}>
               <Text
                 style={{
                   textAlign: 'center',

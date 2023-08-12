@@ -122,6 +122,7 @@ function CustomDrawerContent(props: any) {
     props.navigation.replace('Login');
     AsyncStorage.removeItem('user_id');
     AsyncStorage.removeItem('loginFields');
+    AsyncStorage.removeItem('nickName');
     dispatch(logout());
   };
 

@@ -228,7 +228,7 @@ const TransactionDetails = ({navigation, route}: any) => {
               For Period :
             </Text>
           </View>
-          <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
+          <Text style={{color: 'black', fontSize: 14, fontWeight: '600', }}>
             {/* {differenceInDays ? differenceInDays : 'NaN'} */}
             {`${data.activation_date} to ${data.expiry_date}`}
           </Text>

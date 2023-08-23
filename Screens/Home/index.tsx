@@ -88,6 +88,9 @@ const Home = ({navigation}: any) => {
   const [refresh, setRefresh] = useState(false)
   const [receipts, setReceipts] = useState([]);
   const cartData: any = useSelector(cartData => cartData)
+  const [apply, setApply] = useState(false);
+  const [cancel, setCancel] = useState(false);
+  const [email_address, setEmail_address] = useState('');
  
   useEffect(() => {
     setUserData(cartData?.user?.cart?.customer);
@@ -115,7 +118,6 @@ const Home = ({navigation}: any) => {
       .post(`${BaseUrl}getAllData`, null, config)
       .then((res: any) => {
         if (res.data && res.data.customer) {
-          // console.log('running get Dataa========================>',res.data);
           setUserData(res.data.customer);
           WebPortalData(res.data.portals);
           setUserPackage(res.data.package);
@@ -135,32 +137,6 @@ const Home = ({navigation}: any) => {
         setLoading(false);
         setUserData(null);
       });
-
-    // const intervalId = setInterval(() => {
-    //   axios
-    //     .post(`${BaseUrl}getAllData`, null, config)
-    //     .then((res: any) => {
-    //       if (res.data && res.data.customer) {
-    //         dispatch(addToCart(res.data));
-    //         setLoading(false);
-    //         console.log('running get Dataa');
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log('error,==>', error);
-    //       if (error == 'AxiosError: Network Error') {
-    //         ToastAndroid.show('You Are Offline', ToastAndroid.LONG);
-    //         setNoInternet(true);
-    //         return;
-    //       }
-    //       ToastAndroid.show('Internal Server Error Home', ToastAndroid.LONG);
-    //       setLoading(false);
-    //       setUserData(null);
-    //     });
-    // }, 1000);
-    // return () => {
-    //   clearInterval(intervalId);
-    // };
   };
 
 
@@ -175,9 +151,12 @@ const Home = ({navigation}: any) => {
     }, 2000);
   }, [refresh]);
 
-// manage foreground and background
+
   const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+  const backgroundStartTime = useRef<number | null>(null); // Store background start time
+  const backgroundTime = useRef(0);
+  const maxBackgroundTime = 60 * 60 * 1000; // 1 hour in milliseconds
+  // const maxBackgroundTime = 60 * 1000; // 1 minute in milliseconds
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
@@ -186,23 +165,33 @@ const Home = ({navigation}: any) => {
         nextAppState === 'active'
       ) {
         console.log('App has come to the foreground!');
-        // navigation.navigate('SplashScreen')
+        if (backgroundStartTime.current !== null) {
+          const currentTime = Date.now();
+          const backgroundDuration = currentTime - backgroundStartTime.current;
+          backgroundTime.current += backgroundDuration;
+          backgroundStartTime.current = null;
+
+          if (backgroundTime.current >= maxBackgroundTime) {
+            console.log('Navigating to SplashScreen after 1 minute in background.');
+            navigation.navigate('SplashScreen');
+          }
+        }
       }
-      if (appState.current === 'background') {
-        navigation.navigate('SplashScreen'); 
-        return;
+
+      if (appState.current === 'background' && nextAppState === 'active') {
+        backgroundStartTime.current = Date.now();
       }
 
       appState.current = nextAppState;
-      setAppStateVisible(appState.current);
       console.log('AppState', appState.current);
     });
-    // console.log('navigation:===>',navigation);
+
     return () => {
       subscription.remove();
     };
   }, []);
-  
+
+
 
 
   // Get Notification
@@ -290,39 +279,7 @@ const Home = ({navigation}: any) => {
     });
   }
 
-
-
-  // Get company name  
-  // const getCompanyName = () => {
-  //   const formData = new FormData();
-  //   formData.append('customer_id', getUserData?.customer_id);
-  //   const config = {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data',
-  //     },
-  //   };
-  //   axios
-  //     .post(`${BaseUrl}getCompanyData`, formData, config)
-  //     .then(({data}: any) => {
-  //       setCompanyName(data?.company?.com_name)
-  //       // dispatch(companyName(companyName))
-  //     })
-  //     .catch(error => {
-  //       // console.log('rerror',error.message);
-  //       ToastAndroid.show(
-  //         `Internal Server Error in getCompanyName ${error}`,
-  //         ToastAndroid.BOTTOM,
-  //       );
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getCompanyName();
-  // }, [getUserData?.customer_id,focus]);
-
-  // email work
-  
-  
+  // email work  
   const saveEmailAdress = () => {
     const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     const userEmail: any = email_address;
@@ -478,32 +435,9 @@ const Home = ({navigation}: any) => {
     setShowConfirmation(false);
   };
 
-  const [apply, setApply] = useState(false);
-  const [cancel, setCancel] = useState(false);
-  const [email_address, setEmail_address] = useState('');
-  // console.log('getUserData',receipts);
 
 
-  // const currentDate = new Date();
-  // const lastMonth = new Date(currentDate);
-  // lastMonth.setMonth(lastMonth.getMonth() - 1);
-
-  // const lastMonthReceiptDays: number[] = receipts
-  // .filter((receipt:any) => {
-  //   const createdAt = new Date(receipt.created_at);
-  //   const isLastMonth =
-  //     createdAt.getMonth() === lastMonth.getMonth() &&
-  //     createdAt.getFullYear() === lastMonth.getFullYear();
-
-  //   return isLastMonth;
-  // })
-  // .map((receipt:any) => {
-  //   const createdAt = new Date(receipt.created_at);
-  //   return createdAt.getDate(); // Get the day of the month
-  // });
-
-  // console.log('getUserData',getUserData);
-  
+    
   
   return (
     <View
@@ -521,13 +455,6 @@ const Home = ({navigation}: any) => {
             opacity: 0.9,
           }}>
           <ActivityIndicator color={Color.mainColor} size={'large'} />
-          {/* {noInternet ? (
-            <Text style={{textAlign: 'center', marginTop: 50, color: 'black'}}>
-              Currently You Are Offline
-            </Text>
-          ) : (
-            ''
-          )} */}
         </View>
       ) : (
         <>

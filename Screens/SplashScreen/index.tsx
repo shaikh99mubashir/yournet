@@ -6,6 +6,7 @@ import axios from 'axios';
 import { BaseUrl } from '../../Constants/BaseUrl';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToCart, companyName, logout} from '../../Redux/Reducer/Reducers';
+import { useIsFocused } from '@react-navigation/native';
 const SplashScreen = ({navigation}:any) => {
   // const navigateToHomeScreen = () => {
   //   const dispatch = useDispatch()
@@ -46,8 +47,8 @@ const SplashScreen = ({navigation}:any) => {
   //   navigateToHomeScreen();
   // }, []);
   const dispatch = useDispatch();
+  const focus = useIsFocused();
   const navigateToHomeScreen = () => {
-
   AsyncStorage.getItem('user_id').then((val: any) => {
     let date1 = JSON.parse(val);
     // console.log('data1', date1);
@@ -110,7 +111,7 @@ const SplashScreen = ({navigation}:any) => {
 
 useEffect(() => {
   navigateToHomeScreen();
-}, []);
+}, [focus]);
 
   return (
     <View style={{backgroundColor:Color.mainColor,height:'100%', width:'100%', alignItems:'center', justifyContent:'center'}}>

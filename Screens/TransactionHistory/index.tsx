@@ -258,7 +258,7 @@ const TransactionHistory = ({navigation}: any) => {
                   fontWeight: '700',
                   color: 'black',
                 }}>
-                Rs.{item.package_price}/-
+                Rs.{item.debit}/-
               </Text>
             </View>
           </View>

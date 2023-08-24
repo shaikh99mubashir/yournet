@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 const TransactionDetails = ({navigation, route}: any) => {
   const data: any = route.params;
-  console.log('data ===>', data);
+  // console.log('data ===>', data);
 
   const activationDate: Date = new Date(data.activation_date);
   const expiryDate: Date = new Date(data.expiry_date);
@@ -49,7 +49,7 @@ const TransactionDetails = ({navigation, route}: any) => {
   
   const expiry_date = `${dayString} ${month} ${year}`;
   const activation_date = `${dayString} ${montha} ${yeara}`;
-  console.log('data',data);
+  // console.log('data',data);
 
   return (
     <ScrollView

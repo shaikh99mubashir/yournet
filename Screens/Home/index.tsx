@@ -35,11 +35,12 @@ import CheckWebView from '../CheckWebView';
 import Loader from '../../Components/Loader';
 import notifee, {AndroidImportance} from '@notifee/react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import { AppState,AppStateStatus  } from 'react-native';
+import {AppState, AppStateStatus} from 'react-native';
 import {
   addToCart,
   companyName,
   faqsData,
+  logout,
   packagesPlans,
   pushNotification,
   termAndCondition,
@@ -49,7 +50,7 @@ import messaging from '@react-native-firebase/messaging';
 import firebase from '@react-native-firebase/app';
 const {height, width} = Dimensions.get('window');
 interface Receipt {
-  created_at: string; 
+  created_at: string;
 }
 const Home = ({navigation}: any) => {
   // To retrieve the loginFields
@@ -83,23 +84,23 @@ const Home = ({navigation}: any) => {
   const [noInternet, setNoInternet] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [fcmToken, setFCMToken] = useState('');
-  const [companyName, setCompanyName] = useState<any>('') 
+  const [companyName, setCompanyName] = useState<any>('');
   const [refreshing, setRefreshing] = React.useState(false);
-  const [refresh, setRefresh] = useState(false)
+  const [refresh, setRefresh] = useState(false);
   const [receipts, setReceipts] = useState([]);
-  const cartData: any = useSelector(cartData => cartData)
+  const cartData: any = useSelector(cartData => cartData);
   const [apply, setApply] = useState(false);
   const [cancel, setCancel] = useState(false);
   const [email_address, setEmail_address] = useState('');
- 
+
   useEffect(() => {
     setUserData(cartData?.user?.cart?.customer);
     WebPortalData(cartData?.user?.cart?.portals);
     setUserPackage(cartData?.user?.cart?.package);
     setPromotionData(cartData?.user?.cart?.promotions);
-    setCompanyName(cartData?.user?.cart?.company?.com_name)
-    setReceipts(cartData?.user?.cart?.receipts)
-  }, [cartData, focus,]);
+    setCompanyName(cartData?.user?.cart?.company?.com_name);
+    setReceipts(cartData?.user?.cart?.receipts);
+  }, [cartData, focus]);
 
   const dispatch = useDispatch();
 
@@ -118,12 +119,46 @@ const Home = ({navigation}: any) => {
       .post(`${BaseUrl}getAllData`, null, config)
       .then((res: any) => {
         if (res.data && res.data.customer) {
-          setUserData(res.data.customer);
-          WebPortalData(res.data.portals);
-          setUserPackage(res.data.package);
-          setPromotionData(res.data.promotions);
-          dispatch(addToCart(res.data));
-          setLoading(false);
+          console.log('res',res.data);
+          
+          AsyncStorage.getItem('loginFields')
+            .then(value => {
+              if (value !== null) {
+                let Loginfields = JSON.parse(value);
+                console.log('Loginfields password', Loginfields.password);
+                console.log(
+                  'res.data.customer.password',
+                  res.data.customer.password,
+                );
+                if (Loginfields.password === res?.data?.customer?.password) {
+                  console.log('res',res.data);
+                  console.log('condition True');
+                  dispatch(addToCart(res.data));
+                  setUserData(res.data.customer);
+                  WebPortalData(res.data.portals);
+                  setUserPackage(res.data.package);
+                  setPromotionData(res.data.promotions);
+                  dispatch(addToCart(res.data));
+                  setLoading(false);
+                  // navigation.replace('Home');
+                } else {
+                  navigation.replace('Login');
+                  AsyncStorage.removeItem('user_id');
+                  AsyncStorage.removeItem('loginFields');
+                  AsyncStorage.removeItem('nickName');
+                  dispatch(logout());
+                  ToastAndroid.show(
+                    'Password Change Update Your Password',
+                    ToastAndroid.LONG,
+                  );
+                }
+              } else {
+                console.log('No user_id found');
+              }
+            })
+            .catch(error =>
+              console.log('Error retrieving login fields: ', error),
+            );
         }
       })
       .catch(error => {
@@ -139,18 +174,16 @@ const Home = ({navigation}: any) => {
       });
   };
 
-
   useEffect(() => {
     getData();
-  }, [user_id, focus,refresh]);
+  }, [user_id, focus, refresh]);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-      setRefresh(!refresh)
+      setRefresh(!refresh);
     }, 2000);
   }, [refresh]);
-
 
   const appState = useRef(AppState.currentState);
   const backgroundStartTime = useRef<number | null>(null); // Store background start time
@@ -172,7 +205,9 @@ const Home = ({navigation}: any) => {
           backgroundStartTime.current = null;
 
           if (backgroundTime.current >= maxBackgroundTime) {
-            console.log('Navigating to SplashScreen after 1 minute in background.');
+            console.log(
+              'Navigating to SplashScreen after 1 minute in background.',
+            );
             navigation.navigate('SplashScreen');
           }
         }
@@ -191,9 +226,6 @@ const Home = ({navigation}: any) => {
     };
   }, []);
 
-
-
-
   // Get Notification
   const getNotification = () => {
     const formData = new FormData();
@@ -210,12 +242,12 @@ const Home = ({navigation}: any) => {
       .post(`${BaseUrl}getPushNotifications`, formData, config)
       .then(({data}: any) => {
         // console.log('data',data);
-        
+
         dispatch(pushNotification(data.push_notifications));
       })
       .catch(error => {
-        console.log('error',error);
-        
+        console.log('error', error);
+
         ToastAndroid.show(
           'Internal Server Error in Notification',
           ToastAndroid.BOTTOM,
@@ -235,7 +267,7 @@ const Home = ({navigation}: any) => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [getUserData?.customer_id,fcmToken]);
+  }, [getUserData?.customer_id, fcmToken]);
 
   useEffect(() => {
     getFCMToken();
@@ -252,7 +284,7 @@ const Home = ({navigation}: any) => {
     messaging()
       .getToken()
       .then(token => {
-        setFCMToken(token)
+        setFCMToken(token);
         // console.log('token=>>>', token);
       });
   };
@@ -279,7 +311,7 @@ const Home = ({navigation}: any) => {
     });
   }
 
-  // email work  
+  // email work
   const saveEmailAdress = () => {
     const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     const userEmail: any = email_address;
@@ -341,7 +373,7 @@ const Home = ({navigation}: any) => {
 
     // Cleanup function to clear interval on unmount
     return () => clearInterval(intervalId);
-  }, [currentIndex]);
+  }, [currentIndex,focus]);
 
   const getItemLayout = (_: any, index: number) => ({
     length: width / 1.05, // Replace with the actual width of each item
@@ -386,7 +418,6 @@ const Home = ({navigation}: any) => {
                     //   ToastAndroid.BOTTOM,
                     // );
                     console.log('Internal Server Error fcmToken');
-                    
                   });
               } else {
                 console.log("user doesn't have a device token yet");
@@ -435,10 +466,6 @@ const Home = ({navigation}: any) => {
     setShowConfirmation(false);
   };
 
-
-
-    
-  
   return (
     <View
       style={{
@@ -666,11 +693,11 @@ const Home = ({navigation}: any) => {
               </View>
             </View>
           </View>
-          <ScrollView showsVerticalScrollIndicator={false} 
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          >
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
             <View style={{marginHorizontal: 10}}>
               <Text
                 style={{
@@ -704,8 +731,7 @@ const Home = ({navigation}: any) => {
                       Account Status
                     </Text>
                     <View style={{alignItems: 'center'}}>
-                      {
-                      getUserData?.status == 'Active' ? (
+                      {getUserData?.status == 'Active' ? (
                         <ImageBackground
                           source={require('../../Images/active.png')}
                           resizeMode="contain"
@@ -720,9 +746,7 @@ const Home = ({navigation}: any) => {
                             {getUserData?.status}
                           </Text>
                         </ImageBackground>
-                      ) 
-                      : 
-                      getUserData?.status == 'Manual' ? (
+                      ) : getUserData?.status == 'Manual' ? (
                         <ImageBackground
                           source={require('../../Images/active.png')}
                           resizeMode="contain"
@@ -737,9 +761,7 @@ const Home = ({navigation}: any) => {
                             {getUserData?.status}
                           </Text>
                         </ImageBackground>
-                      ) 
-                      : 
-                      getUserData?.status == 'Registered' ? (
+                      ) : getUserData?.status == 'Registered' ? (
                         <ImageBackground
                           source={require('../../Images/register.png')}
                           resizeMode="contain"
@@ -785,7 +807,7 @@ const Home = ({navigation}: any) => {
                           </Text>
                         </ImageBackground>
                       ) : (
-                        ""
+                        ''
                       )}
                     </View>
                     <View
@@ -867,7 +889,7 @@ const Home = ({navigation}: any) => {
                             paddingHorizontal: 10,
                             fontFamily: 'BebasNeue-Regular',
                             textAlign: 'center',
-                            width:100
+                            width: 100,
                           }}>
                           {userPackage?.package_name ? (
                             userPackage?.package_name

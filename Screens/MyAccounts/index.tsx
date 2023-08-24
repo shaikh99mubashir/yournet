@@ -19,9 +19,9 @@ import {BaseUrl} from '../../Constants/BaseUrl';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import { nickname } from '../../Redux/Reducer/Reducers';
+import { logout, nickname } from '../../Redux/Reducer/Reducers';
 
-const MyAccounts = () => {
+const MyAccounts = ({navigation}:any) => {
   const [editNickName, setEditNickName] = useState<boolean>(false);
   const [nickName, setNickName] = useState<any>('');
   const [getUserData, setUserData] = useState<any>([]);
@@ -83,12 +83,11 @@ const MyAccounts = () => {
   const [updatePassword, setUpdatePassword] = useState(false);
   const [passwordEye, setPasswordEye] = useState(true);
   const saveEmailAdress = () => {
-    ('running save email');
-
     const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     const userEmail: any = email_address;
     const result: boolean = expression.test(userEmail); // true
     if (!result) {
+      setEmail_address('')
       ToastAndroid.show('Enter correct email', ToastAndroid.SHORT);
       return;
     }
@@ -149,6 +148,11 @@ const MyAccounts = () => {
       )
       .then((res: any) => {
         setUpdatePassword(!updatePassword)
+        navigation.replace('Login');
+        AsyncStorage.removeItem('user_id');
+        AsyncStorage.removeItem('loginFields');
+        AsyncStorage.removeItem('nickName');
+        dispatch(logout());
         ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);
       })
       .catch(error => {

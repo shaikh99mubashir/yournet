@@ -130,6 +130,13 @@ const Notification = ({navigation}: any) => {
   };
 
   const renderNotificationItems = ({item}: any): any => {
+    const windowWidth = Dimensions.get('window').width;
+    const textWidth = (item.message.length * 14); 
+    const shouldTrim = textWidth > (0.9 * windowWidth);
+    const trimmedMessage = shouldTrim
+    ? `${item.message.slice(0, Math.floor((0.9 * windowWidth) / 6)).trim()}...`
+    : item.message.trim();
+
     // console.log('item',item);
     return (
       <>
@@ -174,9 +181,10 @@ const Notification = ({navigation}: any) => {
                     fontSize: 14,
                     paddingRight: 10,
                   }}>
-                  {item.message.length > 30
+                  {/* {item.message.length > 30
                     ? `${item.message.slice(0, 30).trim()}...`
-                    : item.message.trim()}
+                    : item.message.trim()} */}
+                    {trimmedMessage}
                 </Text>
               </View>
               <View

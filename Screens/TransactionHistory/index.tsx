@@ -59,7 +59,7 @@ const TransactionHistory = ({navigation}: any) => {
       (check: any) => check.payment_method ==  'Pay Later' || null,
     );
     setPaidRecipts(paid)
-    console.log('paid',paid);
+    console.log('paid',receipts);
     
     setUnPaidRecipts(unpaid)
   }

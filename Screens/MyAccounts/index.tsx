@@ -208,9 +208,10 @@ const MyAccounts = ({navigation}:any) => {
           My Account
         </Text>
         <Text style={{fontSize: 14, marginTop: 15, color: Color.textColor}}>
-          Personal Details
+        Account Details
         </Text>
-        {/* Nick Name */}
+        
+        {/* NAme */}
         <View
           style={{
             backgroundColor: Color.white,
@@ -218,6 +219,36 @@ const MyAccounts = ({navigation}:any) => {
             padding: 10,
             borderRadius: 10,
             marginVertical: 15,
+          }}>
+          <Text
+            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
+            Name
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            <Text
+              style={{
+                color: Color.textColor,
+                fontWeight: 'bold',
+                fontSize: 16,
+              }}>
+              {getUserData?.first_name}
+            </Text>
+          </View>
+        </View>
+        {/* Nick Name
+        <View
+          style={{
+            backgroundColor: Color.white,
+            elevation: 2,
+            padding: 10,
+            borderRadius: 10,
+            marginBottom: 15,
           }}>
           <Text
             style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
@@ -256,8 +287,10 @@ const MyAccounts = ({navigation}:any) => {
               />
             </TouchableOpacity>
           </View>
-        </View>
-        {/* userName */}
+        </View> */}
+        
+        
+        {/* Login Id */}
         <View
           style={{
             backgroundColor: Color.white,
@@ -317,66 +350,6 @@ const MyAccounts = ({navigation}:any) => {
             </Text>
           </View>
         </View>
-        {/* Adress */}
-        <View
-          style={{
-            backgroundColor: Color.white,
-            elevation: 2,
-            padding: 10,
-            borderRadius: 10,
-            marginBottom: 15,
-          }}>
-          <Text
-            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
-            Address
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginTop: 10,
-            }}>
-            <Text
-              style={{
-                color: Color.textColor,
-                fontWeight: 'bold',
-                fontSize: 16,
-              }}>
-              {getUserData?.FullAddress}
-            </Text>
-          </View>
-        </View>
-        {/* CNIC */}
-        <View
-          style={{
-            backgroundColor: Color.white,
-            elevation: 2,
-            padding: 10,
-            borderRadius: 10,
-            marginBottom: 15,
-          }}>
-          <Text
-            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
-           CNIC Number
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginTop: 10,
-            }}>
-            <Text
-              style={{
-                color: Color.textColor,
-                fontWeight: 'bold',
-                fontSize: 16,
-              }}>
-              {getUserData?.CNIC_number}
-            </Text>
-          </View>
-        </View>
         {/* E-mail */}
         <View
           style={{
@@ -388,7 +361,7 @@ const MyAccounts = ({navigation}:any) => {
           }}>
           <Text
             style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
-            E-mail
+            Email
           </Text>
           <View
             style={{
@@ -446,7 +419,67 @@ const MyAccounts = ({navigation}:any) => {
             ''
           )}
         </View>
-
+        
+        {/* Adress */}
+        <View
+          style={{
+            backgroundColor: Color.white,
+            elevation: 2,
+            padding: 10,
+            borderRadius: 10,
+            marginBottom: 15,
+          }}>
+          <Text
+            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
+            Address
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            <Text
+              style={{
+                color: Color.textColor,
+                fontWeight: 'bold',
+                fontSize: 16,
+              }}>
+              {getUserData?.FullAddress}
+            </Text>
+          </View>
+        </View>
+         {/* CNIC */}
+         <View
+          style={{
+            backgroundColor: Color.white,
+            elevation: 2,
+            padding: 10,
+            borderRadius: 10,
+            marginBottom: 15,
+          }}>
+          <Text
+            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
+           CNIC
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            <Text
+              style={{
+                color: Color.textColor,
+                fontWeight: 'bold',
+                fontSize: 16,
+              }}>
+              {getUserData?.CNIC_number}
+            </Text>
+          </View>
+        </View>
         {/* Password */}
         <View
           style={{
@@ -458,7 +491,7 @@ const MyAccounts = ({navigation}:any) => {
           }}>
           <Text
             style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
-            Password
+            Change Password
           </Text>
           <TouchableOpacity
           onPress={()=>setUpdatePassword(!updatePassword)}

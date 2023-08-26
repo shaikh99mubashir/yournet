@@ -16,6 +16,7 @@ import axios from 'axios';
 import {BaseUrl} from '../../Constants/BaseUrl';
 import {useDispatch, useSelector} from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
+import { nickname } from '../../Redux/Reducer/Reducers';
 const Profile = ({navigation}:any) => {
   const [editNickName, setEditNickName] = useState<boolean>(false);
   const [nickName, setNickName] = useState<any>('');
@@ -24,6 +25,7 @@ const Profile = ({navigation}:any) => {
   const [companyName, setCompanyName] = useState<any>('')  
   const focus = useIsFocused()
   const cartData: any = useSelector(cartData => cartData);
+  const dispatch = useDispatch()
   useEffect(()=>{
     setUserData(cartData?.user?.cart?.customer);
     setCompanyName(cartData?.user?.cart?.company?.com_name)
@@ -33,6 +35,22 @@ const Profile = ({navigation}:any) => {
     .then(() => console.log('nickName fields saved'))
     .catch(error => console.log('Error saving nickName fields: ', error));
 
+    const userNickName: any = useSelector(userNickName => userNickName);
+    AsyncStorage.setItem('nickName', JSON.stringify(nickName))
+    .then(() => console.log('nickName saved'))
+    .catch(error => console.log('Error saving user_id: ', error));
+  
+    AsyncStorage.getItem('nickName')
+    .then(value => {
+      if (value !== null) {
+       let myNickName = JSON.parse(value);
+       dispatch(nickname(myNickName));
+      } else {
+        console.log('No user_id found');
+      }
+    })
+    .catch(error => console.log('Error retrieving login fields: ', error));
+    
     
     // const getCompanyName = () => {
     //   const formData = new FormData();
@@ -78,11 +96,11 @@ const Profile = ({navigation}:any) => {
         Profile
       </Text>
       <Text style={{fontSize: 14, marginTop: 15, color: Color.textColor}}>
-        Personal Details
+      Profile Details
       </Text>
       
       {/* userName */}
-      <View
+      {/* <View
         style={{
           backgroundColor: Color.white,
           elevation: 2,
@@ -111,8 +129,56 @@ const Profile = ({navigation}:any) => {
             {getUserData?.first_name}
           </Text>
         </View>
-      </View>
-      {/* userName */}
+      </View> */}
+            
+      {/*  Nick Name*/}
+      <View
+          style={{
+            backgroundColor: Color.white,
+            elevation: 2,
+            padding: 10,
+            borderRadius: 10,
+            marginVertical: 15,
+          }}>
+          <Text
+            style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
+            Nick Name
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            {editNickName ? (
+              <TextInput
+                placeholder="Edit Your Nick Name"
+                onChangeText={e => setNickName(e)}
+                placeholderTextColor={Color.textColor}
+                style={{color: Color.textColor, width: '60%'}}
+              />
+            ) : (
+              <Text
+                style={{
+                  color: Color.textColor,
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                  width: '80%',
+                }}>
+                {userNickName?.user?.userNickName ? userNickName.user.userNickName : getUserData?.first_name}
+              </Text>
+            )}
+            <TouchableOpacity onPress={() => setEditNickName(!editNickName)}>
+              <FontAwesome
+                name={editNickName ? 'save' : 'edit'}
+                size={18}
+                color={Color.textColor}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      {/* Login | Customer ID */}
       <View
         style={{
           backgroundColor: Color.white,
@@ -120,7 +186,7 @@ const Profile = ({navigation}:any) => {
           padding: 10,
           borderRadius: 10,
           marginBottom: 15,
-          marginTop:10
+          // marginTop:10
         }}>
         <Text
           style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
@@ -173,6 +239,40 @@ const Profile = ({navigation}:any) => {
           </Text>
         </View>
       </View>
+
+
+ {/* E-mail */}
+ {getUserData?.email_address &&
+      <View
+        style={{
+          backgroundColor: Color.white,
+          elevation: 2,
+          padding: 10,
+          borderRadius: 10,
+          marginBottom: 15,
+        }}>
+        <Text
+          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
+          E-mail
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          <Text
+            style={{
+              color: Color.textColor,
+              fontWeight: 'bold',
+              fontSize: 16,
+            }}>
+            {getUserData?.email_address}
+          </Text>
+        </View>
+      </View>
+      }
       {/* Address */}
       
       <View
@@ -204,40 +304,9 @@ const Profile = ({navigation}:any) => {
           </Text>
         </View>
       </View>
-      {/* E-mail */}
-      {getUserData?.email_address &&
-      <View
-        style={{
-          backgroundColor: Color.white,
-          elevation: 2,
-          padding: 10,
-          borderRadius: 10,
-          marginBottom: 15,
-        }}>
-        <Text
-          style={{color: Color.textColor, fontWeight: 'bold', fontSize: 14}}>
-          E-mail
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 10,
-          }}>
-          <Text
-            style={{
-              color: Color.textColor,
-              fontWeight: 'bold',
-              fontSize: 16,
-            }}>
-            {getUserData?.email_address}
-          </Text>
-        </View>
-      </View>
-      }
+     
       {/* Account Opening Date */}
-      <View
+      {/* <View
         style={{
           backgroundColor: Color.white,
           elevation: 2,
@@ -265,9 +334,9 @@ const Profile = ({navigation}:any) => {
             {getUserData?.created_at}
           </Text>
         </View>
-      </View>
+      </View> */}
       {/* Service Provider */}
-      <View
+      {/* <View
         style={{
           backgroundColor: Color.white,
           elevation: 2,
@@ -295,7 +364,7 @@ const Profile = ({navigation}:any) => {
             {companyName}
           </Text>
         </View>
-      </View>
+      </View> */}
     </ScrollView>
     </View>
   );

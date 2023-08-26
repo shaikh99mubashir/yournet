@@ -1058,7 +1058,7 @@ const Home = ({navigation}: any) => {
                   Help & Customer Support
                 </Text>
                 <Text style={{fontSize: 12, color: Color.textColor}}>
-                  Register a complaint or get quick help on quries related to
+                Register a complaint or seek prompt assistance on enquiries related to
                   <Text
                     style={{
                       color: Color.mainColor,

@@ -111,11 +111,11 @@ const Help = ({navigation}: any) => {
 
       <View style={{alignItems: 'center', marginTop: 40}}>
         <Text style={{color: Color.textColor, fontSize: 20, fontWeight: '600'}}>
-          Tell us how we can help
+          How Can We Help You?
         </Text>
         <Text
           style={{color: Color.textColor, fontWeight: '300', marginTop: 10,fontSize: 14,}}>
-          Please select from one of the option below
+          Kindly choose one from the options below.
         </Text>
       </View>
 
@@ -199,7 +199,7 @@ const Help = ({navigation}: any) => {
           }}>
           <FontAwesome name="phone" size={20} color={Color.mainColor} />
           <Text style={{color: 'black', fontSize: 14, fontWeight: '500'}}>
-          Contact Us
+          Contact Your ISP
           </Text>
         </View>
         <View style={{marginTop:3}}>

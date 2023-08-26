@@ -7,7 +7,8 @@ import {
   ToastAndroid,
   Image,
   Modal,
-  Dimensions
+  Dimensions,
+  ScrollView,
 } from 'react-native';
 import {
   DrawerContentScrollView,
@@ -25,6 +26,7 @@ import {BaseUrl} from '../../Constants/BaseUrl';
 import {useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToCart, logout} from '../../Redux/Reducer/Reducers';
+import HTML from 'react-native-render-html';
 function CustomDrawerContent(props: any) {
   const dispatch = useDispatch();
 
@@ -82,14 +84,14 @@ function CustomDrawerContent(props: any) {
   // props.navigation.addListener('state', () => {
   //   getData()
   // });
- 
+
   const share = async () => {
     const options = {
       message: 'Internet service Provider',
-      url: 'https://yournet.com',
-      email: 'mubashir@gmail.com',
-      subject: 'Eiusmod esse veniam esse.',
-      recipient: '919988998899',
+      url: 'https://ispbilling.com.pk/APP/ISPBILLINGAPP.apk',
+      // email: 'mubashir@gmail.com',
+      // subject: 'Eiusmod esse veniam esse.',
+      // recipient: '919988998899',
     };
 
     try {
@@ -117,7 +119,7 @@ function CustomDrawerContent(props: any) {
   // useEffect(() => {
   //   gettingUserNickName();
   // }, [focus]);
-  
+
   const logoutFun = () => {
     props.navigation.replace('Login');
     AsyncStorage.removeItem('user_id');
@@ -134,23 +136,23 @@ function CustomDrawerContent(props: any) {
 
   const PackagesPlans: any = useSelector(PackagesPlans => PackagesPlans);
   const getPackagesPlans = cartData?.user?.cart?.package_image;
-  
 
   const availOffer = () => {
-    setOpenPPModal(false)
+    setOpenPPModal(false);
     props.navigation.navigate('Contact');
-  }
+  };
 
   const firstname = getUserData?.first_name;
 
   let initial = '';
 
-if (typeof nickname === 'string' && nickname.length > 0) {
-  initial = nickname.charAt(0);
-} else if (typeof firstname === 'string' && firstname.length > 0) {
-  initial = firstname.charAt(0);
-}
+  if (typeof nickname === 'string' && nickname.length > 0) {
+    initial = nickname.charAt(0);
+  } else if (typeof firstname === 'string' && firstname.length > 0) {
+    initial = firstname.charAt(0);
+  }
 
+  const screenWidth = Dimensions.get('window').width;
   // console.log('userNickName',userNickName.user.userNickName);
   return (
     <View
@@ -220,7 +222,7 @@ if (typeof nickname === 'string' && nickname.length > 0) {
                   : getUserData?.first_name
                   ? getUserData?.first_name?.charAt(0)
                   : 'I'} */}
-                  {initial}
+                {initial}
               </Text>
             </View>
             <Text style={{fontSize: 18, color: Color.textColor}}>
@@ -481,13 +483,20 @@ if (typeof nickname === 'string' && nickname.length > 0) {
             </Text>
             <TouchableOpacity
               // onPress={ShowMessage}
-              onPress={() => navigateToScreen('TermsCondition')}
-            >
+              onPress={() => navigateToScreen('TermsCondition')}>
               <Text style={{color: 'blue'}}>Terms & Condition</Text>
             </TouchableOpacity>
           </View>
         </View>
         {/* Who We Are Modal */}
+        {/* <Text
+                  style={{
+                    textAlign: 'justify',
+                    fontSize: 14,
+                    color: Color.textColor,
+                  }}>
+                  {getWhoWeAre}
+                </Text> */}
         <View style={{flex: 1}}>
           <Modal
             visible={openWWRModal}
@@ -506,7 +515,7 @@ if (typeof nickname === 'string' && nickname.length > 0) {
                   backgroundColor: 'white',
                   padding: 15,
                   borderRadius: 10,
-                  marginHorizontal: 20,
+                  marginHorizontal: 20,height:'90%'
                 }}>
                 <TouchableOpacity onPress={() => setOpenWWRModal(false)}>
                   <View style={{alignItems: 'flex-end'}}>
@@ -526,14 +535,22 @@ if (typeof nickname === 'string' && nickname.length > 0) {
                   }}>
                   Who We Are?
                 </Text>
-                <Text
-                  style={{
-                    textAlign: 'justify',
-                    fontSize: 14,
-                    color: Color.textColor,
-                  }}>
-                  {getWhoWeAre}
-                </Text>
+
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  <HTML
+                    source={{html: getWhoWeAre}}
+                    ignoredDomTags={['o:p']}
+                    contentWidth={300} // Set the content width as per your design
+                    baseStyle={
+                      {
+                        // textAlign: 'justify',
+                        // fontSize: 14,
+                        // color: Color.textColor,
+                        color: 'black',
+                      }
+                    }
+                  />
+                </ScrollView>
               </View>
             </View>
           </Modal>
@@ -553,7 +570,6 @@ if (typeof nickname === 'string' && nickname.length > 0) {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-
               <View
                 style={{
                   backgroundColor: 'white',
@@ -562,7 +578,12 @@ if (typeof nickname === 'string' && nickname.length > 0) {
                   marginHorizontal: 20,
                 }}>
                 <TouchableOpacity onPress={() => setOpenPPModal(false)}>
-                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
+                  <View
+                    style={{
+                      alignItems: 'flex-end',
+                      paddingVertical: 10,
+                      paddingRight: 15,
+                    }}>
                     <AntDesign
                       name="closecircleo"
                       size={20}
@@ -570,19 +591,33 @@ if (typeof nickname === 'string' && nickname.length > 0) {
                     />
                   </View>
                 </TouchableOpacity>
-                <Image source={{uri:getPackagesPlans?.image_url}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
-              
-              <TouchableOpacity activeOpacity={0.8} onPress={availOffer} style={{backgroundColor:Color.mainColor, marginHorizontal:10, paddingVertical:10, alignItems:'center'}}>
-                <Text style={{color:'white',fontSize:16, fontWeight:'bold'}}>Avali Offer</Text>
-              </TouchableOpacity>
-              
-              </View>
+                <Image
+                  source={{uri: getPackagesPlans?.image_url}}
+                  style={{
+                    width: Dimensions.get('screen').width / 1.1,
+                    height: '80%',
+                  }}
+                  resizeMode="contain"
+                />
 
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={availOffer}
+                  style={{
+                    backgroundColor: Color.mainColor,
+                    marginHorizontal: 10,
+                    paddingVertical: 10,
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
+                    Avali Offer
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </Modal>
         </View>
-
-
       </DrawerContentScrollView>
     </View>
   );

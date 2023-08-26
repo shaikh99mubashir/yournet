@@ -13,6 +13,7 @@ import {Color} from '../../Constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
+import HTML from 'react-native-render-html';
 const FAQs = ({navigation}: any) => {
   // const [faqsData, setFaqsData] = useState([
   //   {
@@ -106,10 +107,22 @@ const FAQs = ({navigation}: any) => {
                     marginBottom: item.open? 0 :15,
                   }}>
                   <View style={{width: '93%'}}>
-                    <Text
+                    {/* <Text
                       style={{fontSize: 15, fontWeight: '600', color: 'black'}}>
                       {item.title}
-                    </Text>
+                    </Text> */}
+                    <HTML
+                    source={{html: item.title}}
+                    ignoredDomTags={['o:p']}
+                    contentWidth={300} // Set the content width as per your design
+                    baseStyle={
+                      {
+                        // textAlign: 'justify',
+                        // fontSize: 14,
+                        // color: Color.textColor,
+                        color: 'black',
+                      }
+                    }/>
                   </View>
                   <TouchableOpacity onPress={() => handleQuestionPress(index)}>
                     {item.open ? (
@@ -144,9 +157,21 @@ const FAQs = ({navigation}: any) => {
                       marginBottom:15,
                       
                     }}>
-                    <Text style={{color: 'black'}}>
+                    {/* <Text style={{color: 'black'}}>
                       {item.description}
-                    </Text>
+                    </Text> */}
+                    <HTML
+                    source={{html: item.description}}
+                    ignoredDomTags={['o:p']}
+                    contentWidth={300} // Set the content width as per your design
+                    baseStyle={
+                      {
+                        // textAlign: 'justify',
+                        // fontSize: 14,
+                        // color: Color.textColor,
+                        color: 'black',
+                      }
+                    }/>
                   </View>
                 ) : (
                   ''

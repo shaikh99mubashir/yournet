@@ -28,9 +28,6 @@ const MyAccounts = ({navigation}:any) => {
   const [loading, setLoading] = useState(false);
   const [noInternet, setNoInternet] = useState(false)
   const dispatch = useDispatch()
-  // AsyncStorage.setItem('nickName', JSON.stringify(nickName))
-  // .then((res) => res)
-  // .catch(error => console.log('Error saving nickName: ', error));
   const focus = useIsFocused()
   const [user_id, setUser_id] = useState('');
   const gettingUserDatatoken = () => {
@@ -50,34 +47,6 @@ const MyAccounts = ({navigation}:any) => {
   }, [focus]);
 
   const [companyName, setCompanyName] = useState<any>('')  
-  // const getCompanyName = () => {
-  //   const formData = new FormData();
-  //   formData.append('customer_id', getUserData?.customer_id);
-  //   const config = {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data',
-  //     },
-  //   };
-  //   axios
-  //     .post(`${BaseUrl}getCompanyData`, formData, config)
-  //     .then(({data}: any) => {
-  //       console.log('datat',data?.company?.com_name);
-  //       setCompanyName(data?.company?.com_name)
-  //       // dispatch(companyName(companyName))
-  //     })
-  //     .catch(error => {
-  //       // console.log('rerror',error.message);
-  //       ToastAndroid.show(
-  //         `Internal Server Error in getCompanyName ${error}`,
-  //         ToastAndroid.BOTTOM,
-  //       );
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getCompanyName();
-  // }, [getUserData?.customer_id,focus]);
-
   const [email_address, setEmail_address] = useState('');
   const [updateEmail, setUpdateEmail] = useState(false);
   const [updatePassword, setUpdatePassword] = useState(false);
@@ -160,10 +129,8 @@ const MyAccounts = ({navigation}:any) => {
       });
   };
 
-  // console.log('getUserData',getUserData);
   
   const cartData: any = useSelector(cartData => cartData);
-  // const companyName: any = useSelector(companyName => companyName);
   const userNickName: any = useSelector(userNickName => userNickName);
   AsyncStorage.setItem('nickName', JSON.stringify(nickName))
   .then(() => console.log('nickName saved'))

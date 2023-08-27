@@ -23,29 +23,10 @@ import {useDispatch, useSelector} from 'react-redux';
 const TransactionHistory = ({navigation}: any) => {
   const focus = useIsFocused();
   const [user_id, setUser_id] = useState('');
-  // const gettingUserDatatoken = () => {
-  //   AsyncStorage.getItem('user_id')
-  //     .then(value => {
-  //       if (value !== null) {
-  //         setUser_id(JSON.parse(value));
-  //       } else {
-  //         console.log('No login fields found');
-  //       }
-  //     })
-  //     .catch(error => console.log('Error retrieving login fields: ', error));
-  // };
-
-  // useEffect(() => {
-  //   gettingUserDatatoken();
-  // }, [focus]);
-
   const [receipts, setReceipts] = useState([]);
   const [paidRecipts, setPaidRecipts] = useState([])
   const [unPaidRecipts, setUnPaidRecipts] = useState([])
   const [loading, setLoading] = useState<boolean>(false);
-  // // console.log('receipts',receipts);
-  // console.log('paidRecipts====>',paidRecipts);
-  // console.log('unPaidRecipts====>',unPaidRecipts);
   
   const cartData: any = useSelector(cartData => cartData);
   const receiptsData = () => {
@@ -59,53 +40,11 @@ const TransactionHistory = ({navigation}: any) => {
       (check: any) => check.payment_method ==  'Pay Later' || null,
     );
     setPaidRecipts(paid)
-    console.log('paid',receipts);
-    
     setUnPaidRecipts(unpaid)
   }
   useEffect(()=>{
     receiptsData()
   },[cartData,focus])
-
-
-
-  // const getTransData = () => {
-  //   setLoading(true);
-  //   const config = {
-  //     headers: {
-  //       User_ID: user_id,
-  //     },
-  //   };
-
-  //   axios
-  //     .post(
-  //       `${BaseUrl}getAllData`,
-  //       null, // pass null as the data parameter since you're making a POST request without any payload
-  //       config, // pass the config object as the third parameter
-  //     )
-  //     .then((res: any) => {
-  //       if (res?.data && res?.data?.receipts) {
-  //         setReceipts(res?.data?.setReceipts);
-  //         const paid = res?.data?.receipts.filter(
-  //           (check: any) => check.payment_method == '1',
-  //         );
-  //         const unpaid = res?.data?.receipts.filter(
-  //           (check: any) => check.payment_method ==  'Pay Later' || null,
-  //         );
-  //         setPaidRecipts(paid)
-  //         setUnPaidRecipts(unpaid)
-  //         setLoading(false);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-  //       setLoading(false);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getTransData();
-  // }, [user_id, focus]);
 
   const [currentTab, setCurrentTab]: any = useState([
     {
@@ -146,12 +85,6 @@ const TransactionHistory = ({navigation}: any) => {
   };
 
   const renderAllTransation = ({item, index}: any) => {
-    // const date = new Date(item?.receipt_date);
-    // const year = date.getFullYear();
-    // const month = date.getMonth(); // Months are zero-based, so 5 represents June
-    // const day = date.getDate();
-    // console.log('month',month);
-
     const monthNames = [
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
@@ -160,15 +93,7 @@ const TransactionHistory = ({navigation}: any) => {
     const date = new Date(item?.receipt_date);
     const year = date.getFullYear();
     const monthIndex = date.getMonth(); // Months are zero-based
-    
     const monthName = monthNames[monthIndex];
-    
-    // console.log(`${date.getDate()} ${monthName} ${year}`);
-
-
-// console.log('item?.receipt_date',item?.receipt_date);
-
-    
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('TransactionDetails', item)} 

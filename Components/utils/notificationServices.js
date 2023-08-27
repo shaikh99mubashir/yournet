@@ -15,7 +15,6 @@ export async function requestUserPermission() {
 const getFcmToken = async () => {
     try {
         const token = await messaging().getToken()
-        console.log("fcm token:", token)
     } catch (error) {
         console.log("error in creating token")
     }
@@ -25,7 +24,6 @@ const getFcmToken = async () => {
 
 export async function notificationListeners() {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-        console.log('A new FCM message arrived!', remoteMessage);
         onDisplayNotification(remoteMessage)
     });
 
@@ -36,18 +34,6 @@ export async function notificationListeners() {
             remoteMessage,
         );
         NavigationService.navigate('Notification')
-
-        // if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to == "ProductDetail") {
-        //     setTimeout(() => {
-        //         NavigationService.navigate("ProductDetail", { data: remoteMessage?.data })
-        //     }, 1200);
-        // }
-
-        // if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to == "Profile") {
-        //     setTimeout(() => {
-        //         NavigationService.navigate("Profile", { data: remoteMessage?.data })
-        //     }, 1200);
-        // }
     });
 
     // Check whether an initial notification is available

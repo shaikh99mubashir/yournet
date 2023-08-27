@@ -5,10 +5,8 @@ import {Color} from '../../Constants';
 import {useSelector} from 'react-redux';
 import HTML from 'react-native-render-html';
 const TermsCondition = ({navigation}: any) => {
-  // const termAndCondition: any = useSelector(termAndCondition => termAndCondition);
   const cartData: any = useSelector(cartData => cartData);
   const gettermAndCondition = cartData?.user?.cart?.termsandconditions;
-  // console.log('gettermAndCondition',cartData?.user?.cart?.termsandconditions);
   return (
     <View
       style={{

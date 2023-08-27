@@ -17,125 +17,52 @@ import {BaseUrl} from '../../Constants/BaseUrl';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 const Complaint = ({navigation}: any) => {
   const [complainName, setComplainName] = useState([]);
   const [getUserData, setUserData] = useState<any>([]);
-  // const [user_id, setUser_id] = useState('');
-  // console.log("complainName",complainName);
-  
-  // const gettingUserDatatoken = () => {
-  //   AsyncStorage.getItem('user_id')
-  //     .then(value => {
-  //       if (value !== null) {
-  //         setUser_id(JSON.parse(value));
-  //       } else {
-  //         console.log('No login fields found');
-  //       }
-  //     })
-  //     .catch(error => console.log('Error retrieving login fields: ', error));
-  // };
-  
-  // useEffect(() => {
-  //   gettingUserDatatoken();
-  // }, []);
-  // get User DATA
- 
-  // const [loading, setLoading] = useState(false);
-  // const getData = () => {
-  //   setLoading(!loading);
-  //   const config = {
-  //     headers: {
-  //       User_ID: user_id,
-  //     },
-  //   };
-  //   axios
-  //     .post(
-  //       `${BaseUrl}getAllData`,
-  //       null, 
-  //       config,
-  //     )
-  //     .then((res: any) => {
-  //       setUserData(res.data.customer);
-  //       setLoading(!loading);
-  //     })
-  //     .catch(error => {
-  //       ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-  //       setLoading(!loading);
-  //     });
-  //   };
-    
-  //   useEffect(() => {
-  //   getData();
-  // }, [user_id]);
-
-  // const getComplaintName = () => {
-  //   if (!user_id) {
-  //     navigation.replace('Login');
-  //     AsyncStorage.removeItem('user_id');
-  //     AsyncStorage.removeItem('loginFields');
-  //     return; // Don't make the API call if the userId is not valid
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append('company_id', getUserData?.company_id);
-  //   const config = {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data',
-  //     },
-  //   };
-  //   axios
-  //     .post(`${BaseUrl}getAllComplainName`, formData, config)
-  //     .then((res: any) => {
-  //       setComplainName(res?.data?.complain_names);
-  //     })
-  //     .catch(error => {
-  //       ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-  //     });
-  // };
   const cartData: any = useSelector(cartData => cartData);
-  // console.log('cartData',cartData?.user?.cart?.customer);
   useEffect(() => {
     setComplainName(cartData?.user?.cart?.complainNames);
-    setUserData(cartData?.user?.cart?.customer)
+    setUserData(cartData?.user?.cart?.customer);
     // if (getUserData?.company_id) {
     //   getComplaintName();
     // }
   }, []);
 
   const [selectedServicedata, setSelectedServicedata]: any = useState({});
-  
+
   const [serviceDD, setServiceDD] = useState(false);
   const SelectedServices = (item: any) => {
     setSelectedServicedata(item);
     setServiceDD(!serviceDD);
   };
-  
+
   const [generateComplaint, setGenerateComplaint] = useState({
-    customer_id:'',
-    customer_name:'',
-    package_name:'',
-    mobile_number:'',
-    address:'',
-    complain:'',
-    description:'',
-    external_mobile:'',
-    availability_time:'any',
-    company_id:'',
-    status:'Pending',
-  })
-  
+    customer_id: '',
+    customer_name: '',
+    package_name: '',
+    mobile_number: '',
+    address: '',
+    complain: '',
+    description: '',
+    external_mobile: '',
+    availability_time: 'any',
+    company_id: '',
+    status: 'Pending',
+  });
+
   const sendComplaintData = () => {
-    let data = {...generateComplaint}
-    data.customer_id = getUserData?.customer_id
-    data.customer_name = getUserData?.first_name
-    data.package_name = getUserData?.package_name
-    data.mobile_number = getUserData?.mobile_number
-    data.address = getUserData?.FullAddress
-    data.external_mobile = getUserData?.external_moble
-    data.company_id = getUserData?.company_id
-    data.complain = selectedServicedata.ID
-    
+    let data = {...generateComplaint};
+    data.customer_id = getUserData?.customer_id;
+    data.customer_name = getUserData?.first_name;
+    data.package_name = getUserData?.package_name;
+    data.mobile_number = getUserData?.mobile_number;
+    data.address = getUserData?.FullAddress;
+    data.external_mobile = getUserData?.external_moble;
+    data.company_id = getUserData?.company_id;
+    data.complain = selectedServicedata.ID;
+
     let flag = Object.values(data);
     let flag2 = flag.some((e, i) => e == '');
     // if (flag2) {
@@ -143,7 +70,10 @@ const Complaint = ({navigation}: any) => {
     //   return;
     // }
     if (!selectedServicedata.ID) {
-      ToastAndroid.show('Your Information is In Completed Contact Admin', ToastAndroid.SHORT);
+      ToastAndroid.show(
+        'Your Information is In Completed Contact Admin',
+        ToastAndroid.SHORT,
+      );
       return;
     }
     const formData = new FormData();
@@ -153,28 +83,27 @@ const Complaint = ({navigation}: any) => {
       },
     };
     axios
-    .post(
-      `${BaseUrl}generateComplain`,
-      data,
-      config,
-    )
-    .then((res: any) => {
-      navigation.replace('Help')
-      ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);
-    })
-    .catch(error => {
-      ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-    });
-  }
+      .post(`${BaseUrl}generateComplain`, data, config)
+      .then((res: any) => {
+        navigation.replace('Help');
+        ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
+      });
+  };
 
   return (
     <View
-        style={{
-          backgroundColor: Color.white,
-          paddingHorizontal: 15,
-          height:'100%'
-        }}>
-          <ScrollView style={{height:'100%',}} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
+      style={{
+        backgroundColor: Color.white,
+        paddingHorizontal: 15,
+        height: '100%',
+      }}>
+      <ScrollView
+        style={{height: '100%'}}
+        nestedScrollEnabled={true}
+        showsVerticalScrollIndicator={false}>
         <Header navigation={navigation} noLogo backBtn />
         <Text
           style={{
@@ -186,38 +115,46 @@ const Complaint = ({navigation}: any) => {
           }}>
           Register Complaint
         </Text>
-        <View style={{alignItems:'center',marginTop:20,marginBottom:30}}>
-        <Image source={require('../../Images/complaint.jpg')} style={{width:120, height:120}}/>
+        <View style={{alignItems: 'center', marginTop: 20, marginBottom: 30}}>
+          <Image
+            source={require('../../Images/complaint.jpg')}
+            style={{width: 120, height: 120}}
+          />
         </View>
         <View>
-          <View style={{borderRadius: 0, overflow: 'hidden',marginHorizontal: 0, marginVertical: 0,marginTop:0}}>
-          <Text
+          <View
             style={{
-              fontFamily: 'Poppins-Regular',
-              color: Color.textColor,
-              fontSize: 15,
-              fontWeight: 'bold',
-              marginVertical:5,
+              borderRadius: 0,
+              overflow: 'hidden',
+              marginHorizontal: 0,
+              marginVertical: 0,
+              marginTop: 0,
             }}>
-            Select Complaint
-          </Text>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Regular',
+                color: Color.textColor,
+                fontSize: 15,
+                fontWeight: 'bold',
+                marginVertical: 5,
+              }}>
+              Select Complaint
+            </Text>
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => setServiceDD(!serviceDD)}
               style={{
-                // borderColor: Color.textColor,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                // paddingVertical: 10,
                 paddingHorizontal: 15,
-                height:50,
-                borderLeftWidth:5,
-                    borderLeftColor:Color.mainColor,
-                    borderRightColor:'darkgrey',
-                    borderTopColor:'darkgrey',
-                    borderBottomColor:'darkgrey',
+                height: 50,
+                borderLeftWidth: 5,
+                borderLeftColor: Color.mainColor,
+                borderRightColor: 'darkgrey',
+                borderTopColor: 'darkgrey',
+                borderBottomColor: 'darkgrey',
                 borderWidth: 1,
-                borderRadius:5,
+                borderRadius: 5,
                 borderTopLeftRadius: 5,
                 borderTopRightRadius: 5,
                 borderBottomWidth: serviceDD ? 0 : 1,
@@ -232,7 +169,6 @@ const Complaint = ({navigation}: any) => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     width: '100%',
-                    
                   }}>
                   <Text
                     style={{
@@ -290,7 +226,10 @@ const Complaint = ({navigation}: any) => {
               borderColor: 'darkgrey',
               // borderColor: Color.textColor,
             }}>
-            <ScrollView style={{maxHeight: 100}} nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
+            <ScrollView
+              style={{maxHeight: 100}}
+              nestedScrollEnabled={true}
+              showsVerticalScrollIndicator={false}>
               {serviceDD == true &&
                 Array.from(
                   new Set(complainName.map((item: any) => item.complain_name)),
@@ -311,21 +250,25 @@ const Complaint = ({navigation}: any) => {
                         marginVertical: 5,
                         gap: 10,
                       }}>
-                        <View style={{flexDirection:'row',alignItems:'center',gap:10}}>
-
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 10,
+                        }}>
                         <FontAwesome
                           name="circle"
                           size={6}
                           color={Color.mainColor}
-                          />
-                      <Text
-                        style={{
-                          color: Color.textColor,
-                          fontSize: 14,
-                        }}>
-                        {e}
-                      </Text>
-                          </View>
+                        />
+                        <Text
+                          style={{
+                            color: Color.textColor,
+                            fontSize: 14,
+                          }}>
+                          {e}
+                        </Text>
+                      </View>
                     </TouchableOpacity>
                   );
                 })}
@@ -341,7 +284,7 @@ const Complaint = ({navigation}: any) => {
               color: Color.textColor,
               fontSize: 15,
               fontWeight: 'bold',
-              marginTop:10
+              marginTop: 10,
             }}>
             Description
           </Text>
@@ -359,42 +302,44 @@ const Complaint = ({navigation}: any) => {
             placeholder="Description"
             multiline={true}
             maxLength={300}
-            onChangeText={(e)=> setGenerateComplaint({...generateComplaint, description:e})}
+            onChangeText={e =>
+              setGenerateComplaint({...generateComplaint, description: e})
+            }
             style={[
               styles.textArea,
               {
-                // width: Dimensions.get('window').width / 1.21,
                 padding: 5,
-                color:'black'
+                color: 'black',
               },
             ]}
             underlineColorAndroid="transparent"
-            // placeholder="Type something"
             placeholderTextColor="grey"
           />
         </View>
 
         {/* Submit Button */}
-        
+
         <View
           style={{
-            // width: Dimensions.get('window').width / 1.1,
             borderWidth: 1,
-            borderColor: generateComplaint.description ? Color.mainColor : 'darkgrey',
+            borderColor: generateComplaint.description
+              ? Color.mainColor
+              : 'darkgrey',
             width: Dimensions.get('window').width / 1.5,
-                borderRadius: 30,
-                marginVertical: 15,
-                alignSelf:'center'
+            borderRadius: 30,
+            marginVertical: 15,
+            alignSelf: 'center',
           }}>
           <TouchableOpacity
-          onPress={sendComplaintData}
+            onPress={sendComplaintData}
             style={{
               alignItems: 'center',
-                  paddingVertical: 5,
-                  borderRadius: 30,
+              paddingVertical: 5,
+              borderRadius: 30,
 
-              backgroundColor: selectedServicedata.ID ? Color.mainColor : 'darkgrey',
-              // backgroundColor: generateComplaint.description ? Color.mainColor : 'darkgrey',
+              backgroundColor: selectedServicedata.ID
+                ? Color.mainColor
+                : 'darkgrey',
             }}>
             <Text
               style={{
@@ -406,9 +351,8 @@ const Complaint = ({navigation}: any) => {
             </Text>
           </TouchableOpacity>
         </View>
-       
-    </ScrollView>
-      </View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -416,9 +360,8 @@ export default Complaint;
 
 const styles = StyleSheet.create({
   textAreaContainer: {
-    // borderColor: COLORS.grey20,
     borderWidth: 1,
-    borderColor:'darkgrey',
+    borderColor: 'darkgrey',
     padding: 5,
   },
   textArea: {

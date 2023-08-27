@@ -29,18 +29,9 @@ const Header = (Props: any) => {
     myStyle,
   } = Props;
 
-  // const [userNotificarion, setUserNotificarion] = useState<any>([]);
   const noti: any = useSelector(notification => notification);
-  const cartData: any = useSelector(cartData => cartData);
-  // console.log('noti.user.notification header',noti.user.notification);
-  
+  const cartData: any = useSelector(cartData => cartData);  
   const newNotificationCount = noti?.user?.notification && noti?.user?.notification.filter((notification:any) => notification.status == 'New').length;
-  // const newNotificationCount = cartData?.user?.cart?.push_notifications && cartData?.user?.cart?.push_notifications.filter((notification:any) => notification.status == 'New').length;
-  // useEffect(() => {
-  //   setUserNotificarion(noti.user.notification);
-  // }, []);
-  // console.log('newNotificationCount',newNotificationCount);
-  // console.log('userNotificarion',noti.user.notification.length);
   
   return (
     <View

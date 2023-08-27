@@ -22,18 +22,6 @@ const Promotions = ({navigation}: any) => {
   const [user_id, setUser_id] = useState('');
   const focus = useIsFocused();
   const [noInternet, setNoInternet] = useState(false);
-  // const gettingUserDatatoken = () => {
-  //   AsyncStorage.getItem('user_id')
-  //     .then(value => {
-  //       if (value !== null) {
-  //         setUser_id(JSON.parse(value));
-  //       } else {
-  //         console.log('No login fields found');
-  //       }
-  //     })
-  //     .catch(error => console.log('Error retrieving login fields: ', error));
-  // };
-
   const gettingUserDatatoken = () => {
     try {
       AsyncStorage.getItem('user_id')
@@ -82,10 +70,6 @@ const Promotions = ({navigation}: any) => {
       });
   };
 
-  // useEffect(() => {
-  //   getPromoData();
-  // }, [user_id, focus]);
-
   const cartData: any = useSelector(cartData => cartData);
   useEffect(()=>{
     setPromotionData(cartData?.user?.cart?.promotions)
@@ -95,7 +79,6 @@ const Promotions = ({navigation}: any) => {
     <View
       style={{
         backgroundColor: Color.white,
-        // marginBottom: 200,
         paddingHorizontal: 15,
         height: '100%',
       }}>
@@ -117,9 +100,6 @@ const Promotions = ({navigation}: any) => {
           )}
         </View>
       ) : (
-        // <ScrollView
-        //   showsVerticalScrollIndicator={false}
-        //   nestedScrollEnabled={true}>
         <View style={{flex:1}}>
           <Header />
           <Text
@@ -187,7 +167,6 @@ const Promotions = ({navigation}: any) => {
             />
           </View>
           </View>
-        // </ScrollView>
       )}
     </View>
   );

@@ -53,29 +53,6 @@ interface Receipt {
   created_at: string;
 }
 const Home = ({navigation}: any) => {
-  // To retrieve the loginFields
-  const focus = useIsFocused();
-  const [nickName, setNickName] = useState<any>('');
-
-  const [user_id, setUser_id] = useState('');
-  // console.log('userid', user_id);
-
-  const gettingUserDatatoken = () => {
-    AsyncStorage.getItem('user_id')
-      .then(value => {
-        if (value !== null) {
-          setUser_id(JSON.parse(value));
-        } else {
-          console.log('No user_id found');
-        }
-      })
-      .catch(error => console.log('Error retrieving login fields: ', error));
-  };
-
-  useEffect(() => {
-    gettingUserDatatoken();
-  }, [focus]);
-  // get User DATA
   const [getUserData, setUserData] = useState<any>(null);
   const [userPackage, setUserPackage] = useState<any>([]);
   const [promotionData, setPromotionData] = useState<any>([]);
@@ -92,6 +69,27 @@ const Home = ({navigation}: any) => {
   const [apply, setApply] = useState(false);
   const [cancel, setCancel] = useState(false);
   const [email_address, setEmail_address] = useState('');
+  const dispatch = useDispatch();
+  //used to focus
+  const focus = useIsFocused();
+  // user id to get Data
+  const [user_id, setUser_id] = useState('');
+  // getting user id from acstorage
+  const gettingUserDatatoken = () => {
+    AsyncStorage.getItem('user_id')
+      .then(value => {
+        if (value !== null) {
+          setUser_id(JSON.parse(value));
+        } else {
+          console.log('No user_id found');
+        }
+      })
+      .catch(error => console.log('Error retrieving login fields: ', error));
+  };
+
+  useEffect(() => {
+    gettingUserDatatoken();
+  }, [focus]);
 
   useEffect(() => {
     setUserData(cartData?.user?.cart?.customer);
@@ -102,8 +100,8 @@ const Home = ({navigation}: any) => {
     setReceipts(cartData?.user?.cart?.receipts);
   }, [cartData, focus]);
 
-  const dispatch = useDispatch();
 
+  // get user data
   const getData = () => {
     setLoading(true);
     const config = {
@@ -111,6 +109,7 @@ const Home = ({navigation}: any) => {
         User_ID: user_id,
       },
     };
+    // is if ki condition sa home page ka loader hat jaya ga yeah is liya band ki hai ka data update nahi ho raha hai
     // if (getUserData) {
     //   setLoading(false);
     //   return;
@@ -119,20 +118,12 @@ const Home = ({navigation}: any) => {
       .post(`${BaseUrl}getAllData`, null, config)
       .then((res: any) => {
         if (res.data && res.data.customer) {
-          console.log('res',res.data);
-          
+          // AsyncStoragesa login fields check kar ka password check kara ga or data dispatch kara ga agar mismatch hoo ga to logout kar deay ga
           AsyncStorage.getItem('loginFields')
             .then(value => {
               if (value !== null) {
                 let Loginfields = JSON.parse(value);
-                console.log('Loginfields password', Loginfields.password);
-                console.log(
-                  'res.data.customer.password',
-                  res.data.customer.password,
-                );
                 if (Loginfields.password === res?.data?.customer?.password) {
-                  console.log('res',res.data);
-                  console.log('condition True');
                   dispatch(addToCart(res.data));
                   setUserData(res.data.customer);
                   WebPortalData(res.data.portals);
@@ -140,7 +131,6 @@ const Home = ({navigation}: any) => {
                   setPromotionData(res.data.promotions);
                   dispatch(addToCart(res.data));
                   setLoading(false);
-                  // navigation.replace('Home');
                 } else {
                   navigation.replace('Login');
                   AsyncStorage.removeItem('user_id');
@@ -168,7 +158,7 @@ const Home = ({navigation}: any) => {
           setNoInternet(true);
           return;
         }
-        ToastAndroid.show('Internal Server Error Home', ToastAndroid.LONG);
+        ToastAndroid.show('Internal Server Error Home check Your Internet Connection', ToastAndroid.LONG);
         setLoading(false);
         setUserData(null);
       });
@@ -177,6 +167,7 @@ const Home = ({navigation}: any) => {
   useEffect(() => {
     getData();
   }, [user_id, focus, refresh]);
+  // 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -231,8 +222,6 @@ const Home = ({navigation}: any) => {
     const formData = new FormData();
     formData.append('customer_id', getUserData?.customer_id);
     formData.append('device_token', fcmToken);
-    // console.log('fcmToken',fcmToken);
-    // console.log('getUserData?.customer_id',getUserData?.customer_id);
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -241,8 +230,6 @@ const Home = ({navigation}: any) => {
     axios
       .post(`${BaseUrl}getPushNotifications`, formData, config)
       .then(({data}: any) => {
-        // console.log('data',data);
-
         dispatch(pushNotification(data.push_notifications));
       })
       .catch(error => {
@@ -273,9 +260,7 @@ const Home = ({navigation}: any) => {
     getFCMToken();
     requestPermission();
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      // console.log('remoteMessage', JSON.stringify(remoteMessage));
       DisplayNotification(remoteMessage);
-      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
     return unsubscribe;
   }, [focus]);
@@ -285,7 +270,6 @@ const Home = ({navigation}: any) => {
       .getToken()
       .then(token => {
         setFCMToken(token);
-        // console.log('token=>>>', token);
       });
   };
 
@@ -373,7 +357,7 @@ const Home = ({navigation}: any) => {
 
     // Cleanup function to clear interval on unmount
     return () => clearInterval(intervalId);
-  }, [currentIndex,focus]);
+  }, [currentIndex,focus,cartData]);
 
   const getItemLayout = (_: any, index: number) => ({
     length: width / 1.05, // Replace with the actual width of each item
@@ -1113,7 +1097,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Color.white,
     elevation: 2,
-    // padding: 10,
     borderRadius: 10,
   },
   title: {
@@ -1145,7 +1128,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 5,
     color: Color.mainColor,
-    // fontWeight: 'bold',
   },
   renewal: {
     fontSize: 14,

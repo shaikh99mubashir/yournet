@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 const TransactionDetails = ({navigation, route}: any) => {
   const data: any = route.params;
-  // console.log('data ===>', data);
+  console.log('data ===>', data);
 
   const activationDate: Date = new Date(data.activation_date);
   const expiryDate: Date = new Date(data.expiry_date);
@@ -20,7 +20,9 @@ const TransactionDetails = ({navigation, route}: any) => {
   const differenceInDays: number = Math.ceil(
     differenceInTime / (1000 * 3600 * 24),
   );
-  const companyName: any = useSelector(companyName => companyName);
+  // const companyName: any = useSelector(companyName => companyName);
+  const cartData: any = useSelector(cartData => cartData);
+  const companyName = cartData?.user?.cart?.company?.com_name
   // console.log('data.expiry_date', data.expiry_date);
   const dateString = data.expiry_date;
   const dateStringactivation_date = data.activation_date;
@@ -143,7 +145,7 @@ const TransactionDetails = ({navigation, route}: any) => {
             paddingVertical: 10,
             fontWeight: '700',
           }}>
-          {companyName?.user?.companyData?.com_name}
+          {companyName}
         </Text>
         {/* Customer ID */}
         <View
@@ -314,7 +316,8 @@ const TransactionDetails = ({navigation, route}: any) => {
             </Text>
           </View>
           <Text style={{color: 'black', fontSize: 14, fontWeight: '600'}}>
-            {data.oldamount}
+            {/* {data.oldamount} */}
+            {data.credit}
           </Text>
         </View>
         <View

@@ -30,7 +30,6 @@ import { deviceToken } from '../../Redux/Reducer/Reducers';
 
 const Login = ({navigation}: any) => {
   const [passwordEye, setPasswordEye] = useState(true);
-  // const [rememberMe, setRememberMe] = useState(false);
   const [loginFields, setLoginFields] = useState<any>({
     customer_id: '',
     password: null,
@@ -40,54 +39,8 @@ const Login = ({navigation}: any) => {
   AsyncStorage.setItem('loginFields', JSON.stringify(loginFields))
     .then(() => console.log('Login fields saved'))
     .catch(error => console.log('Error saving login fields: ', error));
-
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  // Initialize Firebase app for notification
-  // const checkPermissionAndToken = async () => {
-  //   messaging()
-  //     .hasPermission()
-  //     .then(enabled => {
-  //       if (enabled) {
-  //         messaging()
-  //           .getToken()
-  //           .then(fcmToken => {
-  //             if (fcmToken) {
-  //               console.log('fcmToken===============>', fcmToken);
-  //               const formData = new FormData();
-  //               formData.append('customer_id', loginFields?.customer_id);
-  //               formData.append('device_token', fcmToken);
-
-  //               const config = {
-  //                 headers: {
-  //                   'Content-Type': 'multipart/form-data',
-  //                 },
-  //               };
-
-  //               axios
-  //                 .post(`${BaseUrl}saveDeviceToken`, formData, config)
-  //                 .then((res: any) => {
-  //                   // ToastAndroid.show(
-  //                   //   `${res.data.message}`,
-  //                   //   ToastAndroid.BOTTOM,
-  //                   // );
-  //                 })
-  //                 .catch(error => {
-  //                   ToastAndroid.show(
-  //                     'Internal Server Error fcmToken',
-  //                     ToastAndroid.BOTTOM,
-  //                   );
-  //                 });
-  //             } else {
-  //               console.log("user doesn't have a device token yet");
-  //             }
-  //           });
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.log('error', error);
-  //     });
-  // };
   const dispatch = useDispatch()
   const checkPermissionAndToken = async () => {
     messaging()
@@ -137,7 +90,6 @@ const Login = ({navigation}: any) => {
       });
   };
   const [user_id, setUser_id] = useState('');
-  // console.log('userid', user_id);
   const gettingUserData = () => {
     AsyncStorage.getItem('user_id')
       .then(value => {
@@ -149,14 +101,13 @@ const Login = ({navigation}: any) => {
       })
       .catch(error => console.log('Error retrieving login fields: ', error));
   };
-  // console.log('gettingUserData',user_id);
+
   useEffect(()=>{
     gettingUserData
   },[])
   
   const LoginFunction = () => {
     let flag = Object.values(loginFields);
-
     let flag2 = flag.some((e, i) => e == '');
 
     if (flag2) {

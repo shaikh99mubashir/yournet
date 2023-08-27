@@ -51,13 +51,7 @@ const CheckWebView = ({ route, navigation }: any) => {
 
 
   const backToHomePage = () => {
-    console.log('working');
-    console.log('link.selectedLink',link.selectedLink);
-    console.log('link.selectedLink',currentUrl);
-    
     if(link.selectedLink == currentUrl){
-      console.log('link====>',link.selectedLink);
-      console.log('currentUrl====>',currentUrl);
       navigation.navigate('Home')
       return true
     }
@@ -102,11 +96,9 @@ const CheckWebView = ({ route, navigation }: any) => {
     React.useCallback(() => {
       const onBackPress = () => {
         if (backAction()) {
-          console.log('hi')
           backToHomePage()
           return true;
         } else {
-          console.log('hi 2')
           backToHomePage();
           return true;
         }
@@ -122,9 +114,7 @@ const CheckWebView = ({ route, navigation }: any) => {
  
   
   const onMessage = async (event: any) => {
-    console.log('event', event);
     const message = event.nativeEvent.data;
-    console.log('Message',message);
       
     if (message === 'navigateToHome') {
       navigation.navigate('Home');
@@ -139,9 +129,6 @@ const CheckWebView = ({ route, navigation }: any) => {
     }
   };
 
-  console.log('current link set hoo gia',currentUrl);
-  // 
-  
    // State and animated values
    const translateX = useSharedValue(0);
    const translateY = useSharedValue(0);
@@ -149,8 +136,7 @@ const CheckWebView = ({ route, navigation }: any) => {
    // Gesture handler event
    const panGestureEvent = useAnimatedGestureHandler<
   PanGestureHandlerGestureEvent,
-  ContextType
->({
+  ContextType>({
   onStart: (event, context) => {
     context.translateX = translateX.value;
     context.translateY = translateY.value;
@@ -173,34 +159,9 @@ const CheckWebView = ({ route, navigation }: any) => {
   },
 });
  
-   // Animated style
-   const rStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateX: translateX.value,
-        },
-        {
-          translateY: translateY.value,
-        },
-      ],
-    };
-  });
+
 
   return (
-  //   <View style={styles.container}>
-  //   <View style={styles.circle}>
-  //     <PanGestureHandler onGestureEvent={panGestureEvent}>
-  //       <Animated.View style={[styles.square, rStyle]} >
-  //       <Image
-  //         source={require('../../Images/ISPIcon.png')}
-  //         style={{ width: 40, height: 40 }}
-  //         resizeMode="contain"
-  //       />
-  //       </Animated.View>
-  //     </PanGestureHandler>
-  //   </View>
-  // </View>
     <View style={{ flex: 1 }}>
       <TouchableOpacity
         onPress={() => navigation.navigate('Home')}
@@ -276,48 +237,3 @@ const styles = StyleSheet.create({
   },
 });
 
-// import {
-//   BackHandler,
-//   StyleSheet,
-//   Text,
-//   View,
-//   TouchableOpacity,
-//   Image
-// } from 'react-native';
-// import React, {useEffect, useRef} from 'react';
-// import WebView from 'react-native-webview';
-// import { Color } from '../../Constants';
-
-// const CheckWebView = ({route, navigation}: any) => {
-//   const link = route.params;
-//   const webViewRef = useRef<WebView | null>(null);
-//   const backAction = () => {
-//     webViewRef.current?.goBack();
-//     return true;
-//   };
-
-//   useEffect(() => {
-//     BackHandler.addEventListener('hardwareBackPress', backAction);
-//   }, []);
-
-//   return (
-//     <View style={{flex: 1}}>
-//       <TouchableOpacity
-//         onPress={() => navigation.navigate('Home')}
-//         style={{position: 'absolute', zIndex: 1,bottom: 16, right: 16, backgroundColor:Color.mainColor, borderRadius:50, padding:5 }}>
-//         <Image source={require('../../Images/logoIcon.png')} style={{width:50, height:50}} resizeMode='contain'/>
-//       </TouchableOpacity>
-//       <WebView
-//         ref={webViewRef}
-//         allowsFullscreenVideo={true}
-//         source={{uri: link.selectedLink}}
-//         startInLoadingState={true}
-//         style={{flex: 1}}
-//       />
-//     </View>
-//   );
-// };
-
-// export default CheckWebView;
-
-// const styles = StyleSheet.create({});

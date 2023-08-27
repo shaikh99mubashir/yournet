@@ -11,74 +11,12 @@ import { useIsFocused } from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 
 const Contact = ({navigation}:any) => {
-  // const mobileNumber = [
-  //   {
-  //     id: 1,
-  //     number: '03353375813',
-  //   },
-  //   {
-  //     id: 2,
-  //     number: '03353375813',
-  //   },
-  // ];
-
   const [number, setNumber] = useState([])
-  // console.log('number',number);
-  
   const cartData: any = useSelector(cartData => cartData);
-  // console.log('cartData',cartData?.user?.cart?.companycontacts);
   useEffect(()=>{
-    // setNumber(cartData?.user?.contact);
     setNumber(cartData?.user?.cart?.companycontacts);
   },[])
 
-
-  // const [userData, setUserData ] :any = useState()
-  // const focus = useIsFocused()
-  // const gettingUserDatatoken = () => {
-  //   AsyncStorage.getItem('userData')
-  //     .then(value => {
-  //       if (value !== null) {
-  //         setUserData(JSON.parse(value));
-  //       } else {
-  //         console.log('No login fields found');
-  //       }
-  //     })
-  //     .catch(error => console.log('Error retrieving login fields: ', error));
-  // };
-  
-  // useEffect(() => {
-  //   gettingUserDatatoken();
-  // }, [focus]);
-  
-  // const getData = () => {
-  //   const formData = new FormData();
-  //   formData.append('company_id', userData?.company_id);
-  //   const config = {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data',
-  //     },
-  //   };
-  //   axios
-  //     .post(`${BaseUrl}getContactNumbersByCompanyId`, formData, config)
-  //     .then((res: any) => {
-  //     })
-  //     .catch(error => {
-  //       ToastAndroid.show('Internal Server Error', ToastAndroid.BOTTOM);
-  //     });
-  //   };
-    // useEffect(()=>{
-    //   getData()
-    // },[focus,userData?.company_id])
-  // const handleMobileNumberPress = (mobileNumber: number) => {
-  //   const phoneUrl = `tel:${mobileNumber}`;
-  //   Linking.openURL(phoneUrl);
-  // };
-
-  // const MobileNumberWhatsapp = (mobileNumber: number) => {
-  //   const whatsappUrl = `whatsapp://send?phone=${mobileNumber}`;
-  //   Linking.openURL(whatsappUrl);
-  // };
 
   const handleMobileNumberPress = (inputObj: { number: string }) => {
     const item :any = number.find((item:any) => item.number === inputObj.number);
@@ -146,7 +84,7 @@ const Contact = ({navigation}:any) => {
           color: Color.textColor,
           fontWeight: 'bold',
         }}>
-        For Calls & WhatsApp Click on Numbers
+        Talk to our Customer Support Team
       </Text>
       <View
         style={{
@@ -155,17 +93,6 @@ const Contact = ({navigation}:any) => {
           justifyContent: 'center',
           gap: 10,
         }}>
-        {/* <MaterialIcons name="local-phone" size={30} color={Color.mainColor} /> */}
-        {/* <Text
-          style={{
-            textAlign: 'center',
-            fontSize: 18,
-            marginVertical: 10,
-            color: Color.textColor,
-            fontWeight: 'bold',
-          }}>
-          For Calls
-        </Text> */}
       </View>
       {number &&
         number.map((e: any, i: number) => (
@@ -180,10 +107,7 @@ const Contact = ({navigation}:any) => {
             }}
             key={i}
             onPress={() => handleMobileNumberPress(e)}>
-            {/* <Text style={{color: 'black', fontSize: 16, fontWeight: 'bold'}}>
-            </Text> */}
             <View style={{flexDirection:'row', alignItems:'center', gap:10}}>
-            {/* <MaterialIcons name="local-phone" size={25} color={Color.mainColor} />  */}
             <Text style={{color: Color.mainColor, fontSize: 16, fontWeight: 'bold'}}>{e.number}</Text>
             </View>
           </TouchableOpacity>

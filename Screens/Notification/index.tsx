@@ -31,14 +31,7 @@ const Notification = ({navigation}: any) => {
   const cartData: any = useSelector(cartData => cartData);
   const noti: any = useSelector(notification => notification);
   const newNotificationCount = noti?.user?.notification && noti?.user?.notification.filter((notification:any) => notification.status == 'New').length;
-  // const newNotificationCount = cartData?.user?.cart?.push_notifications && cartData?.user?.cart?.push_notifications.filter((notification:any) => notification.status == 'New').length;
-  // console.log('newNotificationCount',newNotificationCount);
-  // console.log('newNotificationCount====>',userNotificarion,'newNotificationCount====>');
-  
-  //  userNotificarion  = cartData?.user?.cart?.push_notifications
-  // console.log('cartData',cartData?.user?.cart?.push_notifications);
-  // const noti: any = useSelector(noti => noti);
-  // console.log(noti.user.notification,'noti.user.notification');
+
   useEffect(()=>{
     setUserData(cartData?.user?.cart?.customer);
     getFCMToken()
@@ -66,11 +59,8 @@ const Notification = ({navigation}: any) => {
     axios
     .post(`${BaseUrl}getPushNotifications`, formData, config)
     .then(({data}: any) => {
-        // console.log('running12');
-        // console.log('dara',data.push_notifications,'==========data.push_notifications==========');
         setUserNotificarion(data.push_notifications)
         setLoading(false)
-        // dispatch(pushNotification(data.push_notifications));
       })
       .catch(error => {
         console.log('error noti page',error);
@@ -83,7 +73,6 @@ const Notification = ({navigation}: any) => {
   };
 
   useEffect(()=>{
-    // console.log('Updated userNotificarion:', userNotificarion);
     newNotificationCount > 0 ?
     getNotification()
     :
@@ -137,7 +126,6 @@ const Notification = ({navigation}: any) => {
     ? `${item.message.slice(0, Math.floor((0.9 * windowWidth) / 6)).trim()}...`
     : item.message.trim();
 
-    // console.log('item',item);
     return (
       <>
         <Text

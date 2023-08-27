@@ -34,29 +34,12 @@ function CustomDrawerContent(props: any) {
     props.navigation.navigate(screenName);
   };
   const focus = useIsFocused();
-  // const [user_id, setUser_id] = useState('');
   const [openWWRModal, setOpenWWRModal] = useState(false);
   const [openPPModal, setOpenPPModal] = useState(false);
-  // const gettingUserDatatoken = () => {
-  //   AsyncStorage.getItem('user_id')
-  //     .then(value => {
-  //       if (value !== null) {
-  //         setUser_id(JSON.parse(value));
-  //       } else {
-  //         console.log('No login fields found');
-  //       }
-  //     })
-  //     .catch(error => console.log('Error retrieving login fields: ', error));
-  // };
-
-  // useEffect(() => {
-  //   gettingUserDatatoken();
-  // }, [focus]);
 
   // get User DATA
   const [getUserData, setUserData] = useState<any>([]);
   const cartData: any = useSelector(cartData => cartData);
-  // console.log('cartData?.user?.cart?.customer', cartData?.user?.cart?.customer);
 
   useEffect(() => {
     setUserData(cartData?.user?.cart?.customer);
@@ -87,7 +70,7 @@ function CustomDrawerContent(props: any) {
 
   const share = async () => {
     const options = {
-      message: 'Internet service Provider',
+      message: 'ISP Billing Cloud-based Billing & Data Management Platform For ISP’s (Internet Service Providers)',
       url: 'https://ispbilling.com.pk/APP/ISPBILLINGAPP.apk',
       // email: 'mubashir@gmail.com',
       // subject: 'Eiusmod esse veniam esse.',
@@ -96,7 +79,6 @@ function CustomDrawerContent(props: any) {
 
     try {
       const res = await Share.open(options);
-      // console.log(res);
     } catch (err) {
       console.log(err);
     }
@@ -104,21 +86,6 @@ function CustomDrawerContent(props: any) {
   const ShowMessage = () => {
     ToastAndroid.show('This Feature will Soon Avaiable !', ToastAndroid.SHORT);
   };
-  // const [nickName, setNickName] = useState<any>('');
-  // props.navigation.addListener('state', () => {
-  //   // getData();
-  //   gettingUserNickName();
-  // });
-  // const gettingUserNickName = async () => {
-  //   let value = await AsyncStorage.getItem('nickName');
-  //   if (value !== null) {
-  //     // console.log(value, 'value');
-  //     setNickName(JSON.parse(value));
-  //   }
-  // };
-  // useEffect(() => {
-  //   gettingUserNickName();
-  // }, [focus]);
 
   const logoutFun = () => {
     props.navigation.replace('Login');
@@ -130,10 +97,7 @@ function CustomDrawerContent(props: any) {
 
   const userNickName: any = useSelector(userNickName => userNickName);
   const nickname = userNickName?.user?.userNickName;
-  // const whoWeAre: any = useSelector(whoWeAre => whoWeAre);
-  // const getWhoWeAre = whoWeAre?.user?.whoWeAre;
   const getWhoWeAre = cartData?.user?.cart?.whoweare;
-
   const PackagesPlans: any = useSelector(PackagesPlans => PackagesPlans);
   const getPackagesPlans = cartData?.user?.cart?.package_image;
 
@@ -152,8 +116,6 @@ function CustomDrawerContent(props: any) {
     initial = firstname.charAt(0);
   }
 
-  const screenWidth = Dimensions.get('window').width;
-  // console.log('userNickName',userNickName.user.userNickName);
   return (
     <View
       style={{flex: 1, backgroundColor: Color.white, paddingHorizontal: 10}}>
@@ -489,14 +451,6 @@ function CustomDrawerContent(props: any) {
           </View>
         </View>
         {/* Who We Are Modal */}
-        {/* <Text
-                  style={{
-                    textAlign: 'justify',
-                    fontSize: 14,
-                    color: Color.textColor,
-                  }}>
-                  {getWhoWeAre}
-                </Text> */}
         <View style={{flex: 1}}>
           <Modal
             visible={openWWRModal}

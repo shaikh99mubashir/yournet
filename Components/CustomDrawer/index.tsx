@@ -27,6 +27,7 @@ import {useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToCart, logout} from '../../Redux/Reducer/Reducers';
 import HTML from 'react-native-render-html';
+import messaging from '@react-native-firebase/messaging';
 function CustomDrawerContent(props: any) {
   const dispatch = useDispatch();
 
@@ -93,6 +94,30 @@ function CustomDrawerContent(props: any) {
     AsyncStorage.removeItem('loginFields');
     AsyncStorage.removeItem('nickName');
     dispatch(logout());
+
+    messaging()
+      .getToken()
+      .then(device_token => {
+        const formData = new FormData();
+        formData.append('device_token', device_token);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    axios
+      .post(`${BaseUrl}deleteDeviceToken`, formData, config)
+      .then(({data}: any) => {
+        ToastAndroid.show(
+          'Logout Successfully',
+          ToastAndroid.BOTTOM,
+        );
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+      });
+
   };
 
   const userNickName: any = useSelector(userNickName => userNickName);
@@ -565,7 +590,7 @@ function CustomDrawerContent(props: any) {
                   }}>
                   <Text
                     style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
-                    Avali Offer
+                    Contact us
                   </Text>
                 </TouchableOpacity>
               </View>

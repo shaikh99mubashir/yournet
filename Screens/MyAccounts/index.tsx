@@ -131,21 +131,6 @@ const MyAccounts = ({navigation}:any) => {
 
   
   const cartData: any = useSelector(cartData => cartData);
-  const userNickName: any = useSelector(userNickName => userNickName);
-  AsyncStorage.setItem('nickName', JSON.stringify(nickName))
-  .then(() => console.log('nickName saved'))
-  .catch(error => console.log('Error saving user_id: ', error));
-
-  AsyncStorage.getItem('nickName')
-  .then(value => {
-    if (value !== null) {
-     let myNickName = JSON.parse(value);
-     dispatch(nickname(myNickName));
-    } else {
-      console.log('No user_id found');
-    }
-  })
-  .catch(error => console.log('Error retrieving login fields: ', error));
   
   useEffect(()=>{
     setUserData(cartData?.user?.cart?.customer);

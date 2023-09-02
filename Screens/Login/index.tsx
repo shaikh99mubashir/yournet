@@ -137,8 +137,6 @@ const Login = ({navigation}: any) => {
         AsyncStorage.setItem('user_id', JSON.stringify(res.data.user_id))
           .then(() => console.log('user_id Saved'))
           .catch(error => console.log('Error saving user_id: ', error));
-          // console.log("res.data,",res.data);
-          
         if (res.data.status == 'success') {
           navigation.replace('Home');
           checkPermissionAndToken()

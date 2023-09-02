@@ -85,7 +85,9 @@ const Complaint = ({navigation}: any) => {
     axios
       .post(`${BaseUrl}generateComplain`, data, config)
       .then((res: any) => {
-        navigation.replace('Help');
+        // navigation.replace('Help');
+        navigation.goBack()
+
         ToastAndroid.show(`${res.data.message}`, ToastAndroid.BOTTOM);
       })
       .catch(error => {

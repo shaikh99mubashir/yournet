@@ -158,7 +158,7 @@ const Home = ({navigation}: any) => {
           setNoInternet(true);
           return;
         }
-        ToastAndroid.show('Internal Server Error Home check Your Internet Connection', ToastAndroid.LONG);
+        ToastAndroid.show('You Are Offline', ToastAndroid.LONG);
         setLoading(false);
         setUserData(null);
       });
@@ -486,7 +486,7 @@ const Home = ({navigation}: any) => {
                   width: '80%',
                 }}>
                 <Text style={{fontSize: 15, fontWeight: '500', color: 'black'}}>
-                  Update Your Email
+                  Update email here
                 </Text>
                 <TextInput
                   placeholder="Enter Email Address"

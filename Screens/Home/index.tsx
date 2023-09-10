@@ -182,40 +182,40 @@ const Home = ({navigation}: any) => {
   const maxBackgroundTime = 60 * 60 * 1000; // 1 hour in milliseconds
   // const maxBackgroundTime = 60 * 1000; // 1 minute in milliseconds
 
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', nextAppState => {
-      if (
-        appState.current.match(/inactive|background/) &&
-        nextAppState === 'active'
-      ) {
-        console.log('App has come to the foreground!');
-        if (backgroundStartTime.current !== null) {
-          const currentTime = Date.now();
-          const backgroundDuration = currentTime - backgroundStartTime.current;
-          backgroundTime.current += backgroundDuration;
-          backgroundStartTime.current = null;
+  // useEffect(() => {
+  //   const subscription = AppState.addEventListener('change', nextAppState => {
+  //     if (
+  //       appState.current.match(/inactive|background/) &&
+  //       nextAppState === 'active'
+  //     ) {
+  //       console.log('App has come to the foreground!');
+  //       if (backgroundStartTime.current !== null) {
+  //         const currentTime = Date.now();
+  //         const backgroundDuration = currentTime - backgroundStartTime.current;
+  //         backgroundTime.current += backgroundDuration;
+  //         backgroundStartTime.current = null;
 
-          if (backgroundTime.current >= maxBackgroundTime) {
-            console.log(
-              'Navigating to SplashScreen after 1 minute in background.',
-            );
-            navigation.navigate('SplashScreen');
-          }
-        }
-      }
+  //         if (backgroundTime.current >= maxBackgroundTime) {
+  //           console.log(
+  //             'Navigating to SplashScreen after 1 minute in background.',
+  //           );
+  //           navigation.navigate('SplashScreen');
+  //         }
+  //       }
+  //     }
 
-      if (appState.current === 'background' && nextAppState === 'active') {
-        backgroundStartTime.current = Date.now();
-      }
+  //     if (appState.current === 'background' && nextAppState === 'active') {
+  //       backgroundStartTime.current = Date.now();
+  //     }
 
-      appState.current = nextAppState;
-      console.log('AppState', appState.current);
-    });
+  //     appState.current = nextAppState;
+  //     console.log('AppState', appState.current);
+  //   });
 
-    return () => {
-      subscription.remove();
-    };
-  }, []);
+  //   return () => {
+  //     subscription.remove();
+  //   };
+  // }, []);
 
   // Get Notification
   const getNotification = () => {

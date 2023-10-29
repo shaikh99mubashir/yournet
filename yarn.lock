@@ -1069,6 +1069,11 @@
   "resolved" "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   "version" "0.2.3"
 
+"@brooons/react-native-bluetooth-escpos-printer@^1.2.0":
+  "integrity" "sha512-QVXqxI11qUirwpIMeMfwgAtHI++YaNs3M2BI4tLQP/alNngQzGtuuKsASNY6FAOkN5RaCjUDfZv5yUSXRSUJOw=="
+  "resolved" "https://registry.npmjs.org/@brooons/react-native-bluetooth-escpos-printer/-/react-native-bluetooth-escpos-printer-1.2.0.tgz"
+  "version" "1.2.0"
+
 "@egjs/hammerjs@^2.0.17":
   "integrity" "sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A=="
   "resolved" "https://registry.npmjs.org/@egjs/hammerjs/-/hammerjs-2.0.17.tgz"
@@ -2295,6 +2300,15 @@
   "resolved" "https://registry.npmjs.org/@tsconfig/react-native/-/react-native-2.0.3.tgz"
   "version" "2.0.3"
 
+"@tumihub/react-native-thermal-receipt-printer@^1.0.4":
+  "integrity" "sha512-q0EV6gV76V2C9s4tgMiUNtw5XjC7zLjj1au7CS/U4gm6pNlC5IMxV5eMkwIiMC0kxiV6zGUvmfG57l8UvrbUNg=="
+  "resolved" "https://registry.npmjs.org/@tumihub/react-native-thermal-receipt-printer/-/react-native-thermal-receipt-printer-1.0.4.tgz"
+  "version" "1.0.4"
+  dependencies:
+    "buffer" "^5.6.0"
+    "iconv-lite" "^0.6.2"
+    "string_decoder" "^1.3.0"
+
 "@types/babel__core@^7.1.14":
   "integrity" "sha512-+n8dL/9GWblDO0iU6eZAwEIJVr5DWigtle+Q6HLOrh/pdbXOhOtqzq8VPPE2zvNJzSKY4vH/z3iT3tn0A3ypiQ=="
   "resolved" "https://registry.npmjs.org/@types/babel__core/-/babel__core-7.20.0.tgz"
@@ -3041,7 +3055,7 @@
   "resolved" "https://registry.npmjs.org/buffer-from/-/buffer-from-1.1.2.tgz"
   "version" "1.1.2"
 
-"buffer@^5.5.0":
+"buffer@^5.5.0", "buffer@^5.6.0":
   "integrity" "sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ=="
   "resolved" "https://registry.npmjs.org/buffer/-/buffer-5.7.1.tgz"
   "version" "5.7.1"
@@ -4638,6 +4652,13 @@
   "resolved" "https://registry.npmjs.org/human-signals/-/human-signals-2.1.0.tgz"
   "version" "2.1.0"
 
+"iconv-lite@^0.6.2":
+  "integrity" "sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw=="
+  "resolved" "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.6.3.tgz"
+  "version" "0.6.3"
+  dependencies:
+    "safer-buffer" ">= 2.1.2 < 3.0.0"
+
 "idb@7.0.1":
   "integrity" "sha512-UUxlE7vGWK5RfB/fDwEGgRf84DY/ieqNha6msMV99UsEMQhJ1RwbCd8AYBj3QMgnE3VZnfQvm4oKVCJTYlqIgg=="
   "resolved" "https://registry.npmjs.org/idb/-/idb-7.0.1.tgz"
@@ -6204,6 +6225,11 @@
     "snapdragon" "^0.8.1"
     "to-regex" "^3.0.1"
 
+"nativescript-sewoo-printer@^2.0.2":
+  "integrity" "sha512-ktQGmV9Mbznun8VJ2m3gS5Ek0HNj32u9OMuJ83N+qn9lDpoeApLBcaOajghYoctTEVJC7GQNlOZYb1OR2sscrw=="
+  "resolved" "https://registry.npmjs.org/nativescript-sewoo-printer/-/nativescript-sewoo-printer-2.0.2.tgz"
+  "version" "2.0.2"
+
 "natural-compare-lite@^1.4.0":
   "integrity" "sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g=="
   "resolved" "https://registry.npmjs.org/natural-compare-lite/-/natural-compare-lite-1.4.0.tgz"
@@ -6879,6 +6905,11 @@
     "picocolors" "^1.0.0"
     "pkg-dir" "^5.0.0"
 
+"react-native-print@^0.11.0":
+  "integrity" "sha512-hFDzb9dVJVT8c3VHNNWgkPfLF3Jfyw0WVJ3o7wUmSMmi5hJx6b++veNJ3J95d3lW3Y0sZUpGbn9+yzXrLANnJQ=="
+  "resolved" "https://registry.npmjs.org/react-native-print/-/react-native-print-0.11.0.tgz"
+  "version" "0.11.0"
+
 "react-native-reanimated@^3.3.0":
   "integrity" "sha512-LzfpPZ1qXBGy5BcUHqw3pBC0qSd22qXS3t8hWSbozXNrBkzMhhOrcILE/nEg/PHpNNp1xvGOW8NwpAMF006roQ=="
   "resolved" "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-3.3.0.tgz"
@@ -7273,6 +7304,11 @@
   dependencies:
     "ret" "~0.1.10"
 
+"safer-buffer@>= 2.1.2 < 3.0.0":
+  "integrity" "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg=="
+  "resolved" "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
+  "version" "2.1.2"
+
 "scheduler@^0.23.0":
   "integrity" "sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw=="
   "resolved" "https://registry.npmjs.org/scheduler/-/scheduler-0.23.0.tgz"
@@ -7584,7 +7620,7 @@
   "resolved" "https://registry.npmjs.org/strict-uri-encode/-/strict-uri-encode-2.0.0.tgz"
   "version" "2.0.0"
 
-"string_decoder@^1.1.1":
+"string_decoder@^1.1.1", "string_decoder@^1.3.0":
   "integrity" "sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA=="
   "resolved" "https://registry.npmjs.org/string_decoder/-/string_decoder-1.3.0.tgz"
   "version" "1.3.0"

@@ -1,5 +1,5 @@
-import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, View, Image, ScrollView,TouchableOpacity,Platform,PermissionsAndroid } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -7,11 +7,23 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Entypo from 'react-native-vector-icons/Entypo';
 import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
+import RNPrint from 'react-native-print';
+import { BluetoothManager, BluetoothEscposPrinter, BluetoothTscPrinter  } from '@brooons/react-native-bluetooth-escpos-printer';
+
+import {
+  USBPrinter,
+  NetPrinter,
+  BLEPrinter,
+} from "@tumihub/react-native-thermal-receipt-printer";
+
+
 
 const TransactionDetails = ({navigation, route}: any) => {
   const data: any = route.params;
-  console.log('data ===>', data);
+  // console.log('data ===>', data);
 
+  const [printers, setPrinters] = useState([]);
+  const [currentPrinter, setCurrentPrinter] = useState();
   const activationDate: Date = new Date(data.activation_date);
   const expiryDate: Date = new Date(data.expiry_date);
 
@@ -53,10 +65,89 @@ const TransactionDetails = ({navigation, route}: any) => {
   const activation_date = `${dayString} ${montha} ${yeara}`;
   // console.log('data',data);
 
+  const billHTML = `
+  <B>Company Name</B>:
+  ${companyName}
+  
+  <B>Customer ID</B>:
+  ${data.customer_id}
+  
+`;
+  const selectedDeviceName = "SW_D275";
+  const  printHTML = async ()=> {
+
+    BLEPrinter.init()
+    .then(() => {
+      BLEPrinter.getDeviceList().then((res) => {
+        console.log('res', res);
+        const selectedDevice = res.find(device => device.device_name === selectedDeviceName);
+  
+        if (selectedDevice) {
+          BLEPrinter.connectPrinter(selectedDevice.inner_mac_address) // Connect to the selected device
+            .then(() => {
+              // BLEPrinter.printText("<C>Sample bill</C>")
+              BLEPrinter.printText(billHTML)
+                .then(() => {
+                  console.log("Print successful");
+                })
+                .catch((error) => {
+                  console.log("Error printing:", error);
+                });
+            })
+            .catch((error:any) => {
+              console.log("Error connecting:", error);
+            });
+        } else {
+          console.log("Device not found in the list.");
+        }
+      });
+    })
+    .catch((error) => {
+      console.log("Error initializing:", error);
+    });
+  
+  
+  }
+
+ 
+
+  useEffect(()=>{
+
+    BLEPrinter.init().then(()=> {
+      BLEPrinter.getDeviceList().then((res)=>{
+              console.log('res',res);
+              const selectedDevice = res.find(device => device.device_name === selectedDeviceName);
+              // setPrinters(res)
+              if (selectedDevice) {
+                
+                currentPrinter && USBPrinter.printBill(billHTML);
+              } else {
+                console.log("Device not found in the list.");
+              }
+            })
+            .catch((error)=>{
+              console.log('error',error);
+              
+            })
+          })
+   
+  },[])
+  const _connectPrinter = (printer:any) => USBPrinter.connectPrinter(printer.vendorID, printer.productId).then(() => setCurrentPrinter(printer))
+
+  const printTextTest = () => {
+    currentPrinter && USBPrinter.printText("<C>sample text</C>\n");
+  }
+
+  // const printBillTest = () => {
+  //   currentPrinter && USBPrinter.printBill("<C>sample bill</C>");
+  // }
+
   return (
     <ScrollView
       style={{paddingTop: 0, paddingHorizontal: 0}}
       showsVerticalScrollIndicator={false}>
+         {/* <TouchableOpacity onPress={()=>printBillTest()}><Text>print the recipst</Text></TouchableOpacity> */}
+        
       <View
         style={{
           backgroundColor: Color.mainColor,
@@ -158,6 +249,7 @@ const TransactionDetails = ({navigation, route}: any) => {
             borderColor: '#eee',
             paddingVertical: 10,
           }}>
+          <TouchableOpacity onPress={()=>printHTML()}><Text>print the recipst</Text></TouchableOpacity>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
             <FontAwesome name="circle" size={8} color={Color.mainColor} />
             <Text style={{color: 'grey', fontSize: 14, fontWeight: '600'}}>
